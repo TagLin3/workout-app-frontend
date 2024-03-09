@@ -9,4 +9,4 @@ Currently, two official plugins are available:
 
 | date   | hours | description |
 | ----   | ----- | ----------- |
-|9.3.2024| 3     | Got started on UI. Implemented basic routing for the frontend. Tried and failed to get json-server working with the many-to-many relationship between different workout plans and exercises |
+|9.3.2024| 3     | Got started on the frontend using React. Implemented basic routing for the frontend with React Router. Tried and failed to get json-server working with the many-to-many relationship between different workout plans and exercises. |
