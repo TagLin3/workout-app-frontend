@@ -44,10 +44,6 @@ export const loader = async ({ params }) => {
   const workout = await workoutService.getSingle(params.id);
   return {
     ...workout,
-    exercises: workout.exercises.map(async (id) => {
-      const exercise = await exerciseService.getSingle(id);
-      return exercise;
-    }),
   };
 };
 
