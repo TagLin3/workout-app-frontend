@@ -1,9 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Workouts, { loader as workoutsLoader } from "./routes/Workouts";
 import Root from "./routes/Root";
-import Exercises, { loader as exercisesLoader } from "./routes/Exercises";
+import Workouts,
+{ loader as workoutsLoader } from "./routes/Workouts";
+import ExercisesAndSetsForWorkout,
+{ loader as exercisesForWorkoutLoader } from "./routes/ExercisesAndSetsForWorkout";
+import WorkoutCreator,
+{ loader as availableExercisesLoader } from "./routes/WorkoutCreator";
+import ExerciseLibrary,
+{ loader as exerciseLibraryLoader } from "./routes/ExerciseLibrary";
 
 const router = createBrowserRouter([
   {
@@ -12,14 +18,24 @@ const router = createBrowserRouter([
     errorElement: "Error: 404 Not found",
     children: [
       {
-        path: "/",
+        path: "/workouts",
         element: <Workouts />,
         loader: workoutsLoader,
       },
       {
-        path: "workouts/:id",
-        element: <Exercises />,
-        loader: exercisesLoader,
+        path: "/workouts/:id",
+        element: <ExercisesAndSetsForWorkout />,
+        loader: exercisesForWorkoutLoader,
+      },
+      {
+        path: "/workout_creator",
+        element: <WorkoutCreator />,
+        loader: availableExercisesLoader,
+      },
+      {
+        path: "/exercise_library",
+        element: <ExerciseLibrary />,
+        loader: exerciseLibraryLoader,
       },
     ],
   },

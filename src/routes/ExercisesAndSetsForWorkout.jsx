@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import Exercise from "../components/Exercise";
-import exerciseService from "../services/exerciseService";
+import Sets from "../components/Sets";
 import workoutService from "../services/workoutService";
 
-const Exercises = () => {
+const ExercisesAndSetsForWorkout = () => {
   const { exercises } = useLoaderData();
   const [sets, setSets] = useState([]);
 
@@ -23,14 +22,15 @@ const Exercises = () => {
       rest: event.target.rest.value,
     }));
   };
+
   return (
     <div>
       <h1>testWorkout</h1>
       <div>
         {exercises.map((exercise) => (
-          <Exercise
-            key={exercise}
-            exercise={exercise}
+          <Sets
+            key={exercise.id}
+            exercise={exercise.name}
             sets={sets}
             handleAddNewSet={handleAddNewSet}
           />
@@ -40,11 +40,6 @@ const Exercises = () => {
   );
 };
 
-export const loader = async ({ params }) => {
-  const workout = await workoutService.getSingle(params.id);
-  return {
-    ...workout,
-  };
-};
+export const loader = ({ params }) => workoutService.getSingle(params.id);
 
-export default Exercises;
+export default ExercisesAndSetsForWorkout;

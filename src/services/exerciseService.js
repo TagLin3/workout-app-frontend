@@ -1,10 +1,20 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/exercises";
+const baseUrl = "http://localhost:3001/api/exercises";
+
+const getAll = async () => {
+  const response = await axios.get(baseUrl);
+  return response.data;
+};
 
 const getSingle = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
 };
 
-export default { getSingle };
+const addExercise = async (exercise) => {
+  const response = await axios.post(baseUrl, exercise);
+  return response.data;
+};
+
+export default { getSingle, getAll, addExercise };

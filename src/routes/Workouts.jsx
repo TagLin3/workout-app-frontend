@@ -14,6 +14,8 @@ const Workouts = () => {
           <Link to={`/workouts/${workout.id}`}>{workout.name}</Link>
         </div>
       ))}
+      <h2>Create new workout</h2>
+      <Link to="/workout_creator">Workout creator</Link>
     </div>
   );
 };

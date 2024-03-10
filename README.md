@@ -10,3 +10,5 @@ Currently, two official plugins are available:
 | date   | hours | description |
 | ----   | ----- | ----------- |
 |9.3.2024| 3     | Got started on the frontend using React. Implemented basic routing for the frontend with React Router. Tried and failed to get json-server working with the many-to-many relationship between different workout plans and exercises. |
+|9.3.2024| 1.5   | Started the backend using Express and configured Mongoose. Was a bit rusty on backend develompent so a lot of time was spent on reading the Mongoose and Express docs. |
+|10.3.2024| 2.5  | To the backend: Added the functionality for adding exercises and workouts. To the frontend: made a workout creator and an exercise library. Will probably switch to using some combination of Redux and React Query or RTK Query. |

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/workouts";
+const baseUrl = "http://localhost:3001/api/workouts";
 
 const getAll = async () => {
   const response = await axios.get(baseUrl);
@@ -12,4 +12,9 @@ const getSingle = async (id) => {
   return response.data;
 };
 
-export default { getAll, getSingle };
+const addWorkout = async (workout) => {
+  const response = await axios.post(baseUrl, workout);
+  return response.data;
+};
+
+export default { getAll, getSingle, addWorkout };

@@ -1,4 +1,4 @@
-const Exercise = ({ exercise, sets, handleAddNewSet }) => (
+const Sets = ({ exercise, sets, handleAddNewSet }) => (
   <div>
     <h2>{exercise}</h2>
     <table>
@@ -42,4 +42,4 @@ const Exercise = ({ exercise, sets, handleAddNewSet }) => (
   </div>
 );
 
-export default Exercise;
+export default Sets;
