@@ -1,35 +1,40 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root from "./routes/Root";
-import Workouts,
-{ loader as workoutsLoader } from "./routes/Workouts";
+import Nav from "./routes/Nav";
+import Routines,
+{ loader as routinesLoader } from "./routes/Routines";
 import ExercisesAndSetsForWorkout,
 { loader as exercisesForWorkoutLoader } from "./routes/ExercisesAndSetsForWorkout";
-import WorkoutCreator,
-{ loader as availableExercisesLoader } from "./routes/WorkoutCreator";
+import RoutineCreator,
+{ loader as availableExercisesLoader } from "./routes/RoutineCreator";
 import ExerciseLibrary,
 { loader as exerciseLibraryLoader } from "./routes/ExerciseLibrary";
+import Home from "./routes/Home";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <Nav />,
     errorElement: "Error: 404 Not found",
     children: [
       {
-        path: "/workouts",
-        element: <Workouts />,
-        loader: workoutsLoader,
+        path: "/",
+        element: <Home />,
       },
       {
-        path: "/workouts/:id",
+        path: "/routines",
+        element: <Routines />,
+        loader: routinesLoader,
+      },
+      {
+        path: "/routines/:id",
         element: <ExercisesAndSetsForWorkout />,
         loader: exercisesForWorkoutLoader,
       },
       {
-        path: "/workout_creator",
-        element: <WorkoutCreator />,
+        path: "/routine_creator",
+        element: <RoutineCreator />,
         loader: availableExercisesLoader,
       },
       {

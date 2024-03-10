@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import exerciseService from "../services/exerciseService";
-import workoutService from "../services/workoutService";
+import routineService from "../services/routineService";
 import Notification from "../components/Notification";
 
-const WorkoutCreator = () => {
+const RoutineCreator = () => {
   const availableExercises = useLoaderData();
   const [selectedExercises, setSelectedExercises] = useState([]);
   const [notification, setNotification] = useState(null);
@@ -24,9 +24,9 @@ const WorkoutCreator = () => {
     }
   };
 
-  const createWorkout = (event) => {
+  const createRoutine = (event) => {
     event.preventDefault();
-    workoutService.addWorkout({
+    routineService.addWorkout({
       name: event.target.name.value,
       exercises: selectedExercises.map((exercise) => exercise.id),
     });
@@ -35,7 +35,7 @@ const WorkoutCreator = () => {
   return (
     <div>
       <Notification message={notification} />
-      <h1>Workout creator</h1>
+      <h1>Workout routine creator</h1>
       <h2>Exercises</h2>
       <ol>
         {selectedExercises.map((exercise) => (
@@ -57,12 +57,12 @@ const WorkoutCreator = () => {
         <br />
         <button type="submit">add</button>
       </form>
-      <form onSubmit={createWorkout}>
-        name your workout:
+      <form onSubmit={createRoutine}>
+        name your workout routine:
         {" "}
         <input name="name" />
         <br />
-        <button type="submit">create workout</button>
+        <button type="submit">create workout routine</button>
       </form>
     </div>
   );
@@ -70,4 +70,4 @@ const WorkoutCreator = () => {
 
 export const loader = () => exerciseService.getAll();
 
-export default WorkoutCreator;
+export default RoutineCreator;

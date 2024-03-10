@@ -5,7 +5,7 @@ const Root = () => (
     <nav>
       <Link to="/">home</Link>
       {" "}
-      <Link to="/workouts">Workouts</Link>
+      <Link to="/routines">Workout routines</Link>
       {" "}
       <Link to="/exercise_library">Exercise library</Link>
     </nav>
