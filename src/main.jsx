@@ -2,15 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Nav from "./routes/Nav";
-import Routines,
-{ loader as routinesLoader } from "./routes/Routines";
-import ExercisesAndSetsForWorkout,
-{ loader as exercisesForWorkoutLoader } from "./routes/ExercisesAndSetsForWorkout";
-import RoutineCreator,
-{ loader as availableExercisesLoader } from "./routes/RoutineCreator";
-import ExerciseLibrary,
-{ loader as exerciseLibraryLoader } from "./routes/ExerciseLibrary";
+import Routines from "./routes/Routines";
+import NewWorkout from "./routes/NewWorkout";
+import RoutineCreator from "./routes/RoutineCreator";
+import ExerciseLibrary from "./routes/ExerciseLibrary";
 import Home from "./routes/Home";
+
+import SingleRoutine from "./routes/SingleRoutine";
+import routineService from "./services/routineService";
+import exerciseService from "./services/exerciseService";
 
 const router = createBrowserRouter([
   {
@@ -25,22 +25,27 @@ const router = createBrowserRouter([
       {
         path: "/routines",
         element: <Routines />,
-        loader: routinesLoader,
+        loader: () => routineService.getAll(),
       },
       {
         path: "/routines/:id",
-        element: <ExercisesAndSetsForWorkout />,
-        loader: exercisesForWorkoutLoader,
+        element: <SingleRoutine />,
+        loader: ({ params }) => routineService.getSingle(params.id),
+      },
+      {
+        path: "/routines/:id/new",
+        element: <NewWorkout />,
+        loader: ({ params }) => routineService.getSingle(params.id),
       },
       {
         path: "/routine_creator",
         element: <RoutineCreator />,
-        loader: availableExercisesLoader,
+        loader: () => exerciseService.getAll(),
       },
       {
         path: "/exercise_library",
         element: <ExerciseLibrary />,
-        loader: exerciseLibraryLoader,
+        loader: () => exerciseService.getAll(),
       },
     ],
   },

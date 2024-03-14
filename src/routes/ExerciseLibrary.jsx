@@ -42,6 +42,4 @@ const ExerciseLibrary = () => {
   );
 };
 
-export const loader = () => exerciseService.getAll();
-
 export default ExerciseLibrary;
