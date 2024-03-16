@@ -26,7 +26,7 @@ const RoutineCreator = () => {
 
   const createRoutine = async (event) => {
     event.preventDefault();
-    await routineService.addWorkout({
+    await routineService.addRoutine({
       name: event.target.name.value,
       exercises: selectedExercises.map((exercise) => exercise.id),
     });

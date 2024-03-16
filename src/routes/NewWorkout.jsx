@@ -1,9 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import Sets from "../components/Sets";
+import workoutService from "../services/workoutService";
+import setService from "../services/setService";
 
 const NewWorkout = () => {
-  const { exercises, name } = useLoaderData();
+  const { exercises, name, id: routineId } = useLoaderData();
 
   const [sets, setSets] = useState([]);
 
@@ -21,9 +23,9 @@ const NewWorkout = () => {
     setSets(sets.concat({
       exercise,
       number: setNumber,
-      reps: reps.value,
-      weight: weight.value,
-      rest: rest.value,
+      reps: Number(reps.value),
+      weight: Number(weight.value),
+      rest: Number(rest.value),
       note: note.value,
     }));
     reps.value = "";
@@ -32,9 +34,17 @@ const NewWorkout = () => {
     note.value = "";
   };
 
-  const workoutDone = () => {
-
+  const workoutDone = async () => {
+    const workout = {
+      routine: routineId,
+    };
+    const savedWorkout = await workoutService.addWorkout(workout);
+    setService.addMultipleSets(sets.map((set) => ({
+      ...set,
+      workout: savedWorkout.id,
+    })));
   };
+
   return (
     <div>
       <h1>{name}</h1>
@@ -42,7 +52,8 @@ const NewWorkout = () => {
         {exercises.map((exercise) => (
           <Sets
             key={exercise.id}
-            exercise={exercise.name}
+            exerciseId={exercise.id}
+            exerciseName={exercise.name}
             sets={sets}
             addSet={addSet}
           />

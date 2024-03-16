@@ -1,6 +1,8 @@
-const Sets = ({ exercise, addSet, sets }) => (
+const Sets = ({
+  exerciseName, exerciseId, addSet, sets,
+}) => (
   <div>
-    <h2>{exercise}</h2>
+    <h2>{exerciseName}</h2>
     <table>
       <thead>
         <tr>
@@ -12,7 +14,7 @@ const Sets = ({ exercise, addSet, sets }) => (
         </tr>
       </thead>
       <tbody>
-        {sets.filter((set) => set.exercise === exercise)
+        {sets.filter((set) => set.exercise === exerciseId)
           .map((set) => (
             <tr key={set.number}>
               <td>{set.number}</td>
@@ -24,7 +26,7 @@ const Sets = ({ exercise, addSet, sets }) => (
           ))}
       </tbody>
     </table>
-    <form onSubmit={addSet} name={exercise}>
+    <form onSubmit={addSet} name={exerciseId}>
       Add a set:
       <br />
       reps:

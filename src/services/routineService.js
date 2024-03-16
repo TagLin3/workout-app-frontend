@@ -12,9 +12,9 @@ const getSingle = async (id) => {
   return response.data;
 };
 
-const addWorkout = async (workout) => {
-  const response = await axios.post(baseUrl, workout);
+const addRoutine = async (routine) => {
+  const response = await axios.post(baseUrl, routine);
   return response.data;
 };
 
-export default { getAll, getSingle, addWorkout };
+export default { getAll, getSingle, addRoutine };
