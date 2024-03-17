@@ -11,6 +11,9 @@ import Home from "./routes/Home";
 import SingleRoutine from "./routes/SingleRoutine";
 import routineService from "./services/routineService";
 import exerciseService from "./services/exerciseService";
+import PastWorkouts from "./routes/PastWorkouts";
+import workoutService from "./services/workoutService";
+import SinglePastWorkout from "./routes/SinglePastWorkout";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +49,16 @@ const router = createBrowserRouter([
         path: "/exercise_library",
         element: <ExerciseLibrary />,
         loader: () => exerciseService.getAll(),
+      },
+      {
+        path: "/past_workouts",
+        element: <PastWorkouts />,
+        loader: () => workoutService.getAll(),
+      },
+      {
+        path: "/past_workouts/:id",
+        element: <SinglePastWorkout />,
+        loader: ({ params }) => workoutService.getSingle(params.id, true, true),
       },
     ],
   },

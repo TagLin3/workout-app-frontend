@@ -1,8 +1,11 @@
+import Notification from "./Notification";
+
 const Sets = ({
-  exerciseName, exerciseId, addSet, sets,
+  exerciseName, exerciseId, addSet, sets, notification,
 }) => (
   <div>
     <h2>{exerciseName}</h2>
+    <Notification message={notification} />
     <table>
       <thead>
         <tr>
