@@ -1,17 +1,34 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Sets from "../components/Sets";
 import workoutService from "../services/workoutService";
 import setService from "../services/setService";
+import { UnfinishedWorkoutContext } from "./Nav";
 
 const NewWorkout = () => {
-  const { exercises, name, id: routineId } = useLoaderData();
+  const loaderData = useLoaderData();
+  const { exercises, name, id: routineId } = loaderData.routine;
   const [notification, setNotification] = useState(exercises.reduce(
     (accumulator, currentValue) => ({ ...accumulator, [currentValue.id]: null }),
     {},
   ));
-  const [sets, setSets] = useState([]);
+  const [sets, setSets] = useState(
+    loaderData.sets
+    ?? [],
+  );
   const navigate = useNavigate();
+  const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+
+  useEffect(() => {
+    const unfinishedWorkout = {
+      routine: {
+        id: routineId,
+        name,
+      },
+    };
+    setUnfinishedWorkout(unfinishedWorkout);
+    window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(unfinishedWorkout));
+  }, []);
 
   const addSet = (event) => {
     event.preventDefault();
@@ -26,19 +43,17 @@ const NewWorkout = () => {
         setNotification({ ...notification, [exercise]: null });
       }, 3000);
     } else {
-      const setNumber = sets.filter(
+      const number = sets.filter(
         (set) => set.exercise === exercise,
       ).length === 0
         ? 1
         : sets[sets.length - 1].number + 1;
       setSets(sets.concat({
-        exercise,
-        number: setNumber,
-        reps,
-        weight,
-        rest,
-        note,
+        exercise, number, reps, weight, rest, note,
       }));
+      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat({
+        exercise, number, reps, weight, rest, note,
+      })));
       event.target.reps.value = "";
       event.target.weight.value = "";
       event.target.rest.value = "";
@@ -55,7 +70,14 @@ const NewWorkout = () => {
       ...set,
       workout: savedWorkout.id,
     })));
-    navigate("/routines", { state: { workoutDone: true } });
+    window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    navigate("/routines", { state: { newWorkoutState: "Workout saved!" } });
+  };
+
+  const deleteWorkout = async () => {
+    window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    setUnfinishedWorkout(null);
+    navigate("/routines", { state: { newWorkoutState: "Workout deleted!" } });
   };
 
   return (
@@ -74,6 +96,7 @@ const NewWorkout = () => {
         ))}
       </div>
       <button type="button" onClick={workoutDone}>Workout done</button>
+      <button type="button" onClick={deleteWorkout}>Delete workout</button>
     </div>
   );
 };

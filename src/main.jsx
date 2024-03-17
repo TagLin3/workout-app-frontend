@@ -36,9 +36,12 @@ const router = createBrowserRouter([
         loader: ({ params }) => routineService.getSingle(params.id),
       },
       {
-        path: "/routines/:id/new",
+        path: "/routines/:id/new_workout",
         element: <NewWorkout />,
-        loader: ({ params }) => routineService.getSingle(params.id),
+        loader: async ({ params }) => ({
+          routine: await routineService.getSingle(params.id),
+          sets: JSON.parse(window.localStorage.getItem("exerciseApplicationNewWorkoutSets")),
+        }),
       },
       {
         path: "/routine_creator",
@@ -62,7 +65,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

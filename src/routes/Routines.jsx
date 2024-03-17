@@ -12,15 +12,17 @@ const Routines = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [notification, setNotification] = useState(null);
+
   useEffect(() => {
-    if (location.state && location.state.workoutDone) {
-      setNotification("Workout saved!");
+    if (location.state && location.state.newWorkoutState) {
+      setNotification(location.state.newWorkoutState);
       setTimeout(() => {
         setNotification(null);
         navigate(".", { replace: true });
       }, 3000);
     }
   }, []);
+
   return (
     <div>
       <h1>Workout routines</h1>

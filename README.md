@@ -17,3 +17,4 @@ Currently, two official plugins are available:
 |14.3.2024|1.5|On the backend: Solved the problem of returning a workout populated with sets. On the frontend: tried React Router's actions and Forms but ultimately decided against using them. Did some more rerouting and lifting state up.
 |16.3.2024|1|On the backend: Implemented a feature to save multiple sets at once. On the frontend: implemented saving workouts and sets to the database through the backend.
 |17.3.2024|2|Worked mainly on the frontend. On the frontend: Implemented some quality of life features like data validation for sets, notifications and redirecting after completing a workout. Worked on a feature to view past workouts. On the backend: changed the way exercises are populated to workouts.|
+|17.3.2024|1.5|Worked exclusively on the frontend. Worked on saving unfinished workouts to window.localStorage and using React contexts to manage the global state of an unfinished workout.|

@@ -1,6 +1,14 @@
+import { useContext } from "react";
 import { Link, useLoaderData } from "react-router-dom";
+import { UnfinishedWorkoutContext } from "./Nav";
 
 const SingleRoutine = () => {
+  const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+  const deleteUnfinisedWorkout = () => {
+    window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    window.localStorage.removeItem("workoutAppUnfinishedWorkout");
+    setUnfinishedWorkout(null);
+  };
   const routine = useLoaderData();
   return (
     <div>
@@ -15,7 +23,27 @@ const SingleRoutine = () => {
           </li>
         ))}
       </ul>
-      <Link to="new">Start new workout from this routine</Link>
+      {unfinishedWorkout
+        ? (
+          <div>
+            You currently have an unfinished workout of this routine.
+            <br />
+            You can
+            {" "}
+            <Link to="new_workout">continue the workout</Link>
+            {" "}
+            or
+            {" "}
+            <Link
+              to="/routines"
+              state={{ newWorkoutState: "Workout deleted!" }}
+              onClick={deleteUnfinisedWorkout}
+            >
+              delete it
+            </Link>
+          </div>
+        )
+        : <Link to="new_workout">Start new workout from this routine</Link>}
     </div>
   );
 };

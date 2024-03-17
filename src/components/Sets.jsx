@@ -38,7 +38,7 @@ const Sets = ({
       <br />
       weight:
       {" "}
-      <input type="number" name="weight" />
+      <input type="number" name="weight" step="any" />
       <br />
       rest after set in seconds:
       {" "}
