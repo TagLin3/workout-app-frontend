@@ -1,12 +1,27 @@
-import { createContext, useState, useMemo } from "react";
+import {
+  createContext, useState, useMemo, useEffect,
+} from "react";
 import { Link, Outlet } from "react-router-dom";
 
 export const UnfinishedWorkoutContext = createContext(null);
 
 const Root = () => {
-  const [unfinishedWorkout, setUnfinishedWorkout] = useState(
-    JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkout")),
-  );
+  const [unfinishedWorkout, setUnfinishedWorkout] = useState(null);
+  useEffect(() => {
+    const unfinishedWorkoutInStorage = JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkout"));
+
+    console.log(unfinishedWorkoutInStorage);
+    if (unfinishedWorkoutInStorage) {
+      console.log(Date.now() - unfinishedWorkoutInStorage.expirationDate);
+    }
+
+    if (unfinishedWorkoutInStorage && Date.now() < unfinishedWorkoutInStorage.expirationDate) {
+      setUnfinishedWorkout(unfinishedWorkoutInStorage);
+    } else if (unfinishedWorkoutInStorage) {
+      window.localStorage.removeItem("workoutAppUnfinishedWorkout");
+      window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    }
+  }, []);
   const obj = useMemo(() => ({ unfinishedWorkout, setUnfinishedWorkout }), [unfinishedWorkout]);
   return (
     <UnfinishedWorkoutContext.Provider value={obj}>

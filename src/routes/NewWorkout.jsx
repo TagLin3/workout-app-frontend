@@ -7,6 +7,12 @@ import { UnfinishedWorkoutContext } from "./Nav";
 
 const NewWorkout = () => {
   const loaderData = useLoaderData();
+  const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+  useEffect(() => {
+    if (loaderData.expired) {
+      setUnfinishedWorkout(null);
+    }
+  }, []);
   const { exercises, name, id: routineId } = loaderData.routine;
   const [notification, setNotification] = useState(exercises.reduce(
     (accumulator, currentValue) => ({ ...accumulator, [currentValue.id]: null }),
@@ -17,18 +23,6 @@ const NewWorkout = () => {
     ?? [],
   );
   const navigate = useNavigate();
-  const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
-
-  useEffect(() => {
-    const unfinishedWorkout = {
-      routine: {
-        id: routineId,
-        name,
-      },
-    };
-    setUnfinishedWorkout(unfinishedWorkout);
-    window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(unfinishedWorkout));
-  }, []);
 
   const addSet = (event) => {
     event.preventDefault();
@@ -71,15 +65,24 @@ const NewWorkout = () => {
       workout: savedWorkout.id,
     })));
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
-    navigate("/routines", { state: { newWorkoutState: "Workout saved!" } });
+    navigate("/routines", { state: { notification: "Workout saved!" } });
   };
 
   const deleteWorkout = async () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
-    navigate("/routines", { state: { newWorkoutState: "Workout deleted!" } });
+    navigate("/routines", { state: { notification: "Workout deleted!" } });
   };
 
+  if (loaderData.expired) {
+    return (
+      <div>
+        error: unfinished workout not found.
+        Most likely you were on the page while the unfinished workout expired.
+      </div>
+    );
+  }
   return (
     <div>
       <h1>{name}</h1>

@@ -14,8 +14,8 @@ const Routines = () => {
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    if (location.state && location.state.newWorkoutState) {
-      setNotification(location.state.newWorkoutState);
+    if (location.state && location.state.notification) {
+      setNotification(location.state.notification);
       setTimeout(() => {
         setNotification(null);
         navigate(".", { replace: true });

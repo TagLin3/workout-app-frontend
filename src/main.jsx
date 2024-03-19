@@ -38,10 +38,19 @@ const router = createBrowserRouter([
       {
         path: "/routines/:id/new_workout",
         element: <NewWorkout />,
-        loader: async ({ params }) => ({
-          routine: await routineService.getSingle(params.id),
-          sets: JSON.parse(window.localStorage.getItem("exerciseApplicationNewWorkoutSets")),
-        }),
+        loader: async ({ params }) => {
+          const unfinishedWorkoutInStorage = JSON.parse(
+            window.localStorage.getItem("workoutAppUnfinishedWorkout"),
+          );
+          const objToReturn = {
+            routine: await routineService.getSingle(params.id),
+            sets: JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkoutSets")),
+          };
+          if (Date.now() > unfinishedWorkoutInStorage.expirationDate) {
+            objToReturn.expired = true;
+          }
+          return (objToReturn);
+        },
       },
       {
         path: "/routine_creator",
