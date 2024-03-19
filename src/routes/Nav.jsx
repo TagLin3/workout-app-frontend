@@ -5,7 +5,7 @@ import { Link, Outlet } from "react-router-dom";
 
 export const UnfinishedWorkoutContext = createContext(null);
 
-const Root = () => {
+const Nav = () => {
   const [unfinishedWorkout, setUnfinishedWorkout] = useState(null);
   useEffect(() => {
     const unfinishedWorkoutInStorage = JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkout"));
@@ -47,4 +47,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export default Nav;
