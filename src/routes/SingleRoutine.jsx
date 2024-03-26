@@ -41,11 +41,13 @@ const SingleRoutine = () => {
       {unfinishedWorkout
         ? (
           <div>
-            You currently have an unfinished workout of this routine.
+            You currently have an unfinished workout of the routine &quot;
+            {unfinishedWorkout.routine.name}
+            &quot;. You can&apos;t start a new workout until you&apos;ve finished the old one.
             <br />
             You can
             {" "}
-            <Link to="new_workout">continue the workout</Link>
+            <Link to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>continue the workout</Link>
             {" "}
             or
             {" "}

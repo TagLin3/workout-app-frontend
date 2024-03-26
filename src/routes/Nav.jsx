@@ -10,11 +10,6 @@ const Nav = () => {
   useEffect(() => {
     const unfinishedWorkoutInStorage = JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkout"));
 
-    console.log(unfinishedWorkoutInStorage);
-    if (unfinishedWorkoutInStorage) {
-      console.log(Date.now() - unfinishedWorkoutInStorage.expirationDate);
-    }
-
     if (unfinishedWorkoutInStorage && Date.now() < unfinishedWorkoutInStorage.expirationDate) {
       setUnfinishedWorkout(unfinishedWorkoutInStorage);
     } else if (unfinishedWorkoutInStorage) {
