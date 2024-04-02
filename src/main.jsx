@@ -16,7 +16,6 @@ import Login from "./routes/Login";
 import workoutService from "./services/workoutService";
 import routineService from "./services/routineService";
 import exerciseService from "./services/exerciseService";
-import loginService from "./services/loginService";
 
 const router = createBrowserRouter([
   {
