@@ -1,0 +1,23 @@
+import { Link } from "react-router-dom";
+
+const Nav = ({ unfinishedWorkout }) => (
+  <nav>
+    <Link to="/">home</Link>
+    {" "}
+    <Link to="/routines">Workout routines</Link>
+    {" "}
+    <Link to="/exercise_library">Exercise library</Link>
+    {" "}
+    <Link to="/past_workouts">Past workouts</Link>
+    {" "}
+    <Link to="/login">Log in</Link>
+    {" "}
+    {unfinishedWorkout && (
+      <Link to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>
+        {`Unfinised ${unfinishedWorkout.routine.name}`}
+      </Link>
+    )}
+  </nav>
+);
+
+export default Nav;

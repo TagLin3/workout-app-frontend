@@ -23,3 +23,4 @@ Currently, two official plugins are available:
 |27.3.2024|1.5|Worked exclusively on the backend. Worked more on the authorization and login functionality. Read a lot of docs and Stack Overflow posts and thought about best practices, so not a lot of code was written. Authorization in the backend is somewhat finished now.|
 |28.3.2024|1|Worked exclusively on the backend. Added user ids to routines and exercises. Added some functionality to, for example, filter the returned routines based on the user that's associated with the authorization token submitted with the request.|
 |1.4.2024|1|Worked exclusively on the backend. Added user ids to workouts and sets. Added the same functionality to sets and workouts to that last time got added to routines and exercises.|
+|2.4.2024|1|Worked almost exclusively on the frontend. Started on implementing logging in to the frontend.|

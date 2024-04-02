@@ -3,11 +3,17 @@ import { useContext, useEffect, useState } from "react";
 import Sets from "../components/Sets";
 import workoutService from "../services/workoutService";
 import setService from "../services/setService";
-import { UnfinishedWorkoutContext } from "./Nav";
+import { UnfinishedWorkoutContext } from "./Root";
 
 const NewWorkout = () => {
   const loaderData = useLoaderData();
   const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+  const navigate = useNavigate();
+  const [sets, setSets] = useState(
+    loaderData.sets
+    ?? [],
+  );
+
   useEffect(() => {
     if (loaderData.expired) {
       setUnfinishedWorkout(null);
@@ -18,11 +24,6 @@ const NewWorkout = () => {
     (accumulator, currentValue) => ({ ...accumulator, [currentValue.id]: null }),
     {},
   ));
-  const [sets, setSets] = useState(
-    loaderData.sets
-    ?? [],
-  );
-  const navigate = useNavigate();
 
   const addSet = (event) => {
     event.preventDefault();

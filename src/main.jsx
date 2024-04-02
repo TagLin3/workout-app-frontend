@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Nav from "./routes/Nav";
+import Root from "./routes/Root";
 import Routines from "./routes/Routines";
 import NewWorkout from "./routes/NewWorkout";
 import RoutineCreator from "./routes/RoutineCreator";
@@ -9,16 +9,19 @@ import ExerciseLibrary from "./routes/ExerciseLibrary";
 import Home from "./routes/Home";
 
 import SingleRoutine from "./routes/SingleRoutine";
+import PastWorkouts from "./routes/PastWorkouts";
+import SinglePastWorkout from "./routes/SinglePastWorkout";
+import Login from "./routes/Login";
+
+import workoutService from "./services/workoutService";
 import routineService from "./services/routineService";
 import exerciseService from "./services/exerciseService";
-import PastWorkouts from "./routes/PastWorkouts";
-import workoutService from "./services/workoutService";
-import SinglePastWorkout from "./routes/SinglePastWorkout";
+import loginService from "./services/loginService";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Nav />,
+    element: <Root />,
     errorElement: "Error: 404 Not found",
     children: [
       {
@@ -71,6 +74,10 @@ const router = createBrowserRouter([
         path: "/past_workouts/:id",
         element: <SinglePastWorkout />,
         loader: ({ params }) => workoutService.getSingle(params.id, true, true),
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
     ],
   },
