@@ -1,15 +1,20 @@
 import { useContext } from "react";
 import { Link, useLoaderData } from "react-router-dom";
-import { UnfinishedWorkoutContext } from "./Root";
+import { UnfinishedWorkoutContext, NotificationContext } from "./Root";
 
 const SingleRoutine = () => {
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const routine = useLoaderData();
+  const { setNotification } = useContext(NotificationContext);
 
   const deleteUnfinisedWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
+    setNotification("Workout deleted!");
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
   };
 
   const startNewWorkout = () => {

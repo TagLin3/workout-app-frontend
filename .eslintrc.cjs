@@ -9,9 +9,7 @@ module.exports = {
       env: {
         node: true,
       },
-      files: [
-        ".eslintrc.{js,cjs}",
-      ],
+      files: [".eslintrc.{js,cjs}"],
       parserOptions: {
         sourceType: "script",
       },
@@ -20,31 +18,17 @@ module.exports = {
   parserOptions: {
     ecmaVersion: "latest",
   },
+  plugins: ["react-refresh"],
   rules: {
-    indent: [
-      "error",
-      2,
-    ],
+    "react-refresh/only-export-components": "error",
+    indent: ["error", 2],
     eqeqeq: "error",
     "no-trailing-spaces": "error",
-    "object-curly-spacing": [
-      "error", "always",
-    ],
-    "arrow-spacing": [
-      "error", { before: true, after: true },
-    ],
-    "linebreak-style": [
-      "error",
-      "unix",
-    ],
-    quotes: [
-      "error",
-      "double",
-    ],
-    semi: [
-      "error",
-      "always",
-    ],
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": ["error", { before: true, after: true }],
+    "linebreak-style": ["error", "unix"],
+    quotes: ["error", "double"],
+    semi: ["error", "always"],
     "no-console": 0,
     "import/newline-after-import": 0,
     "no-underscore-dangle": 0,

@@ -2,22 +2,30 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import loginService from "../services/loginService";
-import { loggedUserContext } from "./Root";
+import { LoggedUserContext, NotificationContext } from "./Root";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setLoggedUser } = useContext(loggedUserContext);
+  const { setLoggedUser } = useContext(LoggedUserContext);
+  const { setNotification } = useContext(NotificationContext);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    const loggedUser = await loginService.login(
-      event.target.username.value,
-      event.target.password.value,
-    );
-    axios.defaults.headers.common.Authorization = `Bearer ${loggedUser.token}`;
-    setLoggedUser(loggedUser);
-    window.localStorage.setItem("workoutAppLoggedUser", JSON.stringify(loggedUser));
-    navigate("/");
+    try {
+      const loggedUser = await loginService.login(
+        event.target.username.value,
+        event.target.password.value,
+      );
+      axios.defaults.headers.common.Authorization = `Bearer ${loggedUser.token}`;
+      setLoggedUser(loggedUser);
+      window.localStorage.setItem("workoutAppLoggedUser", JSON.stringify(loggedUser));
+      navigate("/");
+    } catch (err) {
+      setNotification("Username and password don't match");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+    }
   };
 
   return (

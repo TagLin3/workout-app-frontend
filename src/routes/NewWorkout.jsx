@@ -3,12 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import Sets from "../components/Sets";
 import workoutService from "../services/workoutService";
 import setService from "../services/setService";
-import { UnfinishedWorkoutContext } from "./Root";
+import { NotificationContext, UnfinishedWorkoutContext } from "./Root";
 
 const NewWorkout = () => {
   const loaderData = useLoaderData();
   const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const navigate = useNavigate();
+  const { setNotification } = useContext(NotificationContext);
   const [sets, setSets] = useState(
     loaderData.sets
     ?? [],
@@ -20,7 +21,7 @@ const NewWorkout = () => {
     }
   }, []);
   const { exercises, name, id: routineId } = loaderData.routine;
-  const [notification, setNotification] = useState(exercises.reduce(
+  const [notificationForSet, setNotificationForSet] = useState(exercises.reduce(
     (accumulator, currentValue) => ({ ...accumulator, [currentValue.id]: null }),
     {},
   ));
@@ -33,9 +34,9 @@ const NewWorkout = () => {
     const note = event.target.note.value;
     const exercise = event.target.name;
     if (reps <= 0 || !(Number.isInteger(reps)) || weight < 0 || rest < 0) {
-      setNotification({ ...notification, [exercise]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
+      setNotificationForSet({ ...notificationForSet, [exercise]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
       setTimeout(() => {
-        setNotification({ ...notification, [exercise]: null });
+        setNotificationForSet({ ...notificationForSet, [exercise]: null });
       }, 3000);
     } else {
       const number = sets.filter(
@@ -74,6 +75,10 @@ const NewWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
     navigate("/routines", { state: { notification: "Workout deleted!" } });
+    setNotification("Workout deleted!");
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
   };
 
   if (loaderData.expired) {
@@ -90,7 +95,7 @@ const NewWorkout = () => {
       <div>
         {exercises.map((exercise) => (
           <Sets
-            notification={notification[exercise.id]}
+            notification={notificationForSet[exercise.id]}
             key={exercise.id}
             exerciseId={exercise.id}
             exerciseName={exercise.name}

@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, useRouteError } from "react-router-dom";
+import axios from "axios";
 import Root from "./routes/Root";
 import Routines from "./routes/Routines";
 import NewWorkout from "./routes/NewWorkout";
 import RoutineCreator from "./routes/RoutineCreator";
 import ExerciseLibrary from "./routes/ExerciseLibrary";
 import Home from "./routes/Home";
+import ErrorPage from "./routes/ErrorPage";
 
 import SingleRoutine from "./routes/SingleRoutine";
 import PastWorkouts from "./routes/PastWorkouts";
@@ -21,7 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    errorElement: "Error: 404 Not found",
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -79,6 +81,13 @@ const router = createBrowserRouter([
         element: <Login />,
       },
     ],
+    loader: () => {
+      const loggedUserInStorage = JSON.parse(window.localStorage.getItem("workoutAppLoggedUser"));
+      if (loggedUserInStorage) {
+        axios.defaults.headers.common.Authorization = `Bearer ${loggedUserInStorage.token}`;
+      }
+      return loggedUserInStorage;
+    },
   },
 ]);
 

@@ -1,32 +1,14 @@
-import { useEffect, useState } from "react";
 import {
   Link,
   useLoaderData,
-  useLocation,
-  useNavigate,
 } from "react-router-dom";
-import Notification from "../components/Notification";
 
 const Routines = () => {
   const routines = useLoaderData();
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [notification, setNotification] = useState(null);
-
-  useEffect(() => {
-    if (location.state && location.state.notification) {
-      setNotification(location.state.notification);
-      setTimeout(() => {
-        setNotification(null);
-        navigate(".", { replace: true });
-      }, 3000);
-    }
-  }, []);
 
   return (
     <div>
       <h1>Workout routines</h1>
-      <Notification message={notification} />
       {routines.map((workout) => (
         <div key={workout.name}>
           <Link to={`${workout.id}`}>{workout.name}</Link>
