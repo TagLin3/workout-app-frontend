@@ -25,3 +25,4 @@ Currently, two official plugins are available:
 |1.4.2024|1|Worked exclusively on the backend. Added user ids to workouts and sets. Added the same functionality to sets and workouts to that last time got added to routines and exercises.|
 |2.4.2024|1|Worked almost exclusively on the frontend. Started on implementing login functionality to the frontend.|
 |4.4.2024|1.5|Worked exclusively on the frontend. Finished login functionality and user management on the frontend. Also did some refactoring like, for example, lifting the Notification component up to the Root and using React contexts to manage the notification.|
+|7.4.2024|1.5|On the frontend: implemented registration functionality and some minor changes related to being logged in. On the backend: Started implementing automated tests using Jest and Supertest.|
