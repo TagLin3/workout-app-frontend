@@ -2,7 +2,7 @@
 const Home = () => (
   <div>
     <h1>Application for planning workouts and logging them</h1>
-    <div>This is the (unfinished) homepage. Click &quot;workout routines&quot; at the top to access created workouts or &quot;exercise library&quot; to view exercises and add new custom exercises</div>
+    <div>This is the (unfinished) homepage. Click &quot;login&quot; at the top to login or &quot;register&quot; if you aren&apos;t registered yet</div>
   </div>
 );
 

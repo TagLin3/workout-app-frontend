@@ -54,7 +54,7 @@ const Root = () => {
       <LoggedUserContext.Provider value={loggedUserObj}>
         <NotificationContext.Provider value={notificationArray}>
           <div>
-            <Nav unfinishedWorkout={unfinishedWorkout} />
+            <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
             {loggedUser && (
               <p>
                 logged in as

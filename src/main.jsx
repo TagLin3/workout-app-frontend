@@ -9,6 +9,7 @@ import RoutineCreator from "./routes/RoutineCreator";
 import ExerciseLibrary from "./routes/ExerciseLibrary";
 import Home from "./routes/Home";
 import ErrorPage from "./routes/ErrorPage";
+import Register from "./routes/Register";
 
 import SingleRoutine from "./routes/SingleRoutine";
 import PastWorkouts from "./routes/PastWorkouts";
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
     ],
     loader: () => {
