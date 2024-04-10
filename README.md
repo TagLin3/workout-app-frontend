@@ -26,3 +26,4 @@ Currently, two official plugins are available:
 |2.4.2024|1|Worked almost exclusively on the frontend. Started on implementing login functionality to the frontend.|
 |4.4.2024|1.5|Worked exclusively on the frontend. Finished login functionality and user management on the frontend. Also did some refactoring like, for example, lifting the Notification component up to the Root and using React contexts to manage the notification.|
 |7.4.2024|1.5|On the frontend: implemented registration functionality and some minor changes related to being logged in. On the backend: Started implementing automated tests using Jest and Supertest.|
+|10.4.2024|1|Worked exclusively on the backend. Continued on adding tests using Jest and Supertest.|
