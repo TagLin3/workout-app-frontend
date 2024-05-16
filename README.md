@@ -35,3 +35,4 @@ Currently, two official plugins are available:
 |27.4.2024|1|Finished tests for routines route, started implementing tests for workouts route.|
 |5.5.2024|1|Implementing these tests is annoying and I dislike it passionately.|
 |8.5.2024|1|I'm starting to think that this is not how you're supposed to implement tests. Like something has gone terribly wrong This is like more lines of code than the entire rest of the backend and the frontend combined.|
+|16.5.2024|1.5|Finally starting to seem like I might be done with the testing soon. Continued implementing tests for the sets route.|
