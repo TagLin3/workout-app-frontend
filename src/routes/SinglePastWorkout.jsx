@@ -8,21 +8,15 @@ const SinglePastWorkout = () => {
       <h1>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${workout.routine.name}`}</h1>
       <div>
         {workout.routine.exercises.map((exercise) => (
-          <div key={exercise.id}>
-            <h2>{exercise.name}</h2>
+          <div key={exercise.exercise.id}>
+            <h2>{exercise.exercise.name}</h2>
             <h3>sets: </h3>
             <table>
               <thead>
                 <tr>
-                  <th>
-                    reps
-                  </th>
-                  <th>
-                    weight
-                  </th>
-                  <th>
-                    rest after set
-                  </th>
+                  <th>reps</th>
+                  <th>weight</th>
+                  <th>rest after set</th>
                 </tr>
               </thead>
               <tbody>

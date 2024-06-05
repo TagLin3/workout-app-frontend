@@ -12,6 +12,10 @@ const addWorkout = async (workout) => {
   return response.data;
 };
 
+const deleteWorkout = async (id) => {
+  await axios.delete(`${baseUrl}/${id}`);
+};
+
 const getSingle = async (id, sets, exercises) => {
   if (sets === true) {
     if (exercises === true) {
@@ -25,4 +29,6 @@ const getSingle = async (id, sets, exercises) => {
   return response.data;
 };
 
-export default { addWorkout, getAll, getSingle };
+export default {
+  addWorkout, getAll, getSingle, deleteWorkout,
+};

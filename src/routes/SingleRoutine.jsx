@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { UnfinishedWorkoutContext, NotificationContext } from "./Root";
+import workoutService from "../services/workoutService";
 
 const SingleRoutine = () => {
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
@@ -17,7 +18,10 @@ const SingleRoutine = () => {
     }, 3000);
   };
 
-  const startNewWorkout = () => {
+  const startNewWorkout = async () => {
+    await workoutService.addWorkout({
+      routine: routine.id,
+    });
     const unfinishedWorkoutToSave = {
       routine: {
         id: routine.id,
@@ -38,7 +42,7 @@ const SingleRoutine = () => {
       <h2>Exercises</h2>
       <ul>
         {routine.exercises.map((exercise) => (
-          <li key={exercise.id}>
+          <li key={exercise.exercise.id}>
             {exercise.exercise.name}
             ,
             {" "}
