@@ -28,7 +28,9 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    setLoggedUser(loaderData);
+    if (Date.now() < loaderData.expiresAt) {
+      setLoggedUser(loaderData);
+    }
   }, []);
 
   const logOut = () => {

@@ -12,14 +12,25 @@ const RoutineCreator = () => {
   const addExercise = (event) => {
     event.preventDefault();
     const exerciseToAdd = JSON.parse(event.target.exercise.value);
-    if (selectedExercises.some((exercise) => exerciseToAdd.id === exercise.id)) {
+    const repRangeMin = event.target.repRangeMin.value;
+    const repRangeMax = event.target.repRangeMax.value;
+    const exerciseObj = {
+      exercise: exerciseToAdd,
+      repRange: `${repRangeMin}-${repRangeMax}`,
+    };
+    if (selectedExercises.some((exercise) => exerciseToAdd.id === exercise.exercise.id)) {
       setNotification("error: you can only include the same exercise once");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+    } else if (!(repRangeMin < repRangeMax)) {
+      setNotification("error: invalid rep range");
       setTimeout(() => {
         setNotification(null);
       }, 3000);
     } else {
       setSelectedExercises(selectedExercises.concat(
-        exerciseToAdd,
+        exerciseObj,
       ));
     }
   };
@@ -28,7 +39,10 @@ const RoutineCreator = () => {
     event.preventDefault();
     await routineService.addRoutine({
       name: event.target.name.value,
-      exercises: selectedExercises.map((exercise) => exercise.id),
+      exercises: selectedExercises.map((exercise) => ({
+        exercise: exercise.exercise.id,
+        repRange: exercise.repRange,
+      })),
     });
     navigate("/routines");
   };
@@ -40,11 +54,19 @@ const RoutineCreator = () => {
       <h2>Exercises</h2>
       <ol>
         {selectedExercises.map((exercise) => (
-          <li key={exercise.id}>{exercise.name}</li>
+          <li key={exercise.exercise.id}>
+            {exercise.exercise.name}
+            ,
+            {" "}
+            {exercise.repRange}
+            {" "}
+            reps
+          </li>
         ))}
       </ol>
       <h2>Add exercise</h2>
       <form onSubmit={addExercise}>
+        exercise
         <select name="exercise">
           {availableExercises.map((exercise) => (
             <option
@@ -55,6 +77,11 @@ const RoutineCreator = () => {
             </option>
           ))}
         </select>
+        <br />
+        rep range
+        <input type="number" name="repRangeMin" />
+        -
+        <input type="number" name="repRangeMax" />
         <br />
         <button type="submit">add</button>
       </form>

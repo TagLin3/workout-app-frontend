@@ -9,9 +9,9 @@ const Routines = () => {
   return (
     <div>
       <h1>Workout routines</h1>
-      {routines.map((workout) => (
-        <div key={workout.name}>
-          <Link to={`${workout.id}`}>{workout.name}</Link>
+      {routines.map((routine) => (
+        <div key={routine.id}>
+          <Link to={`${routine.id}`}>{routine.name}</Link>
         </div>
       ))}
       <h2>Create new workout routine</h2>

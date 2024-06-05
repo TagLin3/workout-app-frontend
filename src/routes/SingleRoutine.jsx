@@ -39,7 +39,12 @@ const SingleRoutine = () => {
       <ul>
         {routine.exercises.map((exercise) => (
           <li key={exercise.id}>
-            {exercise.name}
+            {exercise.exercise.name}
+            ,
+            {" "}
+            {exercise.repRange}
+            {" "}
+            reps
           </li>
         ))}
       </ul>
