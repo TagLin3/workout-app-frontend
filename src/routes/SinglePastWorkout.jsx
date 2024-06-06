@@ -1,8 +1,22 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import workoutService from "../services/workoutService";
+import { UnfinishedWorkoutContext } from "./Root";
 
 const SinglePastWorkout = () => {
   const workout = useLoaderData();
+  const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+  const navigate = useNavigate();
   const date = new Date(workout.date);
+
+  const deleteWorkout = async () => {
+    await workoutService.deleteWorkout(workout.id);
+    window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    window.localStorage.removeItem("workoutAppUnfinishedWorkout");
+    setUnfinishedWorkout(null);
+    navigate("/past_workouts");
+  };
+
   return (
     <div>
       <h1>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${workout.routine.name}`}</h1>
@@ -40,6 +54,7 @@ const SinglePastWorkout = () => {
           </div>
         ))}
       </div>
+      <button type="button" onClick={deleteWorkout}>delete</button>
     </div>
   );
 };

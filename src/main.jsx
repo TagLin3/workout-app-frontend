@@ -54,7 +54,7 @@ const router = createBrowserRouter([
           if (Date.now() > unfinishedWorkoutInStorage.expirationDate) {
             objToReturn.expired = true;
           }
-          return (objToReturn);
+          return objToReturn;
         },
       },
       {

@@ -7,7 +7,7 @@ import workoutService from "../services/workoutService";
 
 const NewWorkout = () => {
   const loaderData = useLoaderData();
-  const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+  const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const navigate = useNavigate();
   const { setNotification } = useContext(NotificationContext);
   const [sets, setSets] = useState(
@@ -63,11 +63,12 @@ const NewWorkout = () => {
 
   const workoutDone = async () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    setUnfinishedWorkout(null);
     navigate("/routines", { state: { notification: "Workout saved!" } });
   };
 
   const deleteWorkout = async () => {
-    await workoutService.deleteWorkout();
+    await workoutService.deleteWorkout(unfinishedWorkout.id);
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
@@ -86,6 +87,7 @@ const NewWorkout = () => {
       </div>
     );
   }
+
   return (
     <div>
       <h1>{name}</h1>

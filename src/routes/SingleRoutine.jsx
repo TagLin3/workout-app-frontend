@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { UnfinishedWorkoutContext, NotificationContext } from "./Root";
 import workoutService from "../services/workoutService";
 
@@ -7,6 +7,7 @@ const SingleRoutine = () => {
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const routine = useLoaderData();
   const { setNotification } = useContext(NotificationContext);
+  const navigate = useNavigate();
 
   const deleteUnfinisedWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
@@ -19,19 +20,22 @@ const SingleRoutine = () => {
   };
 
   const startNewWorkout = async () => {
-    await workoutService.addWorkout({
-      routine: routine.id,
-    });
+    const startedWorkout = await workoutService.addWorkout({ routine: routine.id });
     const unfinishedWorkoutToSave = {
       routine: {
         id: routine.id,
         name: routine.name,
       },
+      id: startedWorkout.id,
     };
     setUnfinishedWorkout(unfinishedWorkoutToSave);
     window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(
-      { ...unfinishedWorkoutToSave, expirationDate: Date.now() + 1000 * 60 * 60 * 10 },
+      {
+        ...unfinishedWorkoutToSave,
+        expirationDate: Date.now() + 1000 * 60 * 60 * 10,
+      },
     ));
+    navigate("new_workout");
   };
 
   return (
@@ -74,7 +78,7 @@ const SingleRoutine = () => {
             </Link>
           </div>
         )
-        : <Link onClick={startNewWorkout} to="new_workout">Start new workout from this routine</Link>}
+        : <button type="button" onClick={startNewWorkout}>Start new workout from this routine</button>}
     </div>
   );
 };

@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import { useLoaderData, Link } from "react-router-dom";
+import { UnfinishedWorkoutContext } from "./Root";
 
 const PastWorkouts = () => {
   const workouts = useLoaderData();
+  const { unfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   return (
     <div>
       <h1>Past workouts</h1>
@@ -13,6 +16,9 @@ const PastWorkouts = () => {
             </th>
             <th>
               Date
+            </th>
+            <th>
+              status
             </th>
           </tr>
         </thead>
@@ -31,6 +37,9 @@ const PastWorkouts = () => {
                   <Link to={workout.id}>
                     view workout
                   </Link>
+                </td>
+                <td>
+                  {unfinishedWorkout && workout.id === unfinishedWorkout.id ? "unfinished" : "finished"}
                 </td>
               </tr>
             );
