@@ -18,13 +18,7 @@ const Root = () => {
   const loaderData = useLoaderData();
 
   useEffect(() => {
-    const unfinishedWorkoutInStorage = JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkout"));
-    if (unfinishedWorkoutInStorage && Date.now() < unfinishedWorkoutInStorage.expirationDate) {
-      setUnfinishedWorkout(unfinishedWorkoutInStorage);
-    } else if (unfinishedWorkoutInStorage) {
-      window.localStorage.removeItem("workoutAppUnfinishedWorkout");
-      window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
-    }
+    setUnfinishedWorkout(JSON.parse(window.localStorage.getItem("workoutAppUnfinishedWorkout")));
   }, []);
 
   useEffect(() => {

@@ -7,6 +7,21 @@ const getAll = async () => {
   return response.data;
 };
 
+const getActive = async () => {
+  const response = await axios.get(`${baseUrl}?activeOnly`);
+  return response.data;
+};
+
+const getInactive = async () => {
+  const response = await axios.get(`${baseUrl}?inactiveOnly`);
+  return response.data;
+};
+
+const toggleActivity = async (id) => {
+  const response = await axios.put(`${baseUrl}/${id}/toggleActivity`);
+  return response.data;
+};
+
 const getSingle = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
@@ -17,4 +32,6 @@ const addRoutine = async (routine) => {
   return response.data;
 };
 
-export default { getAll, getSingle, addRoutine };
+export default {
+  getAll, getActive, getInactive, getSingle, addRoutine, toggleActivity,
+};

@@ -5,7 +5,7 @@ import { UnfinishedWorkoutContext } from "./Root";
 
 const SinglePastWorkout = () => {
   const workout = useLoaderData();
-  const { setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
+  const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const navigate = useNavigate();
   const date = new Date(workout.date);
 
@@ -19,7 +19,10 @@ const SinglePastWorkout = () => {
 
   return (
     <div>
-      <h1>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${workout.routine.name}`}</h1>
+      <h1>
+        {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${workout.routine.name}`}
+        {(unfinishedWorkout && unfinishedWorkout.id === workout.id) && " (unfinished)"}
+      </h1>
       <div>
         {workout.routine.exercises.map((exercise) => (
           <div key={exercise.exercise.id}>
@@ -31,10 +34,11 @@ const SinglePastWorkout = () => {
                   <th>reps</th>
                   <th>weight</th>
                   <th>rest after set</th>
+                  <th>note</th>
                 </tr>
               </thead>
               <tbody>
-                {workout.sets.filter((set) => set.exercise === exercise.id)
+                {workout.sets.filter((set) => set.exercise === exercise.exercise.id)
                   .toSorted((set1, set2) => set1.number - set2.number)
                   .map((set) => (
                     <tr key={set.id}>
@@ -46,6 +50,9 @@ const SinglePastWorkout = () => {
                       </td>
                       <td>
                         {`${set.rest} seconds`}
+                      </td>
+                      <td>
+                        {set.note}
                       </td>
                     </tr>
                   ))}

@@ -22,19 +22,11 @@ const SingleRoutine = () => {
   const startNewWorkout = async () => {
     const startedWorkout = await workoutService.addWorkout({ routine: routine.id });
     const unfinishedWorkoutToSave = {
-      routine: {
-        id: routine.id,
-        name: routine.name,
-      },
+      routine,
       id: startedWorkout.id,
     };
     setUnfinishedWorkout(unfinishedWorkoutToSave);
-    window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(
-      {
-        ...unfinishedWorkoutToSave,
-        expirationDate: Date.now() + 1000 * 60 * 60 * 10,
-      },
-    ));
+    window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(unfinishedWorkoutToSave));
     navigate("new_workout");
   };
 

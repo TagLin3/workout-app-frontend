@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Sets from "../components/Sets";
 import setService from "../services/setService";
 import { NotificationContext, UnfinishedWorkoutContext } from "./Root";
@@ -14,12 +14,6 @@ const NewWorkout = () => {
     loaderData.sets
     ?? [],
   );
-
-  useEffect(() => {
-    if (loaderData.expired) {
-      setUnfinishedWorkout(null);
-    }
-  }, []);
 
   const { exercises, name } = loaderData.routine;
   const [notificationForSet, setNotificationForSet] = useState(exercises.reduce(
@@ -45,15 +39,18 @@ const NewWorkout = () => {
       ).length === 0
         ? 1
         : sets[sets.length - 1].number + 1;
-      await setService.addSet({
-        exerciseId, number, reps, weight, rest, note,
-      });
-      setSets(sets.concat({
-        exerciseId, number, reps, weight, rest, note,
-      }));
-      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat({
-        exerciseId, number, reps, weight, rest, note,
-      })));
+      const newSet = {
+        exercise: exerciseId,
+        workout: unfinishedWorkout.id,
+        number,
+        reps,
+        weight,
+        rest,
+        note,
+      };
+      await setService.addSet(newSet);
+      setSets(sets.concat(newSet));
+      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(newSet)));
       event.target.reps.value = "";
       event.target.weight.value = "";
       event.target.rest.value = "";
@@ -64,7 +61,11 @@ const NewWorkout = () => {
   const workoutDone = async () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     setUnfinishedWorkout(null);
-    navigate("/routines", { state: { notification: "Workout saved!" } });
+    navigate("/routines");
+    setNotification("Workout saved!");
+    setTimeout(() => {
+      setNotification(null);
+    }, 3000);
   };
 
   const deleteWorkout = async () => {
@@ -72,21 +73,12 @@ const NewWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
-    navigate("/routines", { state: { notification: "Workout deleted!" } });
+    navigate("/routines");
     setNotification("Workout deleted!");
     setTimeout(() => {
       setNotification(null);
     }, 3000);
   };
-
-  if (loaderData.expired) {
-    return (
-      <div>
-        error: unfinished workout not found.
-        Most likely you were on the page while the unfinished workout expired.
-      </div>
-    );
-  }
 
   return (
     <div>
