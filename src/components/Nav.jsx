@@ -11,6 +11,8 @@ const Nav = ({ unfinishedWorkout, loggedUser }) => (
         <Link to="/exercise_library">Exercise library</Link>
         {" "}
         <Link to="/past_workouts">Past workouts</Link>
+        {" "}
+        <Link to="/past_sets">Past sets</Link>
       </>
     )}
     {" "}

@@ -1,11 +1,13 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { UnfinishedWorkoutContext, NotificationContext } from "./Root";
 import workoutService from "../services/workoutService";
+import routineService from "../services/routineService";
 
 const SingleRoutine = () => {
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const routine = useLoaderData();
+  const [active, setActive] = useState(routine.active);
   const { setNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
 
@@ -31,14 +33,28 @@ const SingleRoutine = () => {
   };
 
   const toggleActivity = async () => {
-    console.log("asdf");
+    if (unfinishedWorkout) {
+      setNotification("error: you need to finish the uncompleted workout first");
+      setTimeout(() => setNotification(null), 3000);
+    } else {
+      await routineService.toggleActivity(routine.id);
+      setActive(!active);
+    }
+  };
+
+  const deleteRoutine = async () => {
+    await routineService.deleteRoutine(routine.id);
+    window.confirm("Warning: this will delete all of the workouts associated with this routine and also all of the sets associated with those workouts.");
+    setNotification("Routine deleted!");
+    setTimeout(() => setNotification(null), 3000);
+    navigate("/routines");
   };
 
   return (
     <div>
       <h1>
         {routine.name}
-        {routine.inactive && " (inactive)"}
+        {!active && " (inactive)"}
       </h1>
       <h2>Exercises</h2>
       <ul>
@@ -53,7 +69,7 @@ const SingleRoutine = () => {
           </li>
         ))}
       </ul>
-      {routine.active
+      {active
         ? (unfinishedWorkout
           ? (
             <div>
@@ -80,7 +96,7 @@ const SingleRoutine = () => {
         : <p>you can only start a workout from an active routine</p>}
       <br />
       <div>
-        {routine.active ? (
+        {active ? (
           <p>
             This routine is currently active meaning that you
             are actively completing workouts based on it. Set this
@@ -96,9 +112,14 @@ const SingleRoutine = () => {
           )}
         <button type="button" onClick={toggleActivity}>
           Set this routine as
-          {routine.active ? " inactive" : " active"}
+          {active ? " inactive" : " active"}
         </button>
       </div>
+      {!active && (
+        <div>
+          <button type="button" onClick={deleteRoutine}>delete</button>
+        </div>
+      )}
     </div>
   );
 };

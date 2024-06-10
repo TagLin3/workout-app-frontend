@@ -22,6 +22,10 @@ const toggleActivity = async (id) => {
   return response.data;
 };
 
+const deleteRoutine = async (id) => {
+  await axios.delete(`${baseUrl}/${id}`);
+};
+
 const getSingle = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
@@ -33,5 +37,5 @@ const addRoutine = async (routine) => {
 };
 
 export default {
-  getAll, getActive, getInactive, getSingle, addRoutine, toggleActivity,
+  getAll, getActive, getInactive, getSingle, addRoutine, toggleActivity, deleteRoutine,
 };

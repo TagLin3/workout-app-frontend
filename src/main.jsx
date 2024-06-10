@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import axios from "axios";
+
 import Root from "./routes/Root";
 import Routines from "./routes/Routines";
 import NewWorkout from "./routes/NewWorkout";
@@ -10,7 +11,7 @@ import ExerciseLibrary from "./routes/ExerciseLibrary";
 import Home from "./routes/Home";
 import ErrorPage from "./routes/ErrorPage";
 import Register from "./routes/Register";
-
+import PastSets from "./routes/PastSets";
 import SingleRoutine from "./routes/SingleRoutine";
 import PastWorkouts from "./routes/PastWorkouts";
 import SinglePastWorkout from "./routes/SinglePastWorkout";
@@ -19,6 +20,7 @@ import Login from "./routes/Login";
 import workoutService from "./services/workoutService";
 import routineService from "./services/routineService";
 import exerciseService from "./services/exerciseService";
+import setService from "./services/setService";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +69,11 @@ const router = createBrowserRouter([
         path: "/past_workouts",
         element: <PastWorkouts />,
         loader: () => workoutService.getAll(),
+      },
+      {
+        path: "/past_sets",
+        element: <PastSets />,
+        loader: () => setService.getAll(),
       },
       {
         path: "/past_workouts/:id",

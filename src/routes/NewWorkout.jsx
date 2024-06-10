@@ -60,6 +60,7 @@ const NewWorkout = () => {
 
   const workoutDone = async () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+    window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
     navigate("/routines");
     setNotification("Workout saved!");

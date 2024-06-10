@@ -42,5 +42,6 @@ module.exports = {
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "import/prefer-default-export": 0,
     "no-nested-ternary": 0,
+    "no-alert": 0,
   },
 };
