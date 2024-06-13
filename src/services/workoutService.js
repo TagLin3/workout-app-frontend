@@ -16,19 +16,26 @@ const deleteWorkout = async (id) => {
   await axios.delete(`${baseUrl}/${id}`);
 };
 
-const getSingle = async (id, sets, exercises) => {
-  if (sets === true) {
-    if (exercises === true) {
-      const response = await axios.get(`${baseUrl}/${id}?includeSets&includeExercises`);
-      return response.data;
-    }
-    const response = await axios.get(`${baseUrl}/${id}?includeSets`);
-    return response.data;
-  }
+const getSingle = async (id) => {
   const response = await axios.get(`${baseUrl}/${id}`);
   return response.data;
 };
 
+const getSingleWithExercises = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}?includeExercises`);
+  return response.data;
+};
+
+const getSingleWithSetsAndExercises = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}?includeSets&includeExercises`);
+  return response.data;
+};
+
 export default {
-  addWorkout, getAll, getSingle, deleteWorkout,
+  addWorkout,
+  getAll,
+  getSingle,
+  deleteWorkout,
+  getSingleWithExercises,
+  getSingleWithSetsAndExercises,
 };

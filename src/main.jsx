@@ -73,12 +73,12 @@ const router = createBrowserRouter([
       {
         path: "/past_sets",
         element: <PastSets />,
-        loader: () => setService.getAll(),
+        loader: () => setService.getAll(true),
       },
       {
         path: "/past_workouts/:id",
         element: <SinglePastWorkout />,
-        loader: ({ params }) => workoutService.getSingle(params.id, true, true),
+        loader: ({ params }) => workoutService.getSingleWithSetsAndExercises(params.id),
       },
       {
         path: "/login",

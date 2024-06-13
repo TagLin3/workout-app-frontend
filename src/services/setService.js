@@ -2,8 +2,15 @@ import axios from "axios";
 
 const baseUrl = "http://localhost:3001/api/sets";
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl);
+const getAll = async (includeExercises) => {
+  const response = await axios.get(`${baseUrl}${includeExercises ? "?includeExercises" : ""}`);
+  return response.data;
+};
+
+const getAllForExercise = async (exercise, includeExercises) => {
+  const response = await axios.get(
+    `${baseUrl}?filterByExercise=${exercise}${includeExercises ? "&includeExercises" : ""}`,
+  );
   return response.data;
 };
 
@@ -17,4 +24,6 @@ const addMultipleSets = async (sets) => {
   return response.data;
 };
 
-export default { getAll, addSet, addMultipleSets };
+export default {
+  getAll, addSet, addMultipleSets, getAllForExercise,
+};
