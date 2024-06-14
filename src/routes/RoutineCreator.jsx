@@ -12,8 +12,8 @@ const RoutineCreator = () => {
   const addExercise = (event) => {
     event.preventDefault();
     const exerciseToAdd = JSON.parse(event.target.exercise.value);
-    const repRangeMin = event.target.repRangeMin.value;
-    const repRangeMax = event.target.repRangeMax.value;
+    const repRangeMin = Number(event.target.repRangeMin.value);
+    const repRangeMax = Number(event.target.repRangeMax.value);
     const exerciseObj = {
       exercise: exerciseToAdd,
       repRange: `${repRangeMin}-${repRangeMax}`,

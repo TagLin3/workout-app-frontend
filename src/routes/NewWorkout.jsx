@@ -39,7 +39,7 @@ const NewWorkout = () => {
       ).length === 0
         ? 1
         : sets[sets.length - 1].number + 1;
-      const newSet = {
+      const setToSave = {
         exercise: exerciseId,
         workout: unfinishedWorkout.id,
         number,
@@ -48,9 +48,9 @@ const NewWorkout = () => {
         rest,
         note,
       };
-      await setService.addSet(newSet);
-      setSets(sets.concat(newSet));
-      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(newSet)));
+      const addedSet = await setService.addSet(setToSave);
+      setSets(sets.concat(addedSet));
+      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(addedSet)));
       event.target.reps.value = "";
       event.target.weight.value = "";
       event.target.rest.value = "";
