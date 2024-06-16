@@ -15,13 +15,10 @@ const PastSets = () => {
     return {
       ...acc,
       [workout]: exercisesOfCurrentWorkout
-        .reduce((acc2, exerciseId) => ({
-          ...acc2,
-          [exerciseId]: setsForCurrentWorkout.filter((set) => set.exercise.id === exerciseId),
-        }), {}),
+        .map((exerciseId) => (
+          setsForCurrentWorkout.filter((set) => set.exercise.id === exerciseId))),
     };
   }, {});
-  console.log(setsGroupedByExercisesGroupedByWorkouts);
   const applyFilter = () => {
     console.log("filtering");
   };
@@ -45,31 +42,29 @@ const PastSets = () => {
             <th>Date</th>
           </tr>
         </thead>
-        <tbody>
-          {/* {sets
-            .toSorted((a, b) => new Date(b.date) - new Date(a.date))
-            .map((set) => (
-              <tr key={set.id}>
-                <td>{set.exercise.name}</td>
-                <td>{set.reps}</td>
-                <td>{set.weight}</td>
-                <td>{set.date}</td>
-              </tr>
-            ))} */}
-          {
-            Object.keys(setsGroupedByExercisesGroupedByWorkouts).map((workout) => (
-              <tr key={workout}>
-                <td>
-                  {Object.values(setsGroupedByExercisesGroupedByWorkouts[workout])
-                    .map((sets) => {
-                      console.log(sets.map((set) => set.reps));
-                      return sets[0].reps;
+        {
+          Object.keys(setsGroupedByExercisesGroupedByWorkouts).map((workout) => (
+            setsGroupedByExercisesGroupedByWorkouts[workout]
+              .map((setsForSingleExercise) => (
+                <tbody key={`${workout};${setsForSingleExercise[0].exercise.id}`}>
+                  {setsForSingleExercise
+                    .toSorted((a, b) => a.number - b.number)
+                    .map((set) => {
+                      const date = new Date(set.date);
+                      return (
+                        <tr key={set.id}>
+                          <td>{set.exercise.name}</td>
+                          <td>{set.reps}</td>
+                          <td>{set.weight}</td>
+                          <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
+                        </tr>
+                      );
                     })}
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
+                  <tr><td style={{ paddingBottom: ".5rem" }} /></tr>
+                </tbody>
+              ))
+          ))
+        }
       </table>
     </div>
   );

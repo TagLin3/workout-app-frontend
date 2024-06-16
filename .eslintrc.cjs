@@ -43,5 +43,6 @@ module.exports = {
     "import/prefer-default-export": 0,
     "no-nested-ternary": 0,
     "no-alert": 0,
+    "jsx-a11y/control-has-associated-label": 0,
   },
 };
