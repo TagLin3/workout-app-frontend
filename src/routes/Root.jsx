@@ -22,7 +22,7 @@ const Root = () => {
   }, []);
 
   useEffect(() => {
-    if (Date.now() < loaderData.expiresAt) {
+    if (loaderData && Date.now() < loaderData.expiresAt) {
       setLoggedUser(loaderData);
     }
   }, []);

@@ -3,7 +3,8 @@ import { useLoaderData, Link } from "react-router-dom";
 import { UnfinishedWorkoutContext } from "./Root";
 
 const PastWorkouts = () => {
-  const workouts = useLoaderData();
+  const workouts = useLoaderData()
+    .toSorted((a, b) => (new Date(b.date) - new Date(a.date)));
   const { unfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   return (
     <div>

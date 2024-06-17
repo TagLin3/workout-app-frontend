@@ -24,6 +24,11 @@ const addMultipleSets = async (sets) => {
   return response.data;
 };
 
+const deleteSet = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`);
+  return response.data;
+};
+
 export default {
-  getAll, addSet, addMultipleSets, getAllForExercise,
+  getAll, addSet, addMultipleSets, getAllForExercise, deleteSet,
 };

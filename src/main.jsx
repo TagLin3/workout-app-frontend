@@ -73,7 +73,10 @@ const router = createBrowserRouter([
       {
         path: "/past_sets",
         element: <PastSets />,
-        loader: () => setService.getAll(true),
+        loader: async () => ({
+          sets: await setService.getAll(true),
+          workouts: await workoutService.getAll(),
+        }),
       },
       {
         path: "/past_workouts/:id",

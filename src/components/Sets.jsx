@@ -1,7 +1,7 @@
 import Notification from "./Notification";
 
 const Sets = ({
-  exerciseName, exerciseId, addSet, sets, notification, repRange,
+  exerciseName, exerciseId, addSet, sets, notification, repRange, deleteSet,
 }) => (
   <div>
     <h2>{exerciseName}</h2>
@@ -30,6 +30,9 @@ const Sets = ({
               <td>{set.weight}</td>
               <td>{set.rest}</td>
               <td>{set.note}</td>
+              <td>
+                <button type="button" onClick={() => deleteSet(set)}>delete</button>
+              </td>
             </tr>
           ))}
       </tbody>

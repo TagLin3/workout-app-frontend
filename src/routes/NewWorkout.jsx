@@ -81,6 +81,13 @@ const NewWorkout = () => {
     }, 3000);
   };
 
+  const deleteSet = async (setToDelete) => {
+    await setService.deleteSet(setToDelete.id);
+    const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
+    setSets(setsAfterDeletion);
+    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterDeletion));
+  };
+
   return (
     <div>
       <h1>{name}</h1>
@@ -94,6 +101,7 @@ const NewWorkout = () => {
             repRange={exercise.repRange}
             sets={sets}
             addSet={addSet}
+            deleteSet={deleteSet}
           />
         ))}
       </div>
