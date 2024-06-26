@@ -1,55 +1,29 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
-import setService from "../services/setService";
 
 const PastSets = () => {
-  const { sets, workouts } = useLoaderData();
+  const { sets } = useLoaderData();
+  const [filteredSets, setFilteredSets] = useState(sets);
   const usedExercises = sets.map((set) => set.exercise);
   const uniqueExericses = [...new Set(sets.map((set) => set.exercise.id))];
   const exercises = uniqueExericses
     .map((exerciseId) => usedExercises
       .find((exercise) => exercise.id === exerciseId));
-  // const setsGroupedByExercisesGroupedByWorkouts = workouts
-  //   .toSorted((b, a) => new Date(a.date) - new Date(b.date))
-  //   .map((workout) => {
-  //     const setsForCurrentWorkout = sets.filter((set) => set.workout === workout.id);
-  //     const exercisesOfCurrentWorkout = [...new Set(setsForCurrentWorkout
-  //       .map((set) => set.exercise.id))];
-  //     return exercisesOfCurrentWorkout.map((exerciseId) => (
-  //       setsForCurrentWorkout.filter((set) => set.exercise.id === exerciseId)));
-  //   });
-  // const [setsToShow, setSetsToShow] = useState(setsGroupedByExercisesGroupedByWorkouts);
-  // const applyFilter = (event) => {
-  //   const filter = event.target.value;
-  //   setSetsToShow(setsGroupedByExercisesGroupedByWorkouts
-  //     .map((setsForWorkout) => setsForWorkout
-  //       .filter((setsForExercise) => (filter !== "" ? setsForExercise[0].exercise.id === filter : true))));
-  // };
-  const applyFilter = async () => {
-    console.log("asdf");
+  const applyFilter = async (event) => {
+    const filter = event.target.value;
+    setFilteredSets(sets.filter((set) => filter === "" || set.exercise.id === filter));
   };
-  // const deleteSet = (setToDeleteId) => {
-  //   // setService.deleteSet(setToDeleteId);
-  //   console.log(setsToShow
-  //     .map((setsForWorkout) => setsForWorkout
-  //       .map((setsForExercise) => setsForExercise
-  //         .filter((set) => set.id === setToDeleteId))));
-  //   // setSetsToShow(setsToShow
-  //   //   .map((setsForWorkout) => setsForWorkout
-  //   //     .map((setsForExercise) => setsForExercise
-  //   //       .filter((set) => set.id === setToDeleteId))));
-  // };
-  const setsToShow = sets.slice(1).reduce((acc, set) => {
-    console.log(acc);
-    const exerciseOfCurrentSetGroup = acc[acc.length - 1][0].exercise;
-    if (set.exercise.id !== exerciseOfCurrentSetGroup.id) {
-      console.log("zxcv");
+  const setsToShow = filteredSets.slice(1, sets.length).reduce((acc, set) => {
+    const lastIndex = acc.length > 0
+      ? acc.length - 1 : 0;
+    const lastIndexOfLastIndex = acc.length && acc[lastIndex].length > 0
+      ? acc[lastIndex].length - 1 : 0;
+    if (set.exercise.id !== acc[lastIndex][lastIndexOfLastIndex].exercise.id
+      || set.workout !== acc[lastIndex][lastIndexOfLastIndex].workout) {
       return [...acc, [set]];
     }
-    console.log(acc[acc.length - 1]);
-    return acc[acc.length - 1].concat(set);
-  }, [[sets[0]]]);
-  console.log(setsToShow);
+    return [...acc.slice(0, -1), acc[lastIndex].concat(set)];
+  }, [[filteredSets[0]]]);
   return (
     <div>
       <h1>sets</h1>
@@ -74,49 +48,46 @@ const PastSets = () => {
           </tr>
         </thead>
         {
-          // setsToShow.map((setGroupsForWorkout) => (
-          //   setGroupsForWorkout
-          //     .toSorted((a, b) => new Date(b[0].date) - new Date(a[0].date))
-          //     .map((setsForSingleExercise) => (
-          //       <tbody key={setsForSingleExercise[0].id}>
-          //         {setsForSingleExercise
-          //           .toSorted((a, b) => a.number - b.number)
-          //           .map((set) => {
-          //             const date = new Date(set.date);
-          //             return (
-          //               <tr key={set.id}>
-          //                 <td>{set.exercise.name}</td>
-          //                 <td>{set.reps}</td>
-          //                 <td>{set.weight}</td>
-          //                 <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
-          //                 <td>
-          //                   <button type="button" onClick={() => deleteSet(set.id)}>delete</button>
-          //                 </td>
-          //               </tr>
-          //             );
-          //           })}
-          //         <tr><td style={{ paddingBottom: ".5rem" }} /></tr>
-          //       </tbody>
-          //     ))
-          // ))
+          setsToShow
+            .toSorted((a, b) => new Date(b[0].date) - new Date(a[0].date))
+            .map((setGroup) => (
+              <tbody key={setGroup[0].id}>
+                {setGroup
+                  .toSorted((a, b) => a.number - b.number)
+                  .map((set) => {
+                    const date = new Date(set.date);
+                    const currentSetVolume = set.weight * set.reps;
+                    const highestVolume = !(setGroup.some((setToCompare) => {
+                      const setToCompareVolume = setToCompare.weight * setToCompare.reps;
+                      if (setToCompareVolume > currentSetVolume) {
+                        return true;
+                      }
+                      return false;
+                    }));
+                    return (
+                      highestVolume
+                        ? (
+                          <tr key={set.id}>
+                            <td><b>{set.exercise.name}</b></td>
+                            <td><b>{set.reps}</b></td>
+                            <td><b>{set.weight}</b></td>
+                            <td><b>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</b></td>
+                          </tr>
+                        )
+                        : (
+                          <tr key={set.id}>
+                            <td>{set.exercise.name}</td>
+                            <td>{set.reps}</td>
+                            <td>{set.weight}</td>
+                            <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
+                          </tr>
+                        )
+                    );
+                  })}
+                <tr><td style={{ paddingTop: ".5rem" }} /></tr>
+              </tbody>
+            ))
         }
-        <tbody>
-          {
-            sets
-              .toSorted((a, b) => new Date(b.date) - new Date(a.date))
-              .map((set) => {
-                const date = new Date(set.date);
-                return (
-                  <tr key={set.id}>
-                    <td>{set.exercise.name}</td>
-                    <td>{set.reps}</td>
-                    <td>{set.weight}</td>
-                    <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
-                  </tr>
-                );
-              })
-          }
-        </tbody>
       </table>
     </div>
   );
