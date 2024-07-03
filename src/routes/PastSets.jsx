@@ -3,6 +3,16 @@ import { useState } from "react";
 
 const PastSets = () => {
   const { sets } = useLoaderData();
+  if (sets.length === 0) {
+    return (
+      <div>
+        <h1>sets</h1>
+        <p>
+          No sets completed yet. Complete a workout and your completed sets will be shown here
+        </p>
+      </div>
+    );
+  }
   const [filteredSets, setFilteredSets] = useState(sets);
   const usedExercises = sets.map((set) => set.exercise);
   const uniqueExericses = [...new Set(sets.map((set) => set.exercise.id))];

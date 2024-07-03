@@ -99,6 +99,7 @@ const NewWorkout = () => {
             exerciseId={exercise.exercise.id}
             exerciseName={exercise.exercise.name}
             repRange={exercise.repRange}
+            amountOfSets={exercise.amountOfSets}
             sets={sets}
             addSet={addSet}
             deleteSet={deleteSet}

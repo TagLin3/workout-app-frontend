@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import routineService from "../services/routineService";
 import Notification from "../components/Notification";
+import ExerciseAdder from "../components/ExerciseAdder";
 
 const RoutineCreator = () => {
   const availableExercises = useLoaderData();
@@ -14,10 +15,8 @@ const RoutineCreator = () => {
     const exerciseToAdd = JSON.parse(event.target.exercise.value);
     const repRangeMin = Number(event.target.repRangeMin.value);
     const repRangeMax = Number(event.target.repRangeMax.value);
-    const exerciseObj = {
-      exercise: exerciseToAdd,
-      repRange: `${repRangeMin}-${repRangeMax}`,
-    };
+    const amountOfSets = Number(event.target.amountOfSets.value);
+    const type = event.target.type.value;
     if (selectedExercises.some((exercise) => exerciseToAdd.id === exercise.exercise.id)) {
       setNotification("error: you can only include the same exercise once");
       setTimeout(() => {
@@ -28,10 +27,18 @@ const RoutineCreator = () => {
       setTimeout(() => {
         setNotification(null);
       }, 3000);
+    } else if (!amountOfSets) {
+      setNotification("error: amount of sets is required");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
     } else {
-      setSelectedExercises(selectedExercises.concat(
-        exerciseObj,
-      ));
+      setSelectedExercises(selectedExercises.concat({
+        exercise: exerciseToAdd,
+        repRange: `${repRangeMin}-${repRangeMax}`,
+        amountOfSets,
+        type,
+      }));
     }
   };
 
@@ -42,6 +49,8 @@ const RoutineCreator = () => {
       exercises: selectedExercises.map((exercise) => ({
         exercise: exercise.exercise.id,
         repRange: exercise.repRange,
+        amountOfSets: exercise.amountOfSets,
+        type: exercise.type,
       })),
     });
     navigate("/routines");
@@ -64,27 +73,10 @@ const RoutineCreator = () => {
           </li>
         ))}
       </ol>
-      <h2>Add exercise</h2>
-      <form onSubmit={addExercise}>
-        exercise
-        <select name="exercise">
-          {availableExercises.map((exercise) => (
-            <option
-              value={`{"id": "${exercise.id}", "name": "${exercise.name}"}`}
-              key={exercise.id}
-            >
-              {exercise.name}
-            </option>
-          ))}
-        </select>
-        <br />
-        rep range
-        <input type="number" name="repRangeMin" />
-        -
-        <input type="number" name="repRangeMax" />
-        <br />
-        <button type="submit">add</button>
-      </form>
+      <ExerciseAdder
+        availableExercises={availableExercises}
+        addExercise={addExercise}
+      />
       <form onSubmit={createRoutine}>
         name your workout routine:
         {" "}

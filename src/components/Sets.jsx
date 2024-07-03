@@ -1,7 +1,14 @@
 import Notification from "./Notification";
 
 const Sets = ({
-  exerciseName, exerciseId, addSet, sets, notification, repRange, deleteSet,
+  exerciseName,
+  exerciseId,
+  addSet,
+  sets,
+  notification,
+  repRange,
+  deleteSet,
+  amountOfSets,
 }) => (
   <div>
     <h2>{exerciseName}</h2>
@@ -9,6 +16,11 @@ const Sets = ({
       Suggested rep range:
       {" "}
       {repRange}
+    </h3>
+    <h3>
+      Suggested amount of sets:
+      {" "}
+      {amountOfSets}
     </h3>
     <Notification message={notification} />
     <table>
