@@ -1,6 +1,7 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import Sets from "../components/Sets";
+import DropSets from "../components/DropSets";
 import setService from "../services/setService";
 import { NotificationContext, UnfinishedWorkoutContext } from "./Root";
 import workoutService from "../services/workoutService";
@@ -33,29 +34,57 @@ const NewWorkout = () => {
       setTimeout(() => {
         setNotificationForSet({ ...notificationForSet, [exerciseId]: null });
       }, 3000);
-    } else {
-      const number = sets.filter(
-        (set) => set.exercise === exerciseId,
-      ).length === 0
-        ? 1
-        : sets[sets.length - 1].number + 1;
-      const setToSave = {
-        exercise: exerciseId,
-        workout: unfinishedWorkout.id,
-        number,
-        reps,
-        weight,
-        rest,
-        note,
-      };
-      const addedSet = await setService.addSet(setToSave);
-      setSets(sets.concat(addedSet));
-      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(addedSet)));
-      event.target.reps.value = "";
-      event.target.weight.value = "";
-      event.target.rest.value = "";
-      event.target.note.value = "";
+      return;
     }
+    const number = sets.filter(
+      (set) => set.exercise === exerciseId,
+    ).length === 0
+      ? 1
+      : sets[sets.length - 1].number + 1;
+    const setToSave = {
+      exercise: exerciseId,
+      workout: unfinishedWorkout.id,
+      number,
+      reps,
+      weight,
+      rest,
+      note,
+    };
+    const addedSet = await setService.addSet(setToSave);
+    setSets(sets.concat(addedSet));
+    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(addedSet)));
+    event.target.reps.value = "";
+    event.target.weight.value = "";
+    event.target.rest.value = "";
+    event.target.note.value = "";
+  };
+
+  const addDropSet = (event) => {
+    event.preventDefault();
+    const rest = Number(event.target.rest.value);
+    const note = event.target.note.value;
+    const exerciseId = event.target.name;
+    const amountOfDropSets = 3;
+    const dropSetNumbers = Array.from({ length: amountOfDropSets }, (_, i) => i);
+    const reps = [];
+    const weight = [];
+    dropSetNumbers.forEach((number) => {
+      const repsForCurrentDropSet = Number(event.target[`reps${number}`].value);
+      const weightForCurrentDropSet = Number(event.target[`weight${number}`].value);
+      if (repsForCurrentDropSet <= 0
+        || !(Number.isInteger(repsForCurrentDropSet))
+        || weightForCurrentDropSet < 0
+        || rest < 0) {
+        setNotificationForSet({ ...notificationForSet, [exerciseId]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
+        setTimeout(() => {
+          setNotificationForSet({ ...notificationForSet, [exerciseId]: null });
+        }, 3000);
+        return;
+      }
+      reps.push(repsForCurrentDropSet);
+      weight.push(weightForCurrentDropSet);
+    });
+    console.log("asdf");
   };
 
   const workoutDone = async () => {
@@ -92,19 +121,37 @@ const NewWorkout = () => {
     <div>
       <h1>{name}</h1>
       <div>
-        {exercises.map((exercise) => (
-          <Sets
-            notification={notificationForSet[exercise.exercise.id]}
-            key={exercise.exercise.id}
-            exerciseId={exercise.exercise.id}
-            exerciseName={exercise.exercise.name}
-            repRange={exercise.repRange}
-            amountOfSets={exercise.amountOfSets}
-            sets={sets}
-            addSet={addSet}
-            deleteSet={deleteSet}
-          />
-        ))}
+        {exercises.map((exercise) => {
+          if (exercise.type === "dropset") {
+            return (
+              <DropSets
+                notification={notificationForSet[exercise.exercise.id]}
+                key={exercise.exercise.id}
+                exerciseId={exercise.exercise.id}
+                exerciseName={exercise.exercise.name}
+                repRange={exercise.repRange}
+                amountOfSets={exercise.amountOfSets}
+                amountOfDropSets={exercise.amountOfDropSets}
+                sets={sets}
+                addDropSet={addDropSet}
+                deleteSet={deleteSet}
+              />
+            );
+          }
+          return (
+            <Sets
+              notification={notificationForSet[exercise.exercise.id]}
+              key={exercise.exercise.id}
+              exerciseId={exercise.exercise.id}
+              exerciseName={exercise.exercise.name}
+              repRange={exercise.repRange}
+              amountOfSets={exercise.amountOfSets}
+              sets={sets}
+              addSet={addSet}
+              deleteSet={deleteSet}
+            />
+          );
+        })}
       </div>
       <button type="button" onClick={workoutDone}>Workout done</button>
       <button type="button" onClick={deleteWorkout}>Delete workout</button>

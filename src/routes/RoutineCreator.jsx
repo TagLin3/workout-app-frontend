@@ -17,6 +17,9 @@ const RoutineCreator = () => {
     const repRangeMax = Number(event.target.repRangeMax.value);
     const amountOfSets = Number(event.target.amountOfSets.value);
     const type = event.target.type.value;
+    const amountOfDropSets = type === "dropset"
+      ? Number(event.target.amountOfDropSets.value)
+      : undefined;
     if (selectedExercises.some((exercise) => exerciseToAdd.id === exercise.exercise.id)) {
       setNotification("error: you can only include the same exercise once");
       setTimeout(() => {
@@ -37,6 +40,7 @@ const RoutineCreator = () => {
         exercise: exerciseToAdd,
         repRange: `${repRangeMin}-${repRangeMax}`,
         amountOfSets,
+        amountOfDropSets,
         type,
       }));
     }
@@ -50,6 +54,7 @@ const RoutineCreator = () => {
         exercise: exercise.exercise.id,
         repRange: exercise.repRange,
         amountOfSets: exercise.amountOfSets,
+        amountOfDropSets: exercise.amountOfDropSets,
         type: exercise.type,
       })),
     });

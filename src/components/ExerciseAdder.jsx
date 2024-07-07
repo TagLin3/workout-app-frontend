@@ -44,7 +44,7 @@ const ExerciseAdder = ({ addExercise, availableExercises }) => {
           <>
             amount of sets in one drop set:
             {" "}
-            <input type="number" name="amountOfdropSets" />
+            <input type="number" name="amountOfDropSets" />
           </>
         )}
         <br />
