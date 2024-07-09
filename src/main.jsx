@@ -81,7 +81,13 @@ const router = createBrowserRouter([
       {
         path: "/past_workouts/:id",
         element: <SinglePastWorkout />,
-        loader: ({ params }) => workoutService.getSingleWithSetsAndExercises(params.id),
+        loader: async ({ params }) => {
+          const workout = await workoutService.getSingleWithSetsAndExercises(params.id);
+          return {
+            workout,
+            routine: await routineService.getSingle(workout.routine.id),
+          };
+        },
       },
       {
         path: "/login",

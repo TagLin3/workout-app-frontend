@@ -4,7 +4,7 @@ import workoutService from "../services/workoutService";
 import { UnfinishedWorkoutContext } from "./Root";
 
 const SinglePastWorkout = () => {
-  const workout = useLoaderData();
+  const { workout, routine } = useLoaderData();
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const navigate = useNavigate();
   const date = new Date(workout.date);
@@ -20,7 +20,7 @@ const SinglePastWorkout = () => {
   return (
     <div>
       <h1>
-        {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${workout.routine.name}`}
+        {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${routine.name}`}
         {(unfinishedWorkout && unfinishedWorkout.id === workout.id) && " (unfinished)"}
       </h1>
       <div>

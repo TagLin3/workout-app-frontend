@@ -54,6 +54,7 @@ const PastSets = () => {
             <th>Exercise</th>
             <th>Reps</th>
             <th>Weight</th>
+            <th>Type</th>
             <th>Date</th>
           </tr>
         </thead>
@@ -66,32 +67,14 @@ const PastSets = () => {
                   .toSorted((a, b) => a.number - b.number)
                   .map((set) => {
                     const date = new Date(set.date);
-                    const currentSetVolume = set.weight * set.reps;
-                    const highestVolume = !(setGroup.some((setToCompare) => {
-                      const setToCompareVolume = setToCompare.weight * setToCompare.reps;
-                      if (setToCompareVolume > currentSetVolume) {
-                        return true;
-                      }
-                      return false;
-                    }));
                     return (
-                      highestVolume
-                        ? (
-                          <tr key={set.id}>
-                            <td><b>{set.exercise.name}</b></td>
-                            <td><b>{set.reps}</b></td>
-                            <td><b>{set.weight}</b></td>
-                            <td><b>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</b></td>
-                          </tr>
-                        )
-                        : (
-                          <tr key={set.id}>
-                            <td>{set.exercise.name}</td>
-                            <td>{set.reps}</td>
-                            <td>{set.weight}</td>
-                            <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
-                          </tr>
-                        )
+                      <tr key={set.id}>
+                        <td>{set.exercise.name}</td>
+                        <td>{set.reps}</td>
+                        <td>{set.weight}</td>
+                        <td>{set.type}</td>
+                        <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
+                      </tr>
                     );
                   })}
                 <tr><td style={{ paddingTop: ".5rem" }} /></tr>

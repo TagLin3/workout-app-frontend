@@ -70,8 +70,7 @@ const DropSets = ({
             {" "}
             {dropSetNumber + 1}
             {" "}
-            of set
-            :
+            of set:
             <br />
             reps:
             {" "}

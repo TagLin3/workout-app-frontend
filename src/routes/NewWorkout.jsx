@@ -42,6 +42,7 @@ const NewWorkout = () => {
       ? 1
       : sets[sets.length - 1].number + 1;
     const setToSave = {
+      type: "regular",
       exercise: exerciseId,
       workout: unfinishedWorkout.id,
       number,
@@ -59,32 +60,56 @@ const NewWorkout = () => {
     event.target.note.value = "";
   };
 
-  const addDropSet = (event) => {
+  const addDropSet = async (event) => {
     event.preventDefault();
     const rest = Number(event.target.rest.value);
     const note = event.target.note.value;
     const exerciseId = event.target.name;
     const amountOfDropSets = 3;
-    const dropSetNumbers = Array.from({ length: amountOfDropSets }, (_, i) => i);
+    const lastSetsNumber = sets.filter(
+      (set) => set.exercise === exerciseId,
+    ).length === 0
+      ? 1
+      : sets[sets.length - 1].number + 1;
+    const numbers = Array.from({ length: amountOfDropSets }, (_, i) => i);
     const reps = [];
     const weight = [];
-    dropSetNumbers.forEach((number) => {
-      const repsForCurrentDropSet = Number(event.target[`reps${number}`].value);
-      const weightForCurrentDropSet = Number(event.target[`weight${number}`].value);
-      if (repsForCurrentDropSet <= 0
-        || !(Number.isInteger(repsForCurrentDropSet))
-        || weightForCurrentDropSet < 0
-        || rest < 0) {
-        setNotificationForSet({ ...notificationForSet, [exerciseId]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
-        setTimeout(() => {
-          setNotificationForSet({ ...notificationForSet, [exerciseId]: null });
-        }, 3000);
-        return;
-      }
-      reps.push(repsForCurrentDropSet);
-      weight.push(weightForCurrentDropSet);
+    numbers.forEach((number) => {
+      reps.push(Number(event.target[`reps${number}`].value));
+      event.target[`reps${number}`].value = "";
+      weight.push(Number(event.target[`weight${number}`].value));
+      event.target[`weight${number}`].value = "";
     });
-    console.log("asdf");
+    if (
+      reps.some(
+        (repsForCurrentDropSet) => repsForCurrentDropSet <= 0
+        || !(Number.isInteger(repsForCurrentDropSet)),
+      )
+      || weight.some((weightForCurrentDropSet) => weightForCurrentDropSet < 0)
+      || rest < 0) {
+      setNotificationForSet({ ...notificationForSet, [exerciseId]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
+      setTimeout(() => {
+        setNotificationForSet({ ...notificationForSet, [exerciseId]: null });
+      }, 3000);
+      return;
+    }
+    const savedSets = await Promise.all(numbers.map(async (number) => {
+      const setToSave = {
+        type: "dropset",
+        exercise: exerciseId,
+        workout: unfinishedWorkout.id,
+        number: number + lastSetsNumber,
+        reps: reps[number],
+        weight: weight[number],
+        rest: number === amountOfDropSets - 1 ? rest : 0,
+        note,
+      };
+      return setService.addSet(setToSave);
+    }));
+    setSets(sets.concat(savedSets));
+    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(savedSets)));
+    event.target.rest.value = "";
+    event.target.note.value = "";
   };
 
   const workoutDone = async () => {
