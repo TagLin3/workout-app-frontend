@@ -1,5 +1,8 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
+import {
+  Table, TableHead, TableBody, TableRow, TableCell,
+} from "@mui/material";
 
 const PastSets = () => {
   const { sets } = useLoaderData();
@@ -48,40 +51,48 @@ const PastSets = () => {
           </option>
         ))}
       </select>
-      <table>
-        <thead>
-          <tr>
-            <th>Exercise</th>
-            <th>Reps</th>
-            <th>Weight</th>
-            <th>Type</th>
-            <th>Date</th>
-          </tr>
-        </thead>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Exercise</TableCell>
+            <TableCell>Reps</TableCell>
+            <TableCell>Weight</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Date</TableCell>
+          </TableRow>
+        </TableHead>
         {
           setsToShow
             .toSorted((a, b) => new Date(b[0].date) - new Date(a[0].date))
             .map((setGroup) => (
-              <tbody key={setGroup[0].id}>
+              <TableBody key={setGroup[0].id}>
                 {setGroup
-                  .toSorted((a, b) => a.number - b.number)
+                  .toSorted((a, b) => {
+                    if (a.number !== b.number) {
+                      return a.number - b.number;
+                    }
+                    return a.dropSetNumber - b.dropSetNumber;
+                  })
                   .map((set) => {
                     const date = new Date(set.date);
                     return (
-                      <tr key={set.id}>
-                        <td>{set.exercise.name}</td>
-                        <td>{set.reps}</td>
-                        <td>{set.weight}</td>
-                        <td>{set.type}</td>
-                        <td>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</td>
-                      </tr>
+                      <TableRow key={set.id}>
+                        <TableCell>{set.exercise.name}</TableCell>
+                        <TableCell>{set.reps}</TableCell>
+                        <TableCell>{set.weight}</TableCell>
+                        <TableCell>
+                          {set.type}
+                          {" "}
+                          {set.type === "dropset" && `(${set.dropSetNumber})`}
+                        </TableCell>
+                        <TableCell>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</TableCell>
+                      </TableRow>
                     );
                   })}
-                <tr><td style={{ paddingTop: ".5rem" }} /></tr>
-              </tbody>
+              </TableBody>
             ))
         }
-      </table>
+      </Table>
     </div>
   );
 };

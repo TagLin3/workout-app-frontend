@@ -1,14 +1,13 @@
 import {
-  createContext, useState, useMemo, useEffect,
+  useState, useMemo, useEffect,
 } from "react";
 import { Outlet, useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
 import Nav from "../components/Nav";
 import Notification from "../components/Notification";
-
-export const UnfinishedWorkoutContext = createContext(null);
-export const LoggedUserContext = createContext(null);
-export const NotificationContext = createContext(null);
+import { UnfinishedWorkoutContext, NotificationContext, LoggedUserContext } from "../contexts";
 
 const Root = () => {
   const [unfinishedWorkout, setUnfinishedWorkout] = useState(null);
@@ -45,27 +44,36 @@ const Root = () => {
   const notificationArray = useMemo(() => (
     { notification, setNotification }), [notification]);
 
+  const theme = createTheme({
+    typography: {
+      fontSize: 100,
+      fontFamily: "sans-serif",
+    },
+  });
+
   return (
-    <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
-      <LoggedUserContext.Provider value={loggedUserObj}>
-        <NotificationContext.Provider value={notificationArray}>
-          <div>
-            <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
-            {loggedUser && (
-              <p>
-                logged in as
-                {" "}
-                {loggedUser.name}
-                {" "}
-                <button type="button" onClick={logOut}>Log out</button>
-              </p>
-            )}
-            <Notification message={notification} />
-            <Outlet />
-          </div>
-        </NotificationContext.Provider>
-      </LoggedUserContext.Provider>
-    </UnfinishedWorkoutContext.Provider>
+    <ThemeProvider theme={theme}>
+      <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
+        <LoggedUserContext.Provider value={loggedUserObj}>
+          <NotificationContext.Provider value={notificationArray}>
+            <div>
+              <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
+              {loggedUser && (
+                <p>
+                  logged in as
+                  {" "}
+                  {loggedUser.name}
+                  {" "}
+                  <button type="button" onClick={logOut}>Log out</button>
+                </p>
+              )}
+              <Notification message={notification} />
+              <Outlet />
+            </div>
+          </NotificationContext.Provider>
+        </LoggedUserContext.Provider>
+      </UnfinishedWorkoutContext.Provider>
+    </ThemeProvider>
   );
 };
 

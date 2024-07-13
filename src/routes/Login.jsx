@@ -2,7 +2,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import loginService from "../services/loginService";
-import { LoggedUserContext, NotificationContext } from "./Root";
+import { LoggedUserContext, NotificationContext } from "../contexts";
 
 const Login = () => {
   const navigate = useNavigate();

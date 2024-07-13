@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import Sets from "../components/Sets";
 import DropSets from "../components/DropSets";
 import setService from "../services/setService";
-import { NotificationContext, UnfinishedWorkoutContext } from "./Root";
+import { NotificationContext, UnfinishedWorkoutContext } from "../contexts";
 import workoutService from "../services/workoutService";
 
 const NewWorkout = () => {
@@ -66,19 +66,19 @@ const NewWorkout = () => {
     const note = event.target.note.value;
     const exerciseId = event.target.name;
     const amountOfDropSets = 3;
-    const lastSetsNumber = sets.filter(
+    const number = sets.filter(
       (set) => set.exercise === exerciseId,
     ).length === 0
       ? 1
       : sets[sets.length - 1].number + 1;
-    const numbers = Array.from({ length: amountOfDropSets }, (_, i) => i);
+    const dropSetNumbers = Array.from({ length: amountOfDropSets }, (_, i) => i + 1);
     const reps = [];
     const weight = [];
-    numbers.forEach((number) => {
-      reps.push(Number(event.target[`reps${number}`].value));
-      event.target[`reps${number}`].value = "";
-      weight.push(Number(event.target[`weight${number}`].value));
-      event.target[`weight${number}`].value = "";
+    dropSetNumbers.forEach((dropSetNumber) => {
+      reps.push(Number(event.target[`reps${dropSetNumber}`].value));
+      event.target[`reps${dropSetNumber}`].value = "";
+      weight.push(Number(event.target[`weight${dropSetNumber}`].value));
+      event.target[`weight${dropSetNumber}`].value = "";
     });
     if (
       reps.some(
@@ -93,15 +93,16 @@ const NewWorkout = () => {
       }, 3000);
       return;
     }
-    const savedSets = await Promise.all(numbers.map(async (number) => {
+    const savedSets = await Promise.all(dropSetNumbers.map(async (dropSetNumber) => {
       const setToSave = {
         type: "dropset",
         exercise: exerciseId,
         workout: unfinishedWorkout.id,
-        number: number + lastSetsNumber,
-        reps: reps[number],
-        weight: weight[number],
-        rest: number === amountOfDropSets - 1 ? rest : 0,
+        number,
+        dropSetNumber,
+        reps: reps[dropSetNumber - 1],
+        weight: weight[dropSetNumber - 1],
+        rest: dropSetNumber === amountOfDropSets ? rest : 0,
         note,
       };
       return setService.addSet(setToSave);

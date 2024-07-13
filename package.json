@@ -11,6 +11,10 @@
     "server": "json-server -p3001 --watch db.json"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
+    "@mui/material": "^5.16.1",
     "@reduxjs/toolkit": "^2.2.1",
     "axios": "^1.6.7",
     "json-server": "^1.0.0-alpha.23",

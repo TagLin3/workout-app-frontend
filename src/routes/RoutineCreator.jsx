@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Table, TableHead, TableBody, TableRow, TableCell,
+} from "@mui/material";
 import routineService from "../services/routineService";
 import Notification from "../components/Notification";
 import ExerciseAdder from "../components/ExerciseAdder";
@@ -43,22 +46,44 @@ const RoutineCreator = () => {
         amountOfDropSets,
         type,
       }));
+      event.target.exercise.value = "";
+      event.target.repRangeMin.value = "";
+      event.target.repRangeMax.value = "";
+      event.target.amountOfSets.value = "";
+      event.target.type.value = "";
     }
   };
 
   const createRoutine = async (event) => {
     event.preventDefault();
-    await routineService.addRoutine({
-      name: event.target.name.value,
-      exercises: selectedExercises.map((exercise) => ({
-        exercise: exercise.exercise.id,
-        repRange: exercise.repRange,
-        amountOfSets: exercise.amountOfSets,
-        amountOfDropSets: exercise.amountOfDropSets,
-        type: exercise.type,
-      })),
-    });
-    navigate("/routines");
+    if (event.target.name.value === "") {
+      setNotification("error: name for workout routine is required");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+    } else {
+      await routineService.addRoutine({
+        name: event.target.name.value,
+        exercises: selectedExercises.map((exercise) => ({
+          exercise: exercise.exercise.id,
+          repRange: exercise.repRange,
+          amountOfSets: exercise.amountOfSets,
+          amountOfDropSets: exercise.amountOfDropSets,
+          type: exercise.type,
+        })),
+      });
+      navigate("/routines");
+      setNotification("Workout routine created!");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+    }
+  };
+
+  const removeExercise = (exerciseToRemoveId) => {
+    setSelectedExercises(
+      selectedExercises.filter((exercise) => exercise.exercise.id !== exerciseToRemoveId),
+    );
   };
 
   return (
@@ -66,18 +91,32 @@ const RoutineCreator = () => {
       <Notification message={notification} />
       <h1>Workout routine creator</h1>
       <h2>Exercises</h2>
-      <ol>
-        {selectedExercises.map((exercise) => (
-          <li key={exercise.exercise.id}>
-            {exercise.exercise.name}
-            ,
-            {" "}
-            {exercise.repRange}
-            {" "}
-            reps
-          </li>
-        ))}
-      </ol>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Exercise</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Rep range</TableCell>
+            <TableCell>Amount of sets</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {selectedExercises.map((exercise) => (
+            <TableRow key={exercise.exercise.id}>
+              <TableCell>{exercise.exercise.name}</TableCell>
+              <TableCell>{exercise.type}</TableCell>
+              <TableCell>{exercise.repRange}</TableCell>
+              <TableCell>
+                {exercise.amountOfSets}
+                {exercise.type === "dropset" && ` times ${exercise.amountOfDropSets} dropsets`}
+              </TableCell>
+              <TableCell>
+                <button type="button" onClick={() => removeExercise(exercise.exercise.id)}>remove</button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
       <ExerciseAdder
         availableExercises={availableExercises}
         addExercise={addExercise}

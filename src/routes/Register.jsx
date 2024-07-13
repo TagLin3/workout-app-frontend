@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import loginService from "../services/loginService";
 import userService from "../services/userService";
-import { LoggedUserContext } from "./Root";
+import { LoggedUserContext } from "../contexts";
 
 const Register = () => {
   const { setLoggedUser } = useContext(LoggedUserContext);

@@ -1,6 +1,9 @@
 import { useContext } from "react";
 import { useLoaderData, Link } from "react-router-dom";
-import { UnfinishedWorkoutContext } from "./Root";
+import {
+  Table, TableHead, TableBody, TableRow, TableCell,
+} from "@mui/material";
+import { UnfinishedWorkoutContext } from "../contexts";
 
 const PastWorkouts = () => {
   const workouts = useLoaderData()
@@ -9,44 +12,44 @@ const PastWorkouts = () => {
   return (
     <div>
       <h1>Past workouts</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
               Routine
-            </th>
-            <th>
+            </TableCell>
+            <TableCell>
               Date
-            </th>
-            <th>
+            </TableCell>
+            <TableCell>
               status
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {workouts.map((workout) => {
             const date = new Date(workout.date);
             return (
-              <tr key={workout.id}>
-                <td>
+              <TableRow key={workout.id}>
+                <TableCell>
                   {workout.routine.name}
-                </td>
-                <td>
+                </TableCell>
+                <TableCell>
                   {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
-                </td>
-                <td>
+                </TableCell>
+                <TableCell>
                   <Link to={workout.id}>
                     view workout
                   </Link>
-                </td>
-                <td>
+                </TableCell>
+                <TableCell>
                   {unfinishedWorkout && workout.id === unfinishedWorkout.id ? "unfinished" : "finished"}
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 };

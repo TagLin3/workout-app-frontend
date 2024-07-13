@@ -1,7 +1,10 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import {
+  Table, TableHead, TableBody, TableRow, TableCell,
+} from "@mui/material";
 import workoutService from "../services/workoutService";
-import { UnfinishedWorkoutContext } from "./Root";
+import { UnfinishedWorkoutContext } from "../contexts";
 
 const SinglePastWorkout = () => {
   const { workout, routine } = useLoaderData();
@@ -28,36 +31,41 @@ const SinglePastWorkout = () => {
           <div key={exercise.exercise.id}>
             <h2>{exercise.exercise.name}</h2>
             <h3>sets: </h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>reps</th>
-                  <th>weight</th>
-                  <th>rest after set</th>
-                  <th>note</th>
-                </tr>
-              </thead>
-              <tbody>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>reps</TableCell>
+                  <TableCell>weight</TableCell>
+                  <TableCell>rest after set</TableCell>
+                  <TableCell>note</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {workout.sets.filter((set) => set.exercise === exercise.exercise.id)
-                  .toSorted((set1, set2) => set1.number - set2.number)
+                  .toSorted((a, b) => {
+                    if (a.number !== b.number) {
+                      return a.number - b.number;
+                    }
+                    return a.dropSetNumber - b.dropSetNumber;
+                  })
                   .map((set) => (
-                    <tr key={set.id}>
-                      <td>
+                    <TableRow key={set.id}>
+                      <TableCell>
                         {set.reps}
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         {set.weight}
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         {`${set.rest} seconds`}
-                      </td>
-                      <td>
+                      </TableCell>
+                      <TableCell>
                         {set.note}
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         ))}
       </div>

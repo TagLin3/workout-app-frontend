@@ -1,3 +1,6 @@
+import {
+  Table, TableHead, TableBody, TableRow, TableCell,
+} from "@mui/material";
 import Notification from "./Notification";
 
 const Sets = ({
@@ -12,43 +15,45 @@ const Sets = ({
 }) => (
   <div>
     <h2>{exerciseName}</h2>
-    <h3>
-      Suggested rep range:
-      {" "}
-      {repRange}
-    </h3>
-    <h3>
-      Suggested amount of sets:
-      {" "}
-      {amountOfSets}
-    </h3>
+    <ul>
+      <li>
+        Rep range:
+        {" "}
+        {repRange}
+      </li>
+      <li>
+        Amount of sets:
+        {" "}
+        {amountOfSets}
+      </li>
+    </ul>
     <Notification message={notification} />
-    <table>
-      <thead>
-        <tr>
-          <th>Set</th>
-          <th>Reps</th>
-          <th>Weight</th>
-          <th>Rest after set</th>
-          <th>Note</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Set</TableCell>
+          <TableCell>Reps</TableCell>
+          <TableCell>Weight</TableCell>
+          <TableCell>Rest after set</TableCell>
+          <TableCell>Note</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {sets.filter((set) => set.exercise === exerciseId)
           .map((set) => (
-            <tr key={set.number}>
-              <td>{set.number}</td>
-              <td>{set.reps}</td>
-              <td>{set.weight}</td>
-              <td>{set.rest}</td>
-              <td>{set.note}</td>
-              <td>
+            <TableRow key={set.number}>
+              <TableCell>{set.number}</TableCell>
+              <TableCell>{set.reps}</TableCell>
+              <TableCell>{set.weight}</TableCell>
+              <TableCell>{set.rest}</TableCell>
+              <TableCell>{set.note}</TableCell>
+              <TableCell>
                 <button type="button" onClick={() => deleteSet(set)}>delete</button>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
     <form onSubmit={addSet} name={exerciseId}>
       Add a set:
       <br />

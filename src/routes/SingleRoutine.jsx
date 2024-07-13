@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
-import { UnfinishedWorkoutContext, NotificationContext } from "./Root";
+import { UnfinishedWorkoutContext, NotificationContext } from "../contexts";
 import workoutService from "../services/workoutService";
 import routineService from "../services/routineService";
 
