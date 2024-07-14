@@ -1,5 +1,6 @@
 import {
-  Table, TableHead, TableBody, TableRow, TableCell,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, List, ListItem, ListItemText,
+  TextField, Button,
 } from "@mui/material";
 import Notification from "./Notification";
 
@@ -13,20 +14,24 @@ const Sets = ({
   deleteSet,
   amountOfSets,
 }) => (
-  <div>
-    <h2>{exerciseName}</h2>
-    <ul>
-      <li>
-        Rep range:
-        {" "}
-        {repRange}
-      </li>
-      <li>
-        Amount of sets:
-        {" "}
-        {amountOfSets}
-      </li>
-    </ul>
+  <Box>
+    <Typography variant="h2">{exerciseName}</Typography>
+    <List>
+      <ListItem>
+        <ListItemText>
+          Rep range:
+          {" "}
+          {repRange}
+        </ListItemText>
+      </ListItem>
+      <ListItem>
+        <ListItemText>
+          Amount of sets:
+          {" "}
+          {amountOfSets}
+        </ListItemText>
+      </ListItem>
+    </List>
     <Notification message={notification} />
     <Table>
       <TableHead>
@@ -55,27 +60,18 @@ const Sets = ({
       </TableBody>
     </Table>
     <form onSubmit={addSet} name={exerciseId}>
-      Add a set:
+      <Typography>Add a set:</Typography>
+      <TextField label="reps" type="number" name="reps" />
       <br />
-      reps:
-      {" "}
-      <input type="number" name="reps" />
+      <TextField label="weight" type="number" name="weight" step="any" />
       <br />
-      weight:
-      {" "}
-      <input type="number" name="weight" step="any" />
+      <TextField label="rest after set in seconds" type="number" name="rest" />
       <br />
-      rest after set in seconds:
-      {" "}
-      <input type="number" name="rest" />
+      <TextField label="note" name="note" multiline />
       <br />
-      note:
-      <br />
-      <textarea name="note" />
-      <br />
-      <button type="submit">add set</button>
+      <Button variant="contained" type="submit">add set</Button>
     </form>
-  </div>
+  </Box>
 );
 
 export default Sets;

@@ -1,31 +1,29 @@
-import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Button } from "@mui/material";
 
 const Nav = ({ unfinishedWorkout, loggedUser }) => (
-  <nav>
-    <Link to="/">Home</Link>
-    {loggedUser && (
-      <>
-        {" "}
-        <Link to="/routines">Workout routines</Link>
-        {" "}
-        <Link to="/exercise_library">Exercise library</Link>
-        {" "}
-        <Link to="/past_workouts">Past workouts</Link>
-        {" "}
-        <Link to="/past_sets">Past sets</Link>
-      </>
-    )}
-    {" "}
-    <Link to="/login">Log in</Link>
-    {" "}
-    <Link to="/register">Register</Link>
-    {" "}
-    {unfinishedWorkout && (
-      <Link to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>
-        {`Unfinised ${unfinishedWorkout.routine.name}`}
-      </Link>
-    )}
-  </nav>
+  <AppBar position="static">
+    <Toolbar>
+      <Button variant="contained" href="/">Home</Button>
+      {loggedUser && (
+        <>
+          <Button href="/routines" variant="contained">Workout routines</Button>
+          <Button href="/exercise_library" variant="contained">Exercise library</Button>
+          <Button href="/past_workouts" variant="contained">Past workouts</Button>
+          <Button href="/past_sets" variant="contained">Past sets</Button>
+        </>
+      )}
+      {" "}
+      <Button href="/login" variant="contained">Log in</Button>
+      {" "}
+      <Button href="/register" variant="contained">Register</Button>
+      {" "}
+      {unfinishedWorkout && (
+        <Button href={`/routines/${unfinishedWorkout.routine.id}/new_workout`} variant="contained">
+          {`Unfinised ${unfinishedWorkout.routine.name}`}
+        </Button>
+      )}
+    </Toolbar>
+  </AppBar>
 );
 
 export default Nav;

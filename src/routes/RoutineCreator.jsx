@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
+  Button,
+  TextField,
 } from "@mui/material";
 import routineService from "../services/routineService";
 import Notification from "../components/Notification";
@@ -87,10 +89,10 @@ const RoutineCreator = () => {
   };
 
   return (
-    <div>
+    <Box>
       <Notification message={notification} />
-      <h1>Workout routine creator</h1>
-      <h2>Exercises</h2>
+      <Typography variant="h1">Workout routine creator</Typography>
+      <Typography variant="h2">Exercises</Typography>
       <Table>
         <TableHead>
           <TableRow>
@@ -111,7 +113,13 @@ const RoutineCreator = () => {
                 {exercise.type === "dropset" && ` times ${exercise.amountOfDropSets} dropsets`}
               </TableCell>
               <TableCell>
-                <button type="button" onClick={() => removeExercise(exercise.exercise.id)}>remove</button>
+                <Button
+                  variant="contained"
+                  type="button"
+                  onClick={() => removeExercise(exercise.exercise.id)}
+                >
+                  remove
+                </Button>
               </TableCell>
             </TableRow>
           ))}
@@ -122,13 +130,11 @@ const RoutineCreator = () => {
         addExercise={addExercise}
       />
       <form onSubmit={createRoutine}>
-        name your workout routine:
-        {" "}
-        <input type="text" name="name" />
+        <TextField label="name your workout routine" type="text" name="name" />
         <br />
-        <button type="submit">create workout routine</button>
+        <Button variant="contained" type="submit">create workout routine</Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

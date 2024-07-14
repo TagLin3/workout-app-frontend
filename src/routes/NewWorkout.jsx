@@ -1,5 +1,6 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
+import { Typography, Box, Button } from "@mui/material";
 import Sets from "../components/Sets";
 import DropSets from "../components/DropSets";
 import setService from "../services/setService";
@@ -144,9 +145,9 @@ const NewWorkout = () => {
   };
 
   return (
-    <div>
-      <h1>{name}</h1>
-      <div>
+    <Box>
+      <Typography variant="h1">{name}</Typography>
+      <Box>
         {exercises.map((exercise) => {
           if (exercise.type === "dropset") {
             return (
@@ -178,10 +179,10 @@ const NewWorkout = () => {
             />
           );
         })}
-      </div>
-      <button type="button" onClick={workoutDone}>Workout done</button>
-      <button type="button" onClick={deleteWorkout}>Delete workout</button>
-    </div>
+      </Box>
+      <Button variant="contained" type="button" onClick={workoutDone}>Workout done</Button>
+      <Button variant="contained" type="button" onClick={deleteWorkout}>Delete workout</Button>
+    </Box>
   );
 };
 

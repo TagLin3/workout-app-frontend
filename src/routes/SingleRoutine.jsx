@@ -1,5 +1,8 @@
 import { useContext, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  Box, List, ListItem, ListItemText, Typography, Button,
+} from "@mui/material";
 import { UnfinishedWorkoutContext, NotificationContext } from "../contexts";
 import workoutService from "../services/workoutService";
 import routineService from "../services/routineService";
@@ -51,76 +54,90 @@ const SingleRoutine = () => {
   };
 
   return (
-    <div>
-      <h1>
+    <Box>
+      <Typography variant="h1">
         {routine.name}
         {!active && " (inactive)"}
-      </h1>
-      <h2>Exercises</h2>
-      <ul>
+      </Typography>
+      <Typography variant="h2">Exercises</Typography>
+      <List>
         {routine.exercises.map((exercise) => (
-          <li key={exercise.exercise.id}>
-            {exercise.exercise.name}
-            ,
-            {" "}
-            {exercise.repRange}
-            {" "}
-            reps
-          </li>
+          <ListItem key={exercise.exercise.id}>
+            <ListItemText>
+              {exercise.exercise.name}
+              ,
+              {" "}
+              {exercise.repRange}
+              {" "}
+              reps
+            </ListItemText>
+          </ListItem>
         ))}
-      </ul>
+      </List>
       {active
         ? (unfinishedWorkout
           ? (
-            <div>
-              You currently have an unfinished workout of the routine &quot;
-              {unfinishedWorkout.routine.name}
-              &quot;. You can&apos;t start a new workout until you&apos;ve finished the old one.
+            <Box>
+              <Typography>
+                You currently have an unfinished workout of the routine &quot;
+                {unfinishedWorkout.routine.name}
+                &quot;. You can&apos;t start a new workout until you&apos;ve finished the old one.
+              </Typography>
               <br />
-              You can
-              {" "}
-              <Link to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>continue the workout</Link>
-              {" "}
-              or
-              {" "}
-              <Link
-                to="/routines"
-                state={{ newWorkoutState: "Workout deleted!" }}
-                onClick={deleteUnfinisedWorkout}
-              >
-                delete it
-              </Link>
-            </div>
+              <Typography>
+                You can
+                {" "}
+                <Link to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>continue the workout</Link>
+                {" "}
+                or
+                {" "}
+                <Link
+                  to="/routines"
+                  state={{ newWorkoutState: "Workout deleted!" }}
+                  onClick={deleteUnfinisedWorkout}
+                >
+                  delete it
+                </Link>
+              </Typography>
+            </Box>
           )
-          : <button type="button" onClick={startNewWorkout}>Start new workout from this routine</button>)
-        : <p>you can only start a workout from an active routine</p>}
+          : (
+            <Button
+              variant="contained"
+              type="button"
+              onClick={startNewWorkout}
+            >
+              Start new workout from this routine
+            </Button>
+          ))
+        : <Typography>you can only start a workout from an active routine</Typography>}
       <br />
-      <div>
+      <Box>
         {active ? (
-          <p>
+          <Typography>
             This routine is currently active meaning that you
             are actively completing workouts based on it. Set this
             routine as inactive in order to make it possible to delete it.
-          </p>
+          </Typography>
         )
           : (
-            <p>
+            <Typography>
               This routine is currently inactive meaning that you are no longer actively
               completing workouts based on it. You will have to set this routine as
               active to complete workouts on it again.
-            </p>
+            </Typography>
           )}
-        <button type="button" onClick={toggleActivity}>
+        <Button variant="contained" type="button" onClick={toggleActivity}>
           Set this routine as
           {active ? " inactive" : " active"}
-        </button>
-      </div>
+        </Button>
+      </Box>
       {!active && (
-        <div>
-          <button type="button" onClick={deleteRoutine}>delete</button>
-        </div>
+        <Box>
+          <Button variant="contained" type="button" onClick={deleteRoutine}>delete</Button>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

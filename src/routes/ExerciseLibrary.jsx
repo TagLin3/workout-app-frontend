@@ -1,5 +1,9 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
+import {
+  Box, Typography, List, ListItem,
+  ListItemText, TextField, Button,
+} from "@mui/material";
 import exerciseService from "../services/exerciseService";
 
 const ExerciseLibrary = () => {
@@ -18,27 +22,30 @@ const ExerciseLibrary = () => {
   };
 
   return (
-    <div>
-      <h1>Exercise library</h1>
-      <h2>Existing exercises</h2>
-      <ul>
+    <Box>
+      <Typography variant="h1">Exercise library</Typography>
+      <Typography variant="h2">Existing exercises</Typography>
+      <List>
         {exercises.map((exercise) => (
-          <li key={exercise.id}>{exercise.name}</li>
+          <ListItem key={exercise.id}>
+            <ListItemText>
+              {exercise.name}
+            </ListItemText>
+          </ListItem>
         ))}
-      </ul>
-      <h2>Create a new custom exercise</h2>
+      </List>
+      <Typography variant="h2">Create a new custom exercise</Typography>
       <form onSubmit={createExercise}>
-        name:
-        {" "}
-        <input
+        <TextField
+          label="name"
           value={exerciseName}
           onChange={({ target }) => setExerciseName(target.value)}
           name="name"
         />
         <br />
-        <button type="submit">create</button>
+        <Button variant="contained" type="submit">create</Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

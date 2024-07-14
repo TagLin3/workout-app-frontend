@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Box, Button, TextField, Typography,
+} from "@mui/material";
 import loginService from "../services/loginService";
 import userService from "../services/userService";
 import { LoggedUserContext } from "../contexts";
@@ -26,24 +29,18 @@ const Register = () => {
     navigate("/");
   };
   return (
-    <div>
-      <h2>Register</h2>
+    <Box>
+      <Typography variant="h2">Register</Typography>
       <form onSubmit={onSubmit}>
-        name:
-        {" "}
-        <input type="text" name="name" />
+        <TextField label="name" type="text" name="name" />
         <br />
-        username:
-        {" "}
-        <input type="text" name="username" />
+        <TextField label="username" type="text" name="username" />
         <br />
-        password:
-        {" "}
-        <input type="password" name="password" />
+        <TextField label="password" type="password" name="password" />
         <br />
-        <button type="submit">register</button>
+        <Button type="submit" variant="contained">register</Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

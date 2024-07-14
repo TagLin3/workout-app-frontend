@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useLoaderData, Link } from "react-router-dom";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
 } from "@mui/material";
 import { UnfinishedWorkoutContext } from "../contexts";
 
@@ -10,8 +10,8 @@ const PastWorkouts = () => {
     .toSorted((a, b) => (new Date(b.date) - new Date(a.date)));
   const { unfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   return (
-    <div>
-      <h1>Past workouts</h1>
+    <Box>
+      <Typography variant="h1">Past workouts</Typography>
       <Table>
         <TableHead>
           <TableRow>
@@ -50,7 +50,7 @@ const PastWorkouts = () => {
           })}
         </TableBody>
       </Table>
-    </div>
+    </Box>
   );
 };
 

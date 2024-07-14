@@ -1,6 +1,9 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import {
+  Box, Button, TextField, Typography,
+} from "@mui/material";
 import loginService from "../services/loginService";
 import { LoggedUserContext, NotificationContext } from "../contexts";
 
@@ -29,20 +32,16 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Log in</h2>
+    <Box>
+      <Typography variant="h2">Log in</Typography>
       <form onSubmit={onSubmit}>
-        username:
-        {" "}
-        <input type="text" name="username" />
+        <TextField label="username" type="text" name="username" />
         <br />
-        password:
-        {" "}
-        <input type="password" name="password" />
+        <TextField label="password" type="password" name="password" />
         <br />
-        <button type="submit">log in</button>
+        <Button variant="contained" type="submit">log in</Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

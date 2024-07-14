@@ -3,6 +3,9 @@ import {
   Link,
   useLoaderData,
 } from "react-router-dom";
+import {
+  Box, Typography, Button, Checkbox, FormControlLabel, List, ListItem, ListItemText,
+} from "@mui/material";
 
 const Routines = () => {
   const routines = useLoaderData();
@@ -11,44 +14,59 @@ const Routines = () => {
   const [showActive, setShowactive] = useState(true);
   const [showInactive, setShowInactive] = useState(false);
   return (
-    <div>
-      <h1>Workout routines</h1>
-      <div>
-        view:
-        <br />
-        active
-        <input
-          type="checkbox"
-          checked={showActive}
-          onChange={(event) => setShowactive(event.target.checked)}
+    <Box>
+      <Typography variant="h1">Workout routines</Typography>
+      <Box>
+        <Typography>view:</Typography>
+        <FormControlLabel
+          control={(
+            <Checkbox
+              checked={showActive}
+              onChange={(event) => setShowactive(event.target.checked)}
+            />
+          )}
+          label="active"
         />
         <br />
-        inactive
-        <input
-          type="checkbox"
-          checked={showInactive}
-          onChange={(event) => setShowInactive(event.target.checked)}
+        <FormControlLabel
+          control={(
+            <Checkbox
+              checked={showActive}
+              onChange={(event) => setShowInactive(event.target.checked)}
+            />
+          )}
+          label="inactive"
         />
-      </div>
-      <div>
+      </Box>
+      <Box>
         {showActive && (activeRoutines.length === 0
-          ? <p>no active routines found</p>
-          : activeRoutines.map((routine) => (
-            <div key={routine.id}>
-              <Link to={`${routine.id}`}>{routine.name}</Link>
-            </div>
-          )))}
+          ? <Typography>no active routines found</Typography>
+          : (
+            <List>
+              {
+                activeRoutines.map((routine) => (
+                  <ListItem key={routine.id}>
+                    <ListItemText>
+                      <Link to={`${routine.id}`}>{routine.name}</Link>
+                    </ListItemText>
+                  </ListItem>
+                ))
+              }
+            </List>
+          ))}
         {showInactive && (inactiveRoutines.length === 0
-          ? <p>no inactive routines found</p>
+          ? <Typography>no inactive routines found</Typography>
           : inactiveRoutines.map((routine) => (
-            <div key={routine.id}>
-              <Link to={`${routine.id}`}>{routine.name}</Link>
-            </div>
+            <Box key={routine.id}>
+              <Typography>
+                <Link to={`${routine.id}`}>{routine.name}</Link>
+              </Typography>
+            </Box>
           )))}
-      </div>
-      <h2>Create new workout routine</h2>
-      <Link to="/routine_creator">Routine creator</Link>
-    </div>
+      </Box>
+      <Typography variant="h2">Create new workout routine</Typography>
+      <Button variant="contained" href="/routine_creator">Routine creator</Button>
+    </Box>
   );
 };
 

@@ -4,7 +4,9 @@ import {
 import { Outlet, useNavigate, useLoaderData } from "react-router-dom";
 import axios from "axios";
 import { ThemeProvider } from "@emotion/react";
-import { createTheme } from "@mui/material";
+import {
+  createTheme, Box, Typography, Button,
+} from "@mui/material";
 import Nav from "../components/Nav";
 import Notification from "../components/Notification";
 import { UnfinishedWorkoutContext, NotificationContext, LoggedUserContext } from "../contexts";
@@ -45,8 +47,22 @@ const Root = () => {
     { notification, setNotification }), [notification]);
 
   const theme = createTheme({
+    components: {
+      MuiTypography: {
+        styleOverrides: {
+          h1: {
+            fontSize: 60,
+          },
+          h2: {
+            fontSize: 40,
+          },
+          h3: {
+            fontSize: 30,
+          },
+        },
+      },
+    },
     typography: {
-      fontSize: 100,
       fontFamily: "sans-serif",
     },
   });
@@ -56,20 +72,20 @@ const Root = () => {
       <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
         <LoggedUserContext.Provider value={loggedUserObj}>
           <NotificationContext.Provider value={notificationArray}>
-            <div>
+            <Box>
               <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
               {loggedUser && (
-                <p>
+                <Typography>
                   logged in as
                   {" "}
                   {loggedUser.name}
                   {" "}
-                  <button type="button" onClick={logOut}>Log out</button>
-                </p>
+                  <Button type="button" onClick={logOut}>Log out</Button>
+                </Typography>
               )}
               <Notification message={notification} />
               <Outlet />
-            </div>
+            </Box>
           </NotificationContext.Provider>
         </LoggedUserContext.Provider>
       </UnfinishedWorkoutContext.Provider>

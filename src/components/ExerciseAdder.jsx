@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { Box, Typography } from "@mui/material";
 
 const ExerciseAdder = ({ addExercise, availableExercises }) => {
   const [type, setType] = useState("regular");
   return (
-    <div>
-      <h2>Add exercise</h2>
+    <Box>
+      <Typography variant="h2">Add exercise</Typography>
       <form onSubmit={addExercise}>
         exercise:
         {" "}
@@ -50,7 +51,7 @@ const ExerciseAdder = ({ addExercise, availableExercises }) => {
         <br />
         <button type="submit">add</button>
       </form>
-    </div>
+    </Box>
   );
 };
 

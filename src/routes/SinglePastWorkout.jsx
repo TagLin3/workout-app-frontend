@@ -1,7 +1,8 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
+  Button,
 } from "@mui/material";
 import workoutService from "../services/workoutService";
 import { UnfinishedWorkoutContext } from "../contexts";
@@ -21,16 +22,16 @@ const SinglePastWorkout = () => {
   };
 
   return (
-    <div>
-      <h1>
+    <Box>
+      <Typography variant="h1">
         {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${routine.name}`}
         {(unfinishedWorkout && unfinishedWorkout.id === workout.id) && " (unfinished)"}
-      </h1>
-      <div>
+      </Typography>
+      <Box>
         {workout.routine.exercises.map((exercise) => (
-          <div key={exercise.exercise.id}>
-            <h2>{exercise.exercise.name}</h2>
-            <h3>sets: </h3>
+          <Box key={exercise.exercise.id}>
+            <Typography variant="h2">{exercise.exercise.name}</Typography>
+            <Typography variant="h3">sets: </Typography>
             <Table>
               <TableHead>
                 <TableRow>
@@ -66,11 +67,11 @@ const SinglePastWorkout = () => {
                   ))}
               </TableBody>
             </Table>
-          </div>
+          </Box>
         ))}
-      </div>
-      <button type="button" onClick={deleteWorkout}>delete</button>
-    </div>
+      </Box>
+      <Button variant="contained" type="button" onClick={deleteWorkout}>delete</Button>
+    </Box>
   );
 };
 

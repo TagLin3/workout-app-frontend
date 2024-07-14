@@ -1,5 +1,7 @@
+import { Typography } from "@mui/material";
+
 const Notification = ({ message }) => (
-  <div>{message}</div>
+  <Typography>{message}</Typography>
 );
 
 export default Notification;

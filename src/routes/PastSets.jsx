@@ -1,19 +1,20 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, Select,
+  MenuItem,
 } from "@mui/material";
 
 const PastSets = () => {
   const { sets } = useLoaderData();
   if (sets.length === 0) {
     return (
-      <div>
-        <h1>sets</h1>
-        <p>
+      <Box>
+        <Typography variant="h1">sets</Typography>
+        <Typography>
           No sets completed yet. Complete a workout and your completed sets will be shown here
-        </p>
-      </div>
+        </Typography>
+      </Box>
     );
   }
   const [filteredSets, setFilteredSets] = useState(sets);
@@ -24,7 +25,7 @@ const PastSets = () => {
       .find((exercise) => exercise.id === exerciseId));
   const applyFilter = async (event) => {
     const filter = event.target.value;
-    setFilteredSets(sets.filter((set) => filter === "" || set.exercise.id === filter));
+    setFilteredSets(sets.filter((set) => filter === "all" || set.exercise.id === filter));
   };
   const setsToShow = filteredSets.slice(1, sets.length).reduce((acc, set) => {
     const lastIndex = acc.length > 0
@@ -38,19 +39,19 @@ const PastSets = () => {
     return [...acc.slice(0, -1), acc[lastIndex].concat(set)];
   }, [[filteredSets[0]]]);
   return (
-    <div>
-      <h1>sets</h1>
-      <h3>filter by exercise</h3>
-      <select onChange={applyFilter}>
-        <option value="">
+    <Box>
+      <Typography variant="h1">sets</Typography>
+      <Typography variant="h3">filter by exercise</Typography>
+      <Select defaultValue="all" onChange={applyFilter}>
+        <MenuItem value="all">
           all exercises
-        </option>
+        </MenuItem>
         {exercises.map((exercise) => (
-          <option value={exercise.id} key={exercise.id}>
+          <MenuItem value={exercise.id} key={exercise.id}>
             {exercise.name}
-          </option>
+          </MenuItem>
         ))}
-      </select>
+      </Select>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -93,7 +94,7 @@ const PastSets = () => {
             ))
         }
       </Table>
-    </div>
+    </Box>
   );
 };
 
