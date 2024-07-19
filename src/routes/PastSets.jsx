@@ -40,8 +40,8 @@ const PastSets = () => {
   }, [[filteredSets[0]]]);
   return (
     <Box>
-      <Typography variant="h1">sets</Typography>
-      <Typography variant="h3">filter by exercise</Typography>
+      <Typography variant="h1">Sets</Typography>
+      <Typography variant="h3">Filter by exercise:</Typography>
       <Select defaultValue="all" onChange={applyFilter}>
         <MenuItem value="all">
           all exercises

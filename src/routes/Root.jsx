@@ -50,14 +50,32 @@ const Root = () => {
     components: {
       MuiTypography: {
         styleOverrides: {
-          h1: {
-            fontSize: 60,
+          root: {
+            marginTop: 5,
+            marginBottom: 5,
           },
-          h2: {
+          h1: {
             fontSize: 40,
           },
-          h3: {
+          h2: {
             fontSize: 30,
+          },
+          h3: {
+            fontSize: 20,
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: ({ ownerState }) => {
+            const styles = {
+              marginTop: 5,
+              marginBottom: 5,
+            };
+            if (ownerState.placement === "navBar") {
+              styles.margin = 5;
+            }
+            return styles;
           },
         },
       },
@@ -72,7 +90,7 @@ const Root = () => {
       <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
         <LoggedUserContext.Provider value={loggedUserObj}>
           <NotificationContext.Provider value={notificationArray}>
-            <Box>
+            <Box marginLeft=".5rem" marginRight=".5rem">
               <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
               {loggedUser && (
                 <Typography>
