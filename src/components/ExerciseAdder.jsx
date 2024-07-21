@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import {
+  Box, Typography, Select, MenuItem,
+  InputLabel,
+  FormControl,
+  TextField,
+  Button,
+} from "@mui/material";
 
 const ExerciseAdder = ({ addExercise, availableExercises }) => {
   const [type, setType] = useState("regular");
@@ -7,49 +13,54 @@ const ExerciseAdder = ({ addExercise, availableExercises }) => {
     <Box>
       <Typography variant="h2">Add exercise</Typography>
       <form onSubmit={addExercise}>
-        exercise:
-        {" "}
-        <select name="exercise">
-          {availableExercises.map((exercise) => (
-            <option
-              value={`{"id": "${exercise.id}", "name": "${exercise.name}"}`}
-              key={exercise.id}
-            >
-              {exercise.name}
-            </option>
-          ))}
-        </select>
+        <FormControl>
+          <InputLabel>exercise</InputLabel>
+          <Select defaultValue="select exercise" label="exercise" name="exercise">
+            <MenuItem value="select exercise">
+              Select exercise
+            </MenuItem>
+            {availableExercises.map((exercise) => (
+              <MenuItem
+                value={`{"id": "${exercise.id}", "name": "${exercise.name}"}`}
+                key={exercise.id}
+              >
+                {exercise.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <br />
-        type:
-        {" "}
-        <select name="type" onChange={(event) => setType(event.target.value)}>
-          <option value="regular">
-            regular
-          </option>
-          <option value="dropset">
-            drop set
-          </option>
-        </select>
+        <FormControl>
+          <InputLabel>Type</InputLabel>
+          <Select
+            defaultValue="select type"
+            label="Type"
+            name="type"
+            onChange={(event) => setType(event.target.value)}
+          >
+            <MenuItem value="select type">Select type</MenuItem>
+            <MenuItem value="regular">
+              regular
+            </MenuItem>
+            <MenuItem value="dropset">
+              drop set
+            </MenuItem>
+          </Select>
+        </FormControl>
         <br />
-        rep range:
-        {" "}
-        <input type="number" name="repRangeMin" />
-        -
-        <input type="number" name="repRangeMax" />
+        <TextField label="Rep range lower limit" type="number" name="repRangeMin" />
         <br />
-        suggested amount of total sets:
-        {" "}
-        <input type="number" name="amountOfSets" />
+        <TextField label="Rep range upper limit" type="number" name="repRangeMax" />
+        <br />
+        <TextField label="Amount of total sets" type="number" name="amountOfSets" />
         <br />
         {type === "dropset" && (
           <>
-            amount of sets in one drop set:
-            {" "}
-            <input type="number" name="amountOfDropSets" />
+            <TextField label="Amount of sets in one drop set" type="number" name="amountOfDropSets" />
+            <br />
           </>
         )}
-        <br />
-        <button type="submit">add</button>
+        <Button variant="contained" type="submit">add</Button>
       </form>
     </Box>
   );

@@ -4,8 +4,9 @@ import {
   useLoaderData,
 } from "react-router-dom";
 import {
-  Box, Typography, Button, Checkbox, FormControlLabel, List, ListItem, ListItemText,
+  Box, Typography, Button, Checkbox, FormControlLabel,
 } from "@mui/material";
+import RoutineCard from "../components/RoutineCard";
 
 const Routines = () => {
   const routines = useLoaderData();
@@ -14,7 +15,10 @@ const Routines = () => {
   const [showActive, setShowactive] = useState(true);
   const [showInactive, setShowInactive] = useState(false);
   return (
-    <Box>
+    <Box sx={{
+      display: "flex", flexDirection: "column", alignItems: "center",
+    }}
+    >
       <Typography variant="h1">Workout routines</Typography>
       <Box>
         <Typography>view:</Typography>
@@ -31,28 +35,20 @@ const Routines = () => {
         <FormControlLabel
           control={(
             <Checkbox
-              checked={showActive}
+              checked={showInactive}
               onChange={(event) => setShowInactive(event.target.checked)}
             />
           )}
           label="inactive"
         />
       </Box>
-      <Box>
+      <Box sx={{ display: "flex", flexDirection: "row" }}>
         {showActive && (activeRoutines.length === 0
           ? <Typography>no active routines found</Typography>
           : (
-            <List>
-              {
-                activeRoutines.map((routine) => (
-                  <ListItem key={routine.id}>
-                    <ListItemText>
-                      <Link to={`${routine.id}`}>{routine.name}</Link>
-                    </ListItemText>
-                  </ListItem>
-                ))
-              }
-            </List>
+            activeRoutines.map((routine) => (
+              <RoutineCard key={routine.id} name={routine.name} exercises={routine.exercises} />
+            ))
           ))}
         {showInactive && (inactiveRoutines.length === 0
           ? <Typography>no inactive routines found</Typography>

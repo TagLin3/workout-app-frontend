@@ -17,6 +17,13 @@ const RoutineCreator = () => {
 
   const addExercise = (event) => {
     event.preventDefault();
+    if (event.target.exercise.value === "select exercise" || event.target.type.value === "select type") {
+      setNotification("error: an exercise and a type need to be selected");
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+      return;
+    }
     const exerciseToAdd = JSON.parse(event.target.exercise.value);
     const repRangeMin = Number(event.target.repRangeMin.value);
     const repRangeMax = Number(event.target.repRangeMax.value);
@@ -52,6 +59,9 @@ const RoutineCreator = () => {
       event.target.repRangeMin.value = "";
       event.target.repRangeMax.value = "";
       event.target.amountOfSets.value = "";
+      if (event.target.type === "dropset") {
+        event.target.amountOfDropSets = "";
+      }
       event.target.type.value = "";
     }
   };

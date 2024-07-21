@@ -58,10 +58,13 @@ const Root = () => {
             fontSize: 40,
           },
           h2: {
-            fontSize: 30,
+            fontSize: 35,
           },
           h3: {
-            fontSize: 20,
+            fontSize: 30,
+          },
+          h4: {
+            fontSize: 25,
           },
         },
       },
