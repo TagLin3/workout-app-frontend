@@ -70,15 +70,9 @@ const Root = () => {
       },
       MuiButton: {
         styleOverrides: {
-          root: ({ ownerState }) => {
-            const styles = {
-              marginTop: 5,
-              marginBottom: 5,
-            };
-            if (ownerState.placement === "navBar") {
-              styles.margin = 5;
-            }
-            return styles;
+          root: {
+            marginTop: 5,
+            marginBottom: 5,
           },
         },
       },

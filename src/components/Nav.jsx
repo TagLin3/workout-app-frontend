@@ -1,29 +1,62 @@
-import { AppBar, Toolbar, Button } from "@mui/material";
+import {
+  AppBar, Toolbar, Button, Box,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const Nav = ({ unfinishedWorkout, loggedUser }) => (
-  <AppBar position="static">
-    <Toolbar>
-      <Button placement="navBar" variant="contained" href="/">Home</Button>
-      {loggedUser && (
-        <>
-          <Button placement="navBar" href="/routines" variant="contained">Workout routines</Button>
-          <Button placement="navBar" href="/exercise_library" variant="contained">Exercise library</Button>
-          <Button placement="navBar" href="/past_workouts" variant="contained">Past workouts</Button>
-          <Button placement="navBar" href="/past_sets" variant="contained">Past sets</Button>
-        </>
-      )}
-      {" "}
-      <Button placement="navBar" href="/login" variant="contained">Log in</Button>
-      {" "}
-      <Button placement="navBar" href="/register" variant="contained">Register</Button>
-      {" "}
-      {unfinishedWorkout && (
-        <Button placement="navBar" href={`/routines/${unfinishedWorkout.routine.id}/new_workout`} variant="contained">
-          {`Unfinised ${unfinishedWorkout.routine.name}`}
-        </Button>
-      )}
-    </Toolbar>
-  </AppBar>
-);
+const Nav = ({ unfinishedWorkout, loggedUser }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Button component={Link} to="/" variant="contained">Home</Button>
+          {loggedUser && (
+            <>
+              <Button component={Link} to="/routines" variant="contained">Workout routines</Button>
+              <Button component={Link} to="/exercise_library" variant="contained">Exercise library</Button>
+              <Button component={Link} to="/past_workouts" variant="contained">Past workouts</Button>
+              <Button component={Link} to="/past_sets" variant="contained">Past sets</Button>
+            </>
+          )}
+          {" "}
+          <Button component={Link} to="/login" variant="contained">Log in</Button>
+          {" "}
+          <Button component={Link} to="/register" variant="contained">Register</Button>
+          {" "}
+          {unfinishedWorkout && (
+            <Button component={Link} to={`/routines/${unfinishedWorkout.routine.id}/new_workout`} variant="contained">
+              {`Unfinised ${unfinishedWorkout.routine.name}`}
+            </Button>
+          )}
+        </Box>
+        <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Button variant="contained" onClick={handleOpen}>asdf</Button>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem
+              onClick={handleClose}
+              component={Link}
+              to="/login"
+            >
+              test
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 export default Nav;

@@ -42,12 +42,20 @@ const Routines = () => {
           label="inactive"
         />
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "row" }}>
+      <Box sx={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+      >
         {showActive && (activeRoutines.length === 0
           ? <Typography>no active routines found</Typography>
           : (
             activeRoutines.map((routine) => (
-              <RoutineCard key={routine.id} name={routine.name} exercises={routine.exercises} />
+              <RoutineCard key={routine.id} routine={routine} />
             ))
           ))}
         {showInactive && (inactiveRoutines.length === 0
