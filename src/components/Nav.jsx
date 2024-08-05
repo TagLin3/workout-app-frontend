@@ -21,37 +21,69 @@ const Nav = ({ unfinishedWorkout, loggedUser }) => {
           <Button component={Link} to="/" variant="contained">Home</Button>
           {loggedUser && (
             <>
-              <Button component={Link} to="/routines" variant="contained">Workout routines</Button>
-              <Button component={Link} to="/exercise_library" variant="contained">Exercise library</Button>
-              <Button component={Link} to="/past_workouts" variant="contained">Past workouts</Button>
-              <Button component={Link} to="/past_sets" variant="contained">Past sets</Button>
+              <Button component={Link} to="/routines" variant="contained">
+                Workout routines
+              </Button>
+              <Button component={Link} to="/exercise_library" variant="contained">
+                Exercise library
+              </Button>
+              <Button component={Link} to="/past_workouts" variant="contained">
+                Past workouts
+              </Button>
+              <Button component={Link} to="/past_sets" variant="contained">
+                Past sets
+              </Button>
             </>
           )}
-          {" "}
           <Button component={Link} to="/login" variant="contained">Log in</Button>
-          {" "}
           <Button component={Link} to="/register" variant="contained">Register</Button>
-          {" "}
           {unfinishedWorkout && (
-            <Button component={Link} to={`/routines/${unfinishedWorkout.routine.id}/new_workout`} variant="contained">
+            <Button
+              component={Link}
+              to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}
+              variant="contained"
+            >
               {`Unfinised ${unfinishedWorkout.routine.name}`}
             </Button>
           )}
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
-          <Button variant="contained" onClick={handleOpen}>asdf</Button>
+          <Button variant="contained" onClick={handleOpen}>menu</Button>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem
-              onClick={handleClose}
-              component={Link}
-              to="/login"
-            >
-              test
+            <MenuItem onClick={handleClose} component={Link} to="/">Home</MenuItem>
+            {loggedUser && [
+              <MenuItem key="routines" onClick={handleClose} component={Link} to="/routines">
+                Workout routines
+              </MenuItem>,
+              <MenuItem key="exercise_library" onClick={handleClose} component={Link} to="/exercise_library">
+                Exercise library
+              </MenuItem>,
+              <MenuItem key="past_workouts" onClick={handleClose} component={Link} to="/past_workouts">
+                Past workouts
+              </MenuItem>,
+              <MenuItem key="past_sets" onClick={handleClose} component={Link} to="/past_sets">
+                Past sets
+              </MenuItem>,
+            ]}
+            <MenuItem onClick={handleClose} component={Link} to="/login">
+              Log in
             </MenuItem>
+            <MenuItem onClick={handleClose} component={Link} to="/register">
+              Register
+            </MenuItem>
+            {unfinishedWorkout && (
+              <MenuItem
+                onClick={handleClose}
+                component={Link}
+                to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}
+              >
+                {`Unfinised ${unfinishedWorkout.routine.name}`}
+              </MenuItem>
+            )}
           </Menu>
         </Box>
       </Toolbar>

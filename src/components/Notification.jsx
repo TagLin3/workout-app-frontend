@@ -1,7 +1,12 @@
-import { Typography } from "@mui/material";
+import { Alert } from "@mui/material";
 
-const Notification = ({ message }) => (
-  <Typography>{message}</Typography>
+const Notification = ({ message, severity }) => (
+  message !== null
+  && (
+    <Alert severity={severity}>
+      {message}
+    </Alert>
+  )
 );
 
 export default Notification;

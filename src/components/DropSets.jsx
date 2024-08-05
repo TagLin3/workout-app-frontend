@@ -46,7 +46,7 @@ const DropSets = ({
           </ListItemText>
         </ListItem>
       </List>
-      <Notification message={notification} />
+      <Notification message={notification.message} severity={notification.severity} />
       <Table>
         <TableHead>
           <TableRow>

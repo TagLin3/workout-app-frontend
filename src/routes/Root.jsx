@@ -14,7 +14,7 @@ import { UnfinishedWorkoutContext, NotificationContext, LoggedUserContext } from
 const Root = () => {
   const [unfinishedWorkout, setUnfinishedWorkout] = useState(null);
   const [loggedUser, setLoggedUser] = useState(null);
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState({ message: null });
   const navigate = useNavigate();
   const loaderData = useLoaderData();
 
@@ -39,12 +39,19 @@ const Root = () => {
     }, 3000);
   };
 
+  const showNotification = (notificationToSet, length) => {
+    setNotification(notificationToSet);
+    setTimeout(() => {
+      setNotification({ message: null });
+    }, length);
+  };
+
   const unfinishedWorkoutObj = useMemo(() => (
     { unfinishedWorkout, setUnfinishedWorkout }), [unfinishedWorkout]);
   const loggedUserObj = useMemo(() => (
     { loggedUser, setLoggedUser }), [loggedUser]);
   const notificationArray = useMemo(() => (
-    { notification, setNotification }), [notification]);
+    { notification, showNotification }), [notification]);
 
   const theme = createTheme({
     components: {
@@ -98,7 +105,7 @@ const Root = () => {
                   <Button type="button" onClick={logOut}>Log out</Button>
                 </Typography>
               )}
-              <Notification message={notification} />
+              <Notification message={notification.message} severity={notification.severity} />
               <Outlet />
             </Box>
           </NotificationContext.Provider>

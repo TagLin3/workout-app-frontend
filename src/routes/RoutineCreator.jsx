@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import {
   Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
@@ -6,21 +6,21 @@ import {
   TextField,
 } from "@mui/material";
 import routineService from "../services/routineService";
-import Notification from "../components/Notification";
+import { NotificationContext } from "../contexts";
 import ExerciseAdder from "../components/ExerciseAdder";
 
 const RoutineCreator = () => {
   const availableExercises = useLoaderData();
   const [selectedExercises, setSelectedExercises] = useState([]);
-  const [notification, setNotification] = useState(null);
+  const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
 
   const addExercise = (event) => {
     event.preventDefault();
     if (event.target.exercise.value === "select exercise" || event.target.type.value === "select type") {
-      setNotification("error: an exercise and a type need to be selected");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "error",
+        message: "error: an exercise and a type need to be selected",
       }, 3000);
       return;
     }
@@ -33,19 +33,19 @@ const RoutineCreator = () => {
       ? Number(event.target.amountOfDropSets.value)
       : undefined;
     if (selectedExercises.some((exercise) => exerciseToAdd.id === exercise.exercise.id)) {
-      setNotification("error: you can only include the same exercise once");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "error",
+        message: "error: you can only include the same exercise once",
       }, 3000);
     } else if (!(repRangeMin < repRangeMax)) {
-      setNotification("error: invalid rep range");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "error",
+        message: "error: invalid rep range",
       }, 3000);
     } else if (!amountOfSets) {
-      setNotification("error: amount of sets is required");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "error",
+        message: "error: amount of sets is required",
       }, 3000);
     } else {
       setSelectedExercises(selectedExercises.concat({
@@ -69,9 +69,9 @@ const RoutineCreator = () => {
   const createRoutine = async (event) => {
     event.preventDefault();
     if (event.target.name.value === "") {
-      setNotification("error: name for workout routine is required");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "error",
+        message: "error: name for workout is required",
       }, 3000);
     } else {
       await routineService.addRoutine({
@@ -85,9 +85,9 @@ const RoutineCreator = () => {
         })),
       });
       navigate("/routines");
-      setNotification("Workout routine created!");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "success",
+        message: "Workout routine created!",
       }, 3000);
     }
   };
@@ -100,7 +100,6 @@ const RoutineCreator = () => {
 
   return (
     <Box>
-      <Notification message={notification} />
       <Typography variant="h1">Workout routine creator</Typography>
       <Typography variant="h2">Exercises</Typography>
       <Table>

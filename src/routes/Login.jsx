@@ -10,7 +10,7 @@ import { LoggedUserContext, NotificationContext } from "../contexts";
 const Login = () => {
   const navigate = useNavigate();
   const { setLoggedUser } = useContext(LoggedUserContext);
-  const { setNotification } = useContext(NotificationContext);
+  const { showNotification } = useContext(NotificationContext);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -24,9 +24,9 @@ const Login = () => {
       window.localStorage.setItem("workoutAppLoggedUser", JSON.stringify(loggedUser));
       navigate("/");
     } catch (err) {
-      setNotification("Username and password don't match");
-      setTimeout(() => {
-        setNotification(null);
+      showNotification({
+        severity: "error",
+        message: "Username and password don't match",
       }, 3000);
     }
   };

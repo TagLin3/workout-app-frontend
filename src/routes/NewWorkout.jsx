@@ -11,7 +11,7 @@ const NewWorkout = () => {
   const loaderData = useLoaderData();
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const navigate = useNavigate();
-  const { setNotification } = useContext(NotificationContext);
+  const { showNotification } = useContext(NotificationContext);
   const [sets, setSets] = useState(
     loaderData.sets
     ?? [],
@@ -19,9 +19,17 @@ const NewWorkout = () => {
 
   const { exercises, name } = loaderData.routine;
   const [notificationForSet, setNotificationForSet] = useState(exercises.reduce(
-    (accumulator, currentValue) => ({ ...accumulator, [currentValue.exercise.id]: null }),
+    (accumulator, currentValue) => (
+      { ...accumulator, [currentValue.exercise.id]: { message: null } }),
     {},
   ));
+
+  const showNotificationForSet = (notificationToSet, length) => {
+    setNotificationForSet(notificationToSet);
+    setTimeout(() => {
+      setNotificationForSet({ message: null });
+    }, length);
+  };
 
   const addSet = async (event) => {
     event.preventDefault();
@@ -119,10 +127,7 @@ const NewWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
     navigate("/routines");
-    setNotification("Workout saved!");
-    setTimeout(() => {
-      setNotification(null);
-    }, 3000);
+    showNotification({ severity: "success", message: "Workout saved!" }, 3000);
   };
 
   const deleteWorkout = async () => {
@@ -131,10 +136,7 @@ const NewWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
     navigate("/routines");
-    setNotification("Workout deleted!");
-    setTimeout(() => {
-      setNotification(null);
-    }, 3000);
+    showNotification({ severity: "success", message: "Workout deleted!" }, 3000);
   };
 
   const deleteSet = async (setToDelete) => {
