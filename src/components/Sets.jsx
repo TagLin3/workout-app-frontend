@@ -39,7 +39,7 @@ const Sets = ({
           <TableCell>Set</TableCell>
           <TableCell>Reps</TableCell>
           <TableCell>Weight</TableCell>
-          <TableCell>Rest after set</TableCell>
+          <TableCell>Rest</TableCell>
           <TableCell>Note</TableCell>
         </TableRow>
       </TableHead>
@@ -51,25 +51,36 @@ const Sets = ({
               <TableCell>{set.reps}</TableCell>
               <TableCell>{set.weight}</TableCell>
               <TableCell>{set.rest}</TableCell>
-              <TableCell>{set.note}</TableCell>
+              <TableCell sx={{ display: { md: "table-cell", xs: "none" } }}>{set.note}</TableCell>
+              <TableCell sx={{ display: { md: "none", xs: "table-cell" } }}>
+                <Button>view note</Button>
+              </TableCell>
               <TableCell>
-                <button type="button" onClick={() => deleteSet(set)}>delete</button>
+                <Button onClick={() => deleteSet(set)}>delete</Button>
               </TableCell>
             </TableRow>
           ))}
       </TableBody>
     </Table>
     <form onSubmit={addSet} name={exerciseId}>
-      <Typography>Add a set:</Typography>
-      <TextField label="reps" type="number" name="reps" />
-      <br />
-      <TextField label="weight" type="number" name="weight" step="any" />
-      <br />
-      <TextField label="rest after set in seconds" type="number" name="rest" />
-      <br />
-      <TextField label="note" name="note" multiline />
-      <br />
-      <Button variant="contained" type="submit">add set</Button>
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+      >
+        <Typography variant="h5">Add a set:</Typography>
+        <Box sx={{
+          display: "flex",
+          flexDirection: "row",
+        }}
+        >
+          <TextField label="reps" type="number" name="reps" />
+          <TextField label="weight" type="number" name="weight" step="any" />
+        </Box>
+        <TextField label="rest after set in seconds" type="number" name="rest" />
+        <TextField label="note" name="note" multiline />
+        <Button variant="contained" type="submit">add set</Button>
+      </Box>
     </form>
   </Box>
 );

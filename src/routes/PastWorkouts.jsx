@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { useLoaderData, Link } from "react-router-dom";
 import {
   Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
+  Button,
 } from "@mui/material";
 import { UnfinishedWorkoutContext } from "../contexts";
 
@@ -38,9 +39,9 @@ const PastWorkouts = () => {
                   {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
                 </TableCell>
                 <TableCell>
-                  <Link to={workout.id}>
+                  <Button component={Link} to={workout.id}>
                     view workout
-                  </Link>
+                  </Button>
                 </TableCell>
                 <TableCell>
                   {unfinishedWorkout && workout.id === unfinishedWorkout.id ? "unfinished" : "finished"}

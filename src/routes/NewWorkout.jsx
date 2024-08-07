@@ -24,10 +24,10 @@ const NewWorkout = () => {
     {},
   ));
 
-  const showNotificationForSet = (notificationToSet, length) => {
-    setNotificationForSet(notificationToSet);
+  const showNotificationForSet = (notificationToSet, exerciseId, length) => {
+    setNotificationForSet({ ...notificationForSet, [exerciseId]: notificationToSet });
     setTimeout(() => {
-      setNotificationForSet({ message: null });
+      setNotificationForSet({ ...notificationForSet, [exerciseId]: { message: null } });
     }, length);
   };
 
@@ -39,10 +39,10 @@ const NewWorkout = () => {
     const note = event.target.note.value;
     const exerciseId = event.target.name;
     if (reps <= 0 || !(Number.isInteger(reps)) || weight < 0 || rest < 0) {
-      setNotificationForSet({ ...notificationForSet, [exerciseId]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
-      setTimeout(() => {
-        setNotificationForSet({ ...notificationForSet, [exerciseId]: null });
-      }, 3000);
+      showNotificationForSet({
+        message: "Error: Reps should be above zero and an integer and weight and rest should be non-negative.",
+        severity: "error",
+      }, exerciseId, 3000);
       return;
     }
     const number = sets.filter(
@@ -96,10 +96,10 @@ const NewWorkout = () => {
       )
       || weight.some((weightForCurrentDropSet) => weightForCurrentDropSet < 0)
       || rest < 0) {
-      setNotificationForSet({ ...notificationForSet, [exerciseId]: "Reps should be above zero and an integer and weight and rest should be non-negative." });
-      setTimeout(() => {
-        setNotificationForSet({ ...notificationForSet, [exerciseId]: null });
-      }, 3000);
+      showNotificationForSet({
+        message: "Error: Reps should be above zero and an integer and weight and rest should be non-negative.",
+        severity: "error",
+      }, exerciseId, 3000);
       return;
     }
     const savedSets = await Promise.all(dropSetNumbers.map(async (dropSetNumber) => {
@@ -182,8 +182,8 @@ const NewWorkout = () => {
           );
         })}
       </Box>
-      <Button variant="contained" type="button" onClick={workoutDone}>Workout done</Button>
-      <Button variant="contained" type="button" onClick={deleteWorkout}>Delete workout</Button>
+      <Button color="success" variant="contained" type="button" onClick={workoutDone}>Workout done</Button>
+      <Button color="error" variant="contained" type="button" onClick={deleteWorkout}>Delete workout</Button>
     </Box>
   );
 };

@@ -20,7 +20,7 @@ const RoutineCreator = () => {
     if (event.target.exercise.value === "select exercise" || event.target.type.value === "select type") {
       showNotification({
         severity: "error",
-        message: "error: an exercise and a type need to be selected",
+        message: "Error: An exercise and a type need to be selected",
       }, 3000);
       return;
     }
@@ -35,17 +35,17 @@ const RoutineCreator = () => {
     if (selectedExercises.some((exercise) => exerciseToAdd.id === exercise.exercise.id)) {
       showNotification({
         severity: "error",
-        message: "error: you can only include the same exercise once",
+        message: "Error: You can only include the same exercise once",
       }, 3000);
     } else if (!(repRangeMin < repRangeMax)) {
       showNotification({
         severity: "error",
-        message: "error: invalid rep range",
+        message: "Error: Invalid rep range",
       }, 3000);
     } else if (!amountOfSets) {
       showNotification({
         severity: "error",
-        message: "error: amount of sets is required",
+        message: "Error: Amount of sets is required",
       }, 3000);
     } else {
       setSelectedExercises(selectedExercises.concat({
@@ -71,7 +71,7 @@ const RoutineCreator = () => {
     if (event.target.name.value === "") {
       showNotification({
         severity: "error",
-        message: "error: name for workout is required",
+        message: "Error: Name for workout is required",
       }, 3000);
     } else {
       await routineService.addRoutine({

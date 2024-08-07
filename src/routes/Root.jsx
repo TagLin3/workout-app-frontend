@@ -6,6 +6,7 @@ import axios from "axios";
 import { ThemeProvider } from "@emotion/react";
 import {
   createTheme, Box, Typography, Button,
+  CssBaseline,
 } from "@mui/material";
 import Nav from "../components/Nav";
 import Notification from "../components/Notification";
@@ -54,12 +55,28 @@ const Root = () => {
     { notification, showNotification }), [notification]);
 
   const theme = createTheme({
+    palette: {
+      mode: "dark",
+      background: {
+        default: "#303030",
+        paper: "#3C3C3C",
+      },
+      text: {
+        primary: "#FFFFFF",
+        secondary: "#DDDDDD",
+      },
+      primary: {
+        main: "#EACF00",
+      },
+      secondary: {
+        main: "#001BEA",
+      },
+    },
     components: {
       MuiTypography: {
         styleOverrides: {
           root: {
-            marginTop: 5,
-            marginBottom: 5,
+            margin: 5,
           },
           h1: {
             fontSize: 40,
@@ -73,13 +90,22 @@ const Root = () => {
           h4: {
             fontSize: 25,
           },
+          h5: {
+            fontSize: 20,
+          },
         },
       },
       MuiButton: {
         styleOverrides: {
           root: {
-            marginTop: 5,
-            marginBottom: 5,
+            margin: 5,
+          },
+        },
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            margin: 5,
           },
         },
       },
@@ -91,26 +117,28 @@ const Root = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
-        <LoggedUserContext.Provider value={loggedUserObj}>
-          <NotificationContext.Provider value={notificationArray}>
-            <Box marginLeft=".5rem" marginRight=".5rem">
-              <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
-              {loggedUser && (
-                <Typography>
-                  logged in as
-                  {" "}
-                  {loggedUser.name}
-                  {" "}
-                  <Button type="button" onClick={logOut}>Log out</Button>
-                </Typography>
-              )}
-              <Notification message={notification.message} severity={notification.severity} />
-              <Outlet />
-            </Box>
-          </NotificationContext.Provider>
-        </LoggedUserContext.Provider>
-      </UnfinishedWorkoutContext.Provider>
+      <CssBaseline>
+        <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
+          <LoggedUserContext.Provider value={loggedUserObj}>
+            <NotificationContext.Provider value={notificationArray}>
+              <Box marginLeft=".5rem" marginRight=".5rem">
+                <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
+                {loggedUser && (
+                  <Typography>
+                    Logged in as
+                    {" "}
+                    {loggedUser.name}
+                    {" "}
+                    <Button type="button" onClick={logOut}>Log out</Button>
+                  </Typography>
+                )}
+                <Notification message={notification.message} severity={notification.severity} />
+                <Outlet />
+              </Box>
+            </NotificationContext.Provider>
+          </LoggedUserContext.Provider>
+        </UnfinishedWorkoutContext.Provider>
+      </CssBaseline>
     </ThemeProvider>
   );
 };

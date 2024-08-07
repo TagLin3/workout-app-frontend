@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Link,
   useLoaderData,
 } from "react-router-dom";
 import {
@@ -42,33 +41,52 @@ const Routines = () => {
           label="inactive"
         />
       </Box>
-      <Box sx={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        alignItems: "center",
-        flexWrap: "wrap",
-      }}
-      >
-        {showActive && (activeRoutines.length === 0
-          ? <Typography>no active routines found</Typography>
-          : (
-            activeRoutines.map((routine) => (
-              <RoutineCard key={routine.id} routine={routine} />
-            ))
-          ))}
-        {showInactive && (inactiveRoutines.length === 0
-          ? <Typography>no inactive routines found</Typography>
-          : inactiveRoutines.map((routine) => (
-            <Box key={routine.id}>
-              <Typography>
-                <Link to={`${routine.id}`}>{routine.name}</Link>
-              </Typography>
+      {showActive && (activeRoutines.length === 0
+        ? <Typography>no active routines found</Typography>
+        : (
+          <>
+            <Typography variant="h3">Active routines: </Typography>
+            <Box sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+            >
+              {(
+                activeRoutines.map((routine) => (
+                  <RoutineCard key={routine.id} routine={routine} />
+                ))
+              )}
             </Box>
-          )))}
-      </Box>
-      <Typography variant="h2">Create new workout routine</Typography>
+          </>
+        )
+      )}
+      {showInactive && (inactiveRoutines.length === 0
+        ? <Typography>no inactive routines found</Typography>
+        : (
+          <>
+            <Typography variant="h3">Inactive routines: </Typography>
+            <Box sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-around",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+            >
+              {(
+                inactiveRoutines.map((routine) => (
+                  <RoutineCard key={routine.id} routine={routine} />
+                ))
+              )}
+            </Box>
+          </>
+        ))}
+      <Typography variant="h2">Create new workout routine:</Typography>
       <Button variant="contained" href="/routine_creator">Routine creator</Button>
     </Box>
   );

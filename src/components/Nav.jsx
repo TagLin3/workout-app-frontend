@@ -18,37 +18,37 @@ const Nav = ({ unfinishedWorkout, loggedUser }) => {
     <AppBar position="static">
       <Toolbar>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Button component={Link} to="/" variant="contained">Home</Button>
+          <Button component={Link} to="/">Home</Button>
           {loggedUser && (
             <>
-              <Button component={Link} to="/routines" variant="contained">
+              <Button component={Link} to="/routines">
                 Workout routines
               </Button>
-              <Button component={Link} to="/exercise_library" variant="contained">
+              <Button component={Link} to="/exercise_library">
                 Exercise library
               </Button>
-              <Button component={Link} to="/past_workouts" variant="contained">
+              <Button component={Link} to="/past_workouts">
                 Past workouts
               </Button>
-              <Button component={Link} to="/past_sets" variant="contained">
+              <Button component={Link} to="/past_sets">
                 Past sets
               </Button>
             </>
           )}
-          <Button component={Link} to="/login" variant="contained">Log in</Button>
-          <Button component={Link} to="/register" variant="contained">Register</Button>
+          <Button component={Link} to="/login">Log in</Button>
+          <Button component={Link} to="/register">Register</Button>
           {unfinishedWorkout && (
             <Button
               component={Link}
               to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}
-              variant="contained"
+
             >
               {`Unfinised ${unfinishedWorkout.routine.name}`}
             </Button>
           )}
         </Box>
         <Box sx={{ display: { xs: "flex", md: "none" } }}>
-          <Button variant="contained" onClick={handleOpen}>menu</Button>
+          <Button onClick={handleOpen}>menu</Button>
           <Menu
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}

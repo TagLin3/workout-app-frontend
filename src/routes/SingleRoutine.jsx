@@ -11,16 +11,16 @@ const SingleRoutine = () => {
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const routine = useLoaderData();
   const [active, setActive] = useState(routine.active);
-  const { setNotification } = useContext(NotificationContext);
+  const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
 
   const deleteUnfinisedWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
-    setNotification("Workout deleted!");
-    setTimeout(() => {
-      setNotification(null);
+    showNotification({
+      message: "Workout deleted!",
+      severity: "success",
     }, 3000);
   };
 
@@ -37,8 +37,10 @@ const SingleRoutine = () => {
 
   const toggleActivity = async () => {
     if (unfinishedWorkout) {
-      setNotification("error: you need to finish the uncompleted workout first");
-      setTimeout(() => setNotification(null), 3000);
+      showNotification({
+        message: "Error: You need to finish or delete the uncompleted workout first",
+        severity: "error",
+      }, 3000);
     } else {
       await routineService.toggleActivity(routine.id);
       setActive(!active);
@@ -48,28 +50,40 @@ const SingleRoutine = () => {
   const deleteRoutine = async () => {
     await routineService.deleteRoutine(routine.id);
     window.confirm("Warning: this will delete all of the workouts associated with this routine and also all of the sets associated with those workouts.");
-    setNotification("Routine deleted!");
-    setTimeout(() => setNotification(null), 3000);
+    showNotification({
+      message: "Routine deleted!",
+      severity: "success",
+    }, 3000);
     navigate("/routines");
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <Typography variant="h1">
         {routine.name}
         {!active && " (inactive)"}
       </Typography>
-      <Typography variant="h2">Exercises</Typography>
+      <Typography variant="h2">Exercises:</Typography>
       <List>
         {routine.exercises.map((exercise) => (
-          <ListItem key={exercise.exercise.id}>
+          <ListItem
+            key={exercise.exercise.id}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <ListItemText>
-              {exercise.exercise.name}
-              ,
-              {" "}
-              {exercise.repRange}
-              {" "}
-              reps
+              {exercise.type === "dropset"
+                ? `${exercise.exercise.name}, ${exercise.repRange} reps, ${exercise.amountOfSets} dropsets with ${exercise.amountOfDropSets} sets each`
+                : `${exercise.exercise.name}, ${exercise.repRange} reps, ${exercise.amountOfSets} sets`}
             </ListItemText>
           </ListItem>
         ))}
@@ -83,21 +97,17 @@ const SingleRoutine = () => {
                 {unfinishedWorkout.routine.name}
                 &quot;. You can&apos;t start a new workout until you&apos;ve finished the old one.
               </Typography>
-              <br />
               <Typography>
                 You can
-                {" "}
-                <Link to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>continue the workout</Link>
-                {" "}
+                <Button component={Link} to={`/routines/${unfinishedWorkout.routine.id}/new_workout`}>
+                  continue the workout
+                </Button>
                 or
-                {" "}
-                <Link
-                  to="/routines"
-                  state={{ newWorkoutState: "Workout deleted!" }}
+                <Button
                   onClick={deleteUnfinisedWorkout}
                 >
                   delete it
-                </Link>
+                </Button>
               </Typography>
             </Box>
           )
@@ -111,7 +121,6 @@ const SingleRoutine = () => {
             </Button>
           ))
         : <Typography>you can only start a workout from an active routine</Typography>}
-      <br />
       <Box>
         {active ? (
           <Typography>
@@ -127,11 +136,11 @@ const SingleRoutine = () => {
               active to complete workouts on it again.
             </Typography>
           )}
-        <Button variant="contained" type="button" onClick={toggleActivity}>
-          Set this routine as
-          {active ? " inactive" : " active"}
-        </Button>
       </Box>
+      <Button variant="contained" type="button" onClick={toggleActivity}>
+        Set this routine as
+        {active ? " inactive" : " active"}
+      </Button>
       {!active && (
         <Box>
           <Button variant="contained" type="button" onClick={deleteRoutine}>delete</Button>

@@ -26,7 +26,7 @@ const Login = () => {
     } catch (err) {
       showNotification({
         severity: "error",
-        message: "Username and password don't match",
+        message: "Error: Username and password don't match",
       }, 3000);
     }
   };
