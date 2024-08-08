@@ -29,6 +29,11 @@ const deleteSet = async (id) => {
   return response.data;
 };
 
+const updateSet = async (id, update) => {
+  const response = await axios.put(`${baseUrl}/${id}`, update);
+  return response.data;
+};
+
 export default {
-  getAll, addSet, addMultipleSets, getAllForExercise, deleteSet,
+  getAll, addSet, addMultipleSets, getAllForExercise, deleteSet, updateSet,
 };

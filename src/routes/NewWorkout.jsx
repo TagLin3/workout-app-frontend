@@ -143,6 +143,11 @@ const NewWorkout = () => {
     await setService.deleteSet(setToDelete.id);
     const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
     setSets(setsAfterDeletion);
+    const setsToUpdate = sets.filter((set) => setToDelete.exercise === set.exercise);
+    console.log(await Promise.all(setsToUpdate.reduce((acc, set) => {
+      const updatedSet = setService.updateSet(set.id, { number: acc.length + 1 });
+      return acc.concat(updatedSet);
+    }, [])));
     window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterDeletion));
   };
 
