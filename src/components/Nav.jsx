@@ -17,7 +17,9 @@ const Nav = ({ unfinishedWorkout, loggedUser }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Box sx={{ display: { xs: "none", md: "flex" } }}>
+        <Box
+          display={{ xs: "none", md: "flex" }}
+        >
           <Button component={Link} to="/">Home</Button>
           {loggedUser && (
             <>
@@ -47,7 +49,9 @@ const Nav = ({ unfinishedWorkout, loggedUser }) => {
             </Button>
           )}
         </Box>
-        <Box sx={{ display: { xs: "flex", md: "none" } }}>
+        <Box
+          display={{ xs: "flex", md: "none" }}
+        >
           <Button onClick={handleOpen}>menu</Button>
           <Menu
             anchorEl={anchorEl}

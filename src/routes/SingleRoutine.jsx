@@ -59,11 +59,9 @@ const SingleRoutine = () => {
 
   return (
     <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
     >
       <Typography variant="h1">
         {routine.name}
@@ -74,13 +72,8 @@ const SingleRoutine = () => {
         {routine.exercises.map((exercise) => (
           <ListItem
             key={exercise.exercise.id}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
           >
-            <ListItemText>
+            <ListItemText sx={{ textAlign: "center" }}>
               {exercise.type === "dropset"
                 ? `${exercise.exercise.name}, ${exercise.repRange} reps, ${exercise.amountOfSets} dropsets with ${exercise.amountOfDropSets} sets each`
                 : `${exercise.exercise.name}, ${exercise.repRange} reps, ${exercise.amountOfSets} sets`}

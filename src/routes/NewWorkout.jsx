@@ -142,13 +142,19 @@ const NewWorkout = () => {
   const deleteSet = async (setToDelete) => {
     await setService.deleteSet(setToDelete.id);
     const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
-    setSets(setsAfterDeletion);
-    const setsToUpdate = sets.filter((set) => setToDelete.exercise === set.exercise);
-    console.log(await Promise.all(setsToUpdate.reduce((acc, set) => {
-      const updatedSet = setService.updateSet(set.id, { number: acc.length + 1 });
-      return acc.concat(updatedSet);
-    }, [])));
-    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterDeletion));
+    const setsToUpdate = setsAfterDeletion.filter(
+      (set) => setToDelete.exercise === set.exercise,
+    );
+    const setsToNotUpdate = setsAfterDeletion.filter(
+      (set) => setToDelete.exercise !== set.exercise,
+    );
+    const updatedSets = await Promise.all(setsToUpdate.map(async (set, index) => {
+      const updatedSet = await setService.updateSet(set.id, { number: index + 1 });
+      return updatedSet;
+    }));
+    const setsAfterUpdating = setsToNotUpdate.concat(updatedSets);
+    setSets(setsAfterUpdating);
+    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterUpdating));
   };
 
   return (

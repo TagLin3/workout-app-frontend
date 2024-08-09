@@ -14,9 +14,10 @@ const Routines = () => {
   const [showActive, setShowactive] = useState(true);
   const [showInactive, setShowInactive] = useState(false);
   return (
-    <Box sx={{
-      display: "flex", flexDirection: "column", alignItems: "center",
-    }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
     >
       <Typography variant="h1">Workout routines</Typography>
       <Box>
@@ -46,14 +47,13 @@ const Routines = () => {
         : (
           <>
             <Typography variant="h3">Active routines: </Typography>
-            <Box sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-around"
+              alignItems="center"
+              flexWrap="wrap"
             >
               {(
                 activeRoutines.map((routine) => (
@@ -69,14 +69,13 @@ const Routines = () => {
         : (
           <>
             <Typography variant="h3">Inactive routines: </Typography>
-            <Box sx={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="row"
+              justifyContent="space-around"
+              alignItems="center"
+              flexWrap="wrap"
             >
               {(
                 inactiveRoutines.map((routine) => (
@@ -86,7 +85,7 @@ const Routines = () => {
             </Box>
           </>
         ))}
-      <Typography variant="h2">Create new workout routine:</Typography>
+      <Typography variant="h2" textAlign="center">Create new workout routine:</Typography>
       <Button variant="contained" href="/routine_creator">Routine creator</Button>
     </Box>
   );

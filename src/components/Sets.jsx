@@ -108,19 +108,17 @@ const Sets = ({
         </TableBody>
       </Table>
       <form onSubmit={addSet} name={exerciseId}>
-        <Box sx={{
-          display: "flex",
-          flexDirection: "column",
-        }}
+        <Box
+          display="flex"
+          flexDirection="column"
         >
           <Typography variant="h5">Add a set:</Typography>
-          <Box sx={{
-            display: "flex",
-            flexDirection: "row",
-          }}
+          <Box
+            display="flex"
+            flexDirection="row"
           >
-            <TextField label="reps" type="number" name="reps" />
-            <TextField label="weight" type="number" name="weight" step="any" />
+            <TextField sx={{ flexGrow: 1 }} label="reps" type="number" name="reps" />
+            <TextField sx={{ flexGrow: 1 }} label="weight" type="number" name="weight" step="any" />
           </Box>
           <TextField label="rest after set in seconds" type="number" name="rest" />
           <TextField label="note" name="note" multiline />

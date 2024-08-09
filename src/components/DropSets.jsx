@@ -86,17 +86,24 @@ const DropSets = ({
               {" "}
               of set:
             </Typography>
-            <TextField label="reps" type="number" name={`reps${dropSetNumber}`} />
-            <br />
-            <TextField label="weight" type="number" name={`weight${dropSetNumber}`} step="any" />
-            <br />
+            <Box
+              display="flex"
+              flexDirection="row"
+            >
+              <TextField sx={{ flexGrow: 1 }} label="reps" type="number" name={`reps${dropSetNumber}`} />
+              <TextField sx={{ flexGrow: 1 }} label="weight" type="number" name={`weight${dropSetNumber}`} step="any" />
+            </Box>
           </Box>
         ))}
-        <TextField label="rest after set in seconds" type="number" name="rest" />
-        <br />
-        <TextField label="note" name="note" multiline />
-        <br />
-        <Button variant="contained" type="submit">add set</Button>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="stretch"
+        >
+          <TextField label="rest after all drop sets in seconds" type="number" name="rest" />
+          <TextField label="note" name="note" multiline />
+          <Button variant="contained" type="submit">add set</Button>
+        </Box>
       </form>
     </Box>
   );

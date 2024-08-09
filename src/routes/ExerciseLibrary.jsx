@@ -22,28 +22,37 @@ const ExerciseLibrary = () => {
   };
 
   return (
-    <Box>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+    >
       <Typography variant="h1">Exercise library</Typography>
       <Typography variant="h2">Existing exercises</Typography>
       <List>
         {exercises.map((exercise) => (
           <ListItem key={exercise.id}>
-            <ListItemText>
+            <ListItemText sx={{ textAlign: "center" }}>
               {exercise.name}
             </ListItemText>
           </ListItem>
         ))}
       </List>
-      <Typography variant="h2">Create a new custom exercise</Typography>
+      <Typography textAlign="center" variant="h2">Create a new custom exercise</Typography>
       <form onSubmit={createExercise}>
-        <TextField
-          label="name"
-          value={exerciseName}
-          onChange={({ target }) => setExerciseName(target.value)}
-          name="name"
-        />
-        <br />
-        <Button variant="contained" type="submit">create</Button>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+        >
+          <TextField
+            label="name"
+            value={exerciseName}
+            onChange={({ target }) => setExerciseName(target.value)}
+            name="name"
+          />
+          <Button variant="contained" type="submit">create</Button>
+        </Box>
       </form>
     </Box>
   );
