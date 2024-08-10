@@ -1,8 +1,9 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
   Button,
+  Popover,
 } from "@mui/material";
 import workoutService from "../services/workoutService";
 import { UnfinishedWorkoutContext } from "../contexts";
@@ -15,16 +16,29 @@ const SinglePastWorkout = () => {
 
   const deleteWorkout = async () => {
     await workoutService.deleteWorkout(workout.id);
-    window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
-    window.localStorage.removeItem("workoutAppUnfinishedWorkout");
-    setUnfinishedWorkout(null);
+    if (unfinishedWorkout && unfinishedWorkout.id === workout.id) {
+      window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
+      window.localStorage.removeItem("workoutAppUnfinishedWorkout");
+      setUnfinishedWorkout(null);
+    }
     navigate("/past_workouts");
+  };
+
+  const [noteAnchorEl, setNoteAnchorEl] = useState(null);
+  const [noteContent, setNoteContent] = useState(null);
+  const noteOpen = Boolean(noteAnchorEl);
+  const noteHandleClose = () => {
+    setNoteAnchorEl(null);
+  };
+  const noteHandleOpen = (note, event) => {
+    setNoteContent(note);
+    setNoteAnchorEl(event.target);
   };
 
   return (
     <Box>
       <Typography variant="h1">
-        {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()} ${routine.name}`}
+        {`${routine.name}, ${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
         {(unfinishedWorkout && unfinishedWorkout.id === workout.id) && " (unfinished)"}
       </Typography>
       <Box>
@@ -32,13 +46,30 @@ const SinglePastWorkout = () => {
           <Box key={exercise.exercise.id}>
             <Typography variant="h2">{exercise.exercise.name}</Typography>
             <Typography variant="h3">sets: </Typography>
-            <Table>
+            <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell>reps</TableCell>
-                  <TableCell>weight</TableCell>
-                  <TableCell>rest after set</TableCell>
-                  <TableCell>note</TableCell>
+                  <TableCell align="right">
+                    <Typography>Reps</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="right">Weight</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography align="right">Rest</Typography>
+                  </TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{ display: { md: "table-cell", xs: "none" }, paddingLeft: "1rem" }}
+                  >
+                    <Typography>Note</Typography>
+                  </TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{ display: { md: "none", xs: "table-cell" } }}
+                  >
+                    <Typography>Note</Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -51,17 +82,37 @@ const SinglePastWorkout = () => {
                   })
                   .map((set) => (
                     <TableRow key={set.id}>
-                      <TableCell>
-                        {set.reps}
+                      <TableCell align="right">
+                        <Typography>{set.reps}</Typography>
                       </TableCell>
-                      <TableCell>
-                        {set.weight}
+                      <TableCell align="right">
+                        <Typography>{set.weight}</Typography>
                       </TableCell>
-                      <TableCell>
-                        {`${set.rest} seconds`}
+                      <TableCell align="right">
+                        <Typography>{set.rest}</Typography>
                       </TableCell>
-                      <TableCell>
-                        {set.note}
+                      <TableCell
+                        align="left"
+                        sx={{ display: { md: "table-cell", xs: "none" } }}
+                      >
+                        <Typography>{set.note}</Typography>
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{ display: { md: "none", xs: "table-cell" } }}
+                      >
+                        <Button onClick={(event) => noteHandleOpen(set.note, event)}>
+                          view note
+                        </Button>
+                        <Popover
+                          open={noteOpen}
+                          anchorEl={noteAnchorEl}
+                          onClose={noteHandleClose}
+                        >
+                          <Typography>
+                            {noteContent}
+                          </Typography>
+                        </Popover>
                       </TableCell>
                     </TableRow>
                   ))}

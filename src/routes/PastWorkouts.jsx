@@ -13,17 +13,20 @@ const PastWorkouts = () => {
   return (
     <Box>
       <Typography variant="h1">Past workouts</Typography>
-      <Table>
+      <Table padding="none">
         <TableHead>
           <TableRow>
             <TableCell>
-              Routine
+              <Typography>Routine</Typography>
             </TableCell>
             <TableCell>
-              Date
+              <Typography>Date</Typography>
             </TableCell>
             <TableCell>
-              status
+              <Typography>View Workout</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>Status</Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -33,10 +36,12 @@ const PastWorkouts = () => {
             return (
               <TableRow key={workout.id}>
                 <TableCell>
-                  {workout.routine.name}
+                  <Typography>{workout.routine.name}</Typography>
                 </TableCell>
                 <TableCell>
-                  {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
+                  <Typography>
+                    {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
+                  </Typography>
                 </TableCell>
                 <TableCell>
                   <Button component={Link} to={workout.id}>
@@ -44,7 +49,9 @@ const PastWorkouts = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  {unfinishedWorkout && workout.id === unfinishedWorkout.id ? "unfinished" : "finished"}
+                  <Typography>
+                    {unfinishedWorkout && workout.id === unfinishedWorkout.id ? "unfinished" : "finished"}
+                  </Typography>
                 </TableCell>
               </TableRow>
             );

@@ -61,7 +61,16 @@ const Sets = ({
             <TableCell align="right">
               <Typography>Rest</Typography>
             </TableCell>
-            <TableCell align="center">
+            <TableCell
+              align="left"
+              sx={{ display: { md: "table-cell", xs: "none" }, paddingLeft: { md: "1rem" } }}
+            >
+              <Typography>Note</Typography>
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ display: { md: "none", xs: "table-cell" } }}
+            >
               <Typography>Note</Typography>
             </TableCell>
             <TableCell align="center">
@@ -85,7 +94,7 @@ const Sets = ({
                 <TableCell align="right">
                   <Typography>{set.rest}</Typography>
                 </TableCell>
-                <TableCell align="center" sx={{ display: { md: "table-cell", xs: "none" } }}>
+                <TableCell align="left" sx={{ display: { md: "table-cell", xs: "none" }, maxWidth: "10rem", paddingLeft: "1rem" }}>
                   <Typography>{set.note}</Typography>
                 </TableCell>
                 <TableCell align="center" sx={{ display: { md: "none", xs: "table-cell" } }}>

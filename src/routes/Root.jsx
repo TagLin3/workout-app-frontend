@@ -29,22 +29,19 @@ const Root = () => {
     }
   }, []);
 
-  const logOut = () => {
-    setLoggedUser(null);
-    window.localStorage.removeItem("workoutAppLoggedUser");
-    axios.defaults.headers.common.Authorization = undefined;
-    navigate("/login");
-    setNotification("Logged out!");
-    setTimeout(() => {
-      setNotification(null);
-    }, 3000);
-  };
-
   const showNotification = (notificationToSet, length) => {
     setNotification(notificationToSet);
     setTimeout(() => {
       setNotification({ message: null });
     }, length);
+  };
+
+  const logOut = () => {
+    setLoggedUser(null);
+    window.localStorage.removeItem("workoutAppLoggedUser");
+    axios.defaults.headers.common.Authorization = undefined;
+    navigate("/login");
+    showNotification({ message: "Logged out!", severity: "success" }, 3000);
   };
 
   const unfinishedWorkoutObj = useMemo(() => (
