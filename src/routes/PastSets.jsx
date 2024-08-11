@@ -10,7 +10,7 @@ const PastSets = () => {
   if (sets.length === 0) {
     return (
       <Box>
-        <Typography variant="h1">sets</Typography>
+        <Typography variant="h1">Sets</Typography>
         <Typography>
           No sets completed yet. Complete a workout and your completed sets will be shown here
         </Typography>
@@ -52,14 +52,24 @@ const PastSets = () => {
           </MenuItem>
         ))}
       </Select>
-      <Table size="small">
+      <Table padding="none">
         <TableHead>
           <TableRow>
-            <TableCell>Exercise</TableCell>
-            <TableCell>Reps</TableCell>
-            <TableCell>Weight</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Date</TableCell>
+            <TableCell>
+              <Typography>Exercise</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>Reps</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>Weight</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>Type</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>Date</Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         {
@@ -78,15 +88,27 @@ const PastSets = () => {
                     const date = new Date(set.date);
                     return (
                       <TableRow key={set.id}>
-                        <TableCell>{set.exercise.name}</TableCell>
-                        <TableCell>{set.reps}</TableCell>
-                        <TableCell>{set.weight}</TableCell>
                         <TableCell>
-                          {set.type}
-                          {" "}
-                          {set.type === "dropset" && `(${set.dropSetNumber})`}
+                          <Typography>{set.exercise.name}</Typography>
                         </TableCell>
-                        <TableCell>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</TableCell>
+                        <TableCell>
+                          <Typography>{set.reps}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>{set.weight}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>
+                            {set.type}
+                            {" "}
+                            {set.type === "dropset" && `(${set.dropSetNumber})`}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography>
+                            {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
+                          </Typography>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

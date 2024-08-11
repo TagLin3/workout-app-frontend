@@ -157,6 +157,10 @@ const NewWorkout = () => {
     window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterUpdating));
   };
 
+  const editSet = async (setToEdit) => {
+
+  };
+
   return (
     <Box>
       <Typography variant="h1">{name}</Typography>
@@ -189,6 +193,7 @@ const NewWorkout = () => {
               sets={sets}
               addSet={addSet}
               deleteSet={deleteSet}
+              editSet={editSet}
             />
           );
         })}

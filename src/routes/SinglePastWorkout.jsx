@@ -6,9 +6,10 @@ import {
   Popover,
 } from "@mui/material";
 import workoutService from "../services/workoutService";
-import { UnfinishedWorkoutContext } from "../contexts";
+import { UnfinishedWorkoutContext, NotificationContext } from "../contexts";
 
 const SinglePastWorkout = () => {
+  const { showNotification } = useContext(NotificationContext);
   const { workout, routine } = useLoaderData();
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
   const navigate = useNavigate();
@@ -22,6 +23,24 @@ const SinglePastWorkout = () => {
       setUnfinishedWorkout(null);
     }
     navigate("/past_workouts");
+  };
+
+  const editWorkout = async () => {
+    if (!unfinishedWorkout || unfinishedWorkout.id === workout.id) {
+      const unfinishedWorkoutToSave = {
+        routine,
+        id: workout.id,
+      };
+      setUnfinishedWorkout(unfinishedWorkoutToSave);
+      window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(unfinishedWorkoutToSave));
+      window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(workout.sets));
+      navigate(`/routines/${routine.id}/new_workout`);
+    } else {
+      showNotification({
+        message: "Error: You need to finish your unfinished workout first",
+        severity: "error",
+      }, 3000);
+    }
   };
 
   const [noteAnchorEl, setNoteAnchorEl] = useState(null);
@@ -121,7 +140,8 @@ const SinglePastWorkout = () => {
           </Box>
         ))}
       </Box>
-      <Button variant="contained" type="button" onClick={deleteWorkout}>delete</Button>
+      <Button variant="contained" onClick={deleteWorkout}>delete</Button>
+      <Button variant="contained" onClick={editWorkout}>edit</Button>
     </Box>
   );
 };

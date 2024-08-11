@@ -1,7 +1,8 @@
 import {
   Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, List, ListItem, ListItemText,
-  TextField, Button,
+  TextField, Button, Popover,
 } from "@mui/material";
+import { useState } from "react";
 import Notification from "./Notification";
 
 const DropSets = ({
@@ -16,6 +17,16 @@ const DropSets = ({
   amountOfDropSets,
 }) => {
   const dropSets = Array.from({ length: amountOfDropSets }, (_, i) => i + 1);
+  const [noteAnchorEl, setNoteAnchorEl] = useState(null);
+  const [noteContent, setNoteContent] = useState(null);
+  const noteOpen = Boolean(noteAnchorEl);
+  const noteHandleClose = () => {
+    setNoteAnchorEl(null);
+  };
+  const noteHandleOpen = (note, event) => {
+    setNoteContent(note);
+    setNoteAnchorEl(event.target);
+  };
   return (
     <Box>
       <Typography variant="h2">
@@ -47,29 +58,88 @@ const DropSets = ({
         </ListItem>
       </List>
       <Notification message={notification.message} severity={notification.severity} />
-      <Table>
+      <Table padding="none">
         <TableHead>
           <TableRow>
-            <TableCell>Set</TableCell>
-            <TableCell>Dropset in set</TableCell>
-            <TableCell>Reps</TableCell>
-            <TableCell>Weight</TableCell>
-            <TableCell>Rest after set</TableCell>
-            <TableCell>Note</TableCell>
+            <TableCell align="right">
+              <Typography>Set</Typography>
+            </TableCell>
+            <TableCell align="right">
+              <Typography>Reps</Typography>
+            </TableCell>
+            <TableCell align="right">
+              <Typography>Weight</Typography>
+            </TableCell>
+            <TableCell align="right">
+              <Typography>Rest</Typography>
+            </TableCell>
+            <TableCell
+              align="left"
+              sx={{ display: { md: "table-cell", xs: "none" }, paddingLeft: { md: "1rem" } }}
+            >
+              <Typography>Note</Typography>
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{ display: { md: "none", xs: "table-cell" } }}
+            >
+              <Typography>Note</Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography>Delete</Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography>Edit</Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {sets.filter((set) => set.exercise === exerciseId)
+            .toSorted((a, b) => {
+              if (a.number === b.number) {
+                return a.dropSetNumber - b.dropSetNumber;
+              }
+              return a.number - b.number;
+            })
             .map((set) => (
               <TableRow key={`${set.number}, ${set.dropSetNumber}`}>
-                <TableCell>{set.number}</TableCell>
-                <TableCell>{set.dropSetNumber}</TableCell>
-                <TableCell>{set.reps}</TableCell>
-                <TableCell>{set.weight}</TableCell>
-                <TableCell>{set.rest}</TableCell>
-                <TableCell>{set.note}</TableCell>
-                <TableCell>
-                  <Button variant="contained" type="button" onClick={() => deleteSet(set)}>delete</Button>
+                <TableCell align="right">
+                  <Typography>{`${set.number}.${set.dropSetNumber}`}</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>{set.reps}</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>{set.weight}</Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography>{set.rest}</Typography>
+                </TableCell>
+                <TableCell align="left" sx={{ display: { md: "table-cell", xs: "none" }, maxWidth: "10rem", paddingLeft: "1rem" }}>
+                  <Typography>{set.note}</Typography>
+                </TableCell>
+                <TableCell align="center" sx={{ display: { md: "none", xs: "table-cell" } }}>
+                  <Button
+                    sx={{ padding: 0 }}
+                    onClick={(event) => noteHandleOpen(set.note, event)}
+                  >
+                    view
+                  </Button>
+                  <Popover
+                    open={noteOpen}
+                    anchorEl={noteAnchorEl}
+                    onClose={noteHandleClose}
+                  >
+                    <Typography>
+                      {noteContent}
+                    </Typography>
+                  </Popover>
+                </TableCell>
+                <TableCell align="center">
+                  <Button sx={{ padding: 0 }} onClick={() => deleteSet(set)}>delete</Button>
+                </TableCell>
+                <TableCell align="center">
+                  <Button sx={{ padding: 0 }}>edit</Button>
                 </TableCell>
               </TableRow>
             ))}

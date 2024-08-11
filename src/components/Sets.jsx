@@ -15,6 +15,7 @@ const Sets = ({
   repRange,
   deleteSet,
   amountOfSets,
+  editSet,
 }) => {
   const [noteAnchorEl, setNoteAnchorEl] = useState(null);
   const [noteContent, setNoteContent] = useState(null);
@@ -26,6 +27,15 @@ const Sets = ({
     setNoteContent(note);
     setNoteAnchorEl(event.target);
   };
+
+  const initEditSet = () => {
+
+  };
+
+  const finishEditingSet = () => {
+
+  };
+
   return (
     <Box>
       <Typography variant="h2">{exerciseName}</Typography>
@@ -76,6 +86,9 @@ const Sets = ({
             <TableCell align="center">
               <Typography>Delete</Typography>
             </TableCell>
+            <TableCell align="center">
+              <Typography>Edit</Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -98,7 +111,12 @@ const Sets = ({
                   <Typography>{set.note}</Typography>
                 </TableCell>
                 <TableCell align="center" sx={{ display: { md: "none", xs: "table-cell" } }}>
-                  <Button onClick={(event) => noteHandleOpen(set.note, event)}>view note</Button>
+                  <Button
+                    sx={{ padding: 0 }}
+                    onClick={(event) => noteHandleOpen(set.note, event)}
+                  >
+                    view
+                  </Button>
                   <Popover
                     open={noteOpen}
                     anchorEl={noteAnchorEl}
@@ -110,12 +128,20 @@ const Sets = ({
                   </Popover>
                 </TableCell>
                 <TableCell align="center">
-                  <Button onClick={() => deleteSet(set)}>delete</Button>
+                  <Button sx={{ padding: 0 }} onClick={() => deleteSet(set)}>delete</Button>
+                </TableCell>
+                <TableCell align="center">
+                  <Button sx={{ padding: 0 }} onClick={() => initEditSet(set)}>edit</Button>
                 </TableCell>
               </TableRow>
             ))}
         </TableBody>
       </Table>
+      <Box display="none">
+        <form onSubmit={finishEditingSet}>
+          <Button>test</Button>
+        </form>
+      </Box>
       <form onSubmit={addSet} name={exerciseId}>
         <Box
           display="flex"
