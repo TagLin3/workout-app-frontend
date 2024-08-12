@@ -5,13 +5,13 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import Notification from "./Notification";
+import SetEditForm from "./SetEditForm";
 
 const Sets = ({
   exerciseName,
   exerciseId,
   addSet,
   sets,
-  notification,
   repRange,
   deleteSet,
   amountOfSets,
@@ -27,13 +27,56 @@ const Sets = ({
     setNoteContent(note);
     setNoteAnchorEl(event.target);
   };
+  const [setToEdit, setSetToEdit] = useState(null);
 
-  const initEditSet = () => {
-
+  const initEditSet = (set) => {
+    setSetToEdit(set);
   };
 
-  const finishEditingSet = () => {
+  const finishEditingSet = async (event) => {
+    event.preventDefault();
+    await editSet(setToEdit);
+    setSetToEdit(null);
+  };
 
+  const [notification, setNotification] = useState({ message: null });
+  const showNotification = (notificationToSet, length) => {
+    setNotification(notificationToSet);
+    setTimeout(() => {
+      setNotification({ message: null });
+    }, length);
+  };
+
+  const newSet = async (event) => {
+    event.preventDefault();
+    const reps = Number(event.target.reps.value);
+    const weight = Number(event.target.weight.value);
+    const rest = Number(event.target.rest.value);
+    const note = event.target.note.value;
+    if (reps <= 0 || !(Number.isInteger(reps)) || weight < 0 || rest < 0) {
+      showNotification({
+        message: "Error: Reps should be above zero and an integer and weight and rest should be non-negative.",
+        severity: "error",
+      }, 3000);
+      return;
+    }
+    const number = sets.length === 0
+      ? 1
+      : sets[sets.length - 1].number + 1;
+    const setToSave = {
+      type: "regular",
+      exercise: exerciseId,
+      number,
+      reps,
+      weight,
+      rest,
+      note,
+    };
+    await addSet(setToSave);
+    event.target.reps.value = "";
+    event.target.weight.value = "";
+    event.target.rest.value = "";
+    event.target.note.value = "";
   };
 
   return (
@@ -137,12 +180,14 @@ const Sets = ({
             ))}
         </TableBody>
       </Table>
-      <Box display="none">
-        <form onSubmit={finishEditingSet}>
-          <Button>test</Button>
-        </form>
-      </Box>
-      <form onSubmit={addSet} name={exerciseId}>
+      {setToEdit && (
+        <SetEditForm
+          setToEdit={setToEdit}
+          setSetToEdit={setSetToEdit}
+          finishEditingSet={finishEditingSet}
+        />
+      )}
+      <form onSubmit={newSet} name={exerciseId}>
         <Box
           display="flex"
           flexDirection="column"

@@ -8,9 +8,8 @@ import Notification from "./Notification";
 const DropSets = ({
   exerciseName,
   exerciseId,
-  addDropSet,
+  addDropSets,
   sets,
-  notification,
   repRange,
   deleteSet,
   amountOfSets,
@@ -27,6 +26,59 @@ const DropSets = ({
     setNoteContent(note);
     setNoteAnchorEl(event.target);
   };
+
+  const [notification, setNotification] = useState({ message: null });
+  const showNotification = (notificationToSet, length) => {
+    setNotification(notificationToSet);
+    setTimeout(() => {
+      setNotification({ message: null });
+    }, length);
+  };
+
+  const newDropSets = async (event) => {
+    event.preventDefault();
+    const rest = Number(event.target.rest.value);
+    const note = event.target.note.value;
+    const number = sets.length === 0
+      ? 1
+      : sets[sets.length - 1].number + 1;
+    const dropSetNumbers = Array.from({ length: amountOfDropSets }, (_, i) => i + 1);
+    const reps = [];
+    const weight = [];
+    dropSetNumbers.forEach((dropSetNumber) => {
+      reps.push(Number(event.target[`reps${dropSetNumber}`].value));
+      event.target[`reps${dropSetNumber}`].value = "";
+      weight.push(Number(event.target[`weight${dropSetNumber}`].value));
+      event.target[`weight${dropSetNumber}`].value = "";
+    });
+    if (
+      reps.some(
+        (repsForCurrentDropSet) => repsForCurrentDropSet <= 0
+        || !(Number.isInteger(repsForCurrentDropSet)),
+      )
+      || weight.some((weightForCurrentDropSet) => weightForCurrentDropSet < 0)
+      || rest < 0) {
+      showNotification({
+        message: "Error: Reps should be above zero and an integer and weight and rest should be non-negative.",
+        severity: "error",
+      }, 3000);
+      return;
+    }
+    const setsToSave = dropSetNumbers.map((dropSetNumber) => ({
+      type: "dropset",
+      exercise: exerciseId,
+      number,
+      dropSetNumber,
+      reps: reps[dropSetNumber - 1],
+      weight: weight[dropSetNumber - 1],
+      rest: dropSetNumber === amountOfDropSets ? rest : 0,
+      note,
+    }));
+    await addDropSets(setsToSave);
+    event.target.rest.value = "";
+    event.target.note.value = "";
+  };
+
   return (
     <Box>
       <Typography variant="h2">
@@ -145,7 +197,7 @@ const DropSets = ({
             ))}
         </TableBody>
       </Table>
-      <form onSubmit={addDropSet} name={exerciseId}>
+      <form onSubmit={newDropSets} name={exerciseId}>
         <Typography>Add a set:</Typography>
         {dropSets.map((dropSetNumber) => (
           <Box key={dropSetNumber}>

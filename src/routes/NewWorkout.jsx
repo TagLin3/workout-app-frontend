@@ -18,108 +18,19 @@ const NewWorkout = () => {
   );
 
   const { exercises, name } = loaderData.routine;
-  const [notificationForSet, setNotificationForSet] = useState(exercises.reduce(
-    (accumulator, currentValue) => (
-      { ...accumulator, [currentValue.exercise.id]: { message: null } }),
-    {},
-  ));
 
-  const showNotificationForSet = (notificationToSet, exerciseId, length) => {
-    setNotificationForSet({ ...notificationForSet, [exerciseId]: notificationToSet });
-    setTimeout(() => {
-      setNotificationForSet({ ...notificationForSet, [exerciseId]: { message: null } });
-    }, length);
-  };
-
-  const addSet = async (event) => {
-    event.preventDefault();
-    const reps = Number(event.target.reps.value);
-    const weight = Number(event.target.weight.value);
-    const rest = Number(event.target.rest.value);
-    const note = event.target.note.value;
-    const exerciseId = event.target.name;
-    if (reps <= 0 || !(Number.isInteger(reps)) || weight < 0 || rest < 0) {
-      showNotificationForSet({
-        message: "Error: Reps should be above zero and an integer and weight and rest should be non-negative.",
-        severity: "error",
-      }, exerciseId, 3000);
-      return;
-    }
-    const number = sets.filter(
-      (set) => set.exercise === exerciseId,
-    ).length === 0
-      ? 1
-      : sets[sets.length - 1].number + 1;
-    const setToSave = {
-      type: "regular",
-      exercise: exerciseId,
-      workout: unfinishedWorkout.id,
-      number,
-      reps,
-      weight,
-      rest,
-      note,
-    };
-    const addedSet = await setService.addSet(setToSave);
+  const addSet = async (setToAdd) => {
+    const addedSet = await setService.addSet({ ...setToAdd, workout: unfinishedWorkout.id });
     setSets(sets.concat(addedSet));
     window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(addedSet)));
-    event.target.reps.value = "";
-    event.target.weight.value = "";
-    event.target.rest.value = "";
-    event.target.note.value = "";
   };
 
-  const addDropSet = async (event) => {
-    event.preventDefault();
-    const rest = Number(event.target.rest.value);
-    const note = event.target.note.value;
-    const exerciseId = event.target.name;
-    const amountOfDropSets = 3;
-    const number = sets.filter(
-      (set) => set.exercise === exerciseId,
-    ).length === 0
-      ? 1
-      : sets[sets.length - 1].number + 1;
-    const dropSetNumbers = Array.from({ length: amountOfDropSets }, (_, i) => i + 1);
-    const reps = [];
-    const weight = [];
-    dropSetNumbers.forEach((dropSetNumber) => {
-      reps.push(Number(event.target[`reps${dropSetNumber}`].value));
-      event.target[`reps${dropSetNumber}`].value = "";
-      weight.push(Number(event.target[`weight${dropSetNumber}`].value));
-      event.target[`weight${dropSetNumber}`].value = "";
-    });
-    if (
-      reps.some(
-        (repsForCurrentDropSet) => repsForCurrentDropSet <= 0
-        || !(Number.isInteger(repsForCurrentDropSet)),
-      )
-      || weight.some((weightForCurrentDropSet) => weightForCurrentDropSet < 0)
-      || rest < 0) {
-      showNotificationForSet({
-        message: "Error: Reps should be above zero and an integer and weight and rest should be non-negative.",
-        severity: "error",
-      }, exerciseId, 3000);
-      return;
-    }
-    const savedSets = await Promise.all(dropSetNumbers.map(async (dropSetNumber) => {
-      const setToSave = {
-        type: "dropset",
-        exercise: exerciseId,
-        workout: unfinishedWorkout.id,
-        number,
-        dropSetNumber,
-        reps: reps[dropSetNumber - 1],
-        weight: weight[dropSetNumber - 1],
-        rest: dropSetNumber === amountOfDropSets ? rest : 0,
-        note,
-      };
-      return setService.addSet(setToSave);
-    }));
+  const addDropSets = async (setsToAdd) => {
+    const savedSets = await Promise.all(setsToAdd.map(
+      async (setToAdd) => setService.addSet({ ...setToAdd, workout: unfinishedWorkout.id }),
+    ));
     setSets(sets.concat(savedSets));
     window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(sets.concat(savedSets)));
-    event.target.rest.value = "";
-    event.target.note.value = "";
   };
 
   const workoutDone = async () => {
@@ -157,8 +68,11 @@ const NewWorkout = () => {
     window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterUpdating));
   };
 
-  const editSet = async (setToEdit) => {
-
+  const editSet = async (editedSet) => {
+    await setService.updateSet(editedSet.id, editedSet);
+    const setsAfterEdit = sets.map((set) => (set.id === editedSet.id ? editedSet : set));
+    setSets(setsAfterEdit);
+    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterEdit));
   };
 
   return (
@@ -169,7 +83,6 @@ const NewWorkout = () => {
           if (exercise.type === "dropset") {
             return (
               <DropSets
-                notification={notificationForSet[exercise.exercise.id]}
                 key={exercise.exercise.id}
                 exerciseId={exercise.exercise.id}
                 exerciseName={exercise.exercise.name}
@@ -177,19 +90,19 @@ const NewWorkout = () => {
                 amountOfSets={exercise.amountOfSets}
                 amountOfDropSets={exercise.amountOfDropSets}
                 sets={sets}
-                addDropSet={addDropSet}
+                addDropSets={addDropSets}
                 deleteSet={deleteSet}
               />
             );
           }
           return (
             <Sets
-              notification={notificationForSet[exercise.exercise.id]}
               key={exercise.exercise.id}
               exerciseId={exercise.exercise.id}
               exerciseName={exercise.exercise.name}
               repRange={exercise.repRange}
               amountOfSets={exercise.amountOfSets}
+              amountOfDropSets={exercise.amountOfDropSets}
               sets={sets}
               addSet={addSet}
               deleteSet={deleteSet}
