@@ -50,20 +50,24 @@ const NewWorkout = () => {
     showNotification({ severity: "success", message: "Workout deleted!" }, 3000);
   };
 
-  const deleteSet = async (setToDelete) => {
+  const deleteSet = async (setToDelete, updatedSets) => {
     await setService.deleteSet(setToDelete.id);
-    const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
-    const setsToUpdate = setsAfterDeletion.filter(
-      (set) => setToDelete.exercise === set.exercise,
-    );
-    const setsToNotUpdate = setsAfterDeletion.filter(
-      (set) => setToDelete.exercise !== set.exercise,
-    );
-    const updatedSets = await Promise.all(setsToUpdate.map(async (set, index) => {
-      const updatedSet = await setService.updateSet(set.id, { number: index + 1 });
-      return updatedSet;
-    }));
-    const setsAfterUpdating = setsToNotUpdate.concat(updatedSets);
+    await Promise.all(updatedSets.map(
+      (set) => setService.updateSet(set.id, { number: set.number }),
+    ));
+    const nonUpdatedSets = sets.filter((set) => set.exercise !== setToDelete.exercise);
+    const setsAfterUpdating = nonUpdatedSets.concat(updatedSets);
+    setSets(setsAfterUpdating);
+    window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterUpdating));
+  };
+
+  const deleteDropSets = async (setsToDelete, updatedSets) => {
+    await Promise.all(setsToDelete.map(async (set) => setService.deleteSet(set.id)));
+    await Promise.all(updatedSets.map(
+      (set) => setService.updateSet(set.id, { number: set.number }),
+    ));
+    const nonUpdatedSets = sets.filter((set) => set.exercise !== setsToDelete[0].exercise);
+    const setsAfterUpdating = nonUpdatedSets.concat(updatedSets);
     setSets(setsAfterUpdating);
     window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(setsAfterUpdating));
   };
@@ -89,9 +93,10 @@ const NewWorkout = () => {
                 repRange={exercise.repRange}
                 amountOfSets={exercise.amountOfSets}
                 amountOfDropSets={exercise.amountOfDropSets}
-                sets={sets}
+                sets={sets.filter((set) => set.exercise === exercise.exercise.id)}
                 addDropSets={addDropSets}
-                deleteSet={deleteSet}
+                deleteDropSets={deleteDropSets}
+                editSet={editSet}
               />
             );
           }
@@ -103,7 +108,7 @@ const NewWorkout = () => {
               repRange={exercise.repRange}
               amountOfSets={exercise.amountOfSets}
               amountOfDropSets={exercise.amountOfDropSets}
-              sets={sets}
+              sets={sets.filter((set) => set.exercise === exercise.exercise.id)}
               addSet={addSet}
               deleteSet={deleteSet}
               editSet={editSet}

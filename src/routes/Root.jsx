@@ -106,6 +106,13 @@ const Root = () => {
           },
         },
       },
+      MuiSelect: {
+        styleOverrides: {
+          root: {
+            margin: 5,
+          },
+        },
+      },
     },
     typography: {
       fontFamily: "sans-serif",

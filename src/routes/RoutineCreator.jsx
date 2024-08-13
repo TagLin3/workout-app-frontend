@@ -17,10 +17,10 @@ const RoutineCreator = () => {
 
   const addExercise = (event) => {
     event.preventDefault();
-    if (event.target.exercise.value === "select exercise" || event.target.type.value === "select type") {
+    if (event.target.exercise.value === "select exercise") {
       showNotification({
         severity: "error",
-        message: "Error: An exercise and a type need to be selected",
+        message: "Error: An exercise needs to be selected",
       }, 3000);
       return;
     }
@@ -102,30 +102,48 @@ const RoutineCreator = () => {
     <Box>
       <Typography variant="h1">Workout routine creator</Typography>
       <Typography variant="h2">Exercises</Typography>
-      <Table>
+      <Table padding="none">
         <TableHead>
           <TableRow>
-            <TableCell>Exercise</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Rep range</TableCell>
-            <TableCell>Amount of sets</TableCell>
+            <TableCell align="center">
+              <Typography>Exercise</Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography>Type</Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography>Rep range</Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography>Sets</Typography>
+            </TableCell>
+            <TableCell align="center">
+              <Typography>Remove</Typography>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {selectedExercises.map((exercise) => (
             <TableRow key={exercise.exercise.id}>
-              <TableCell>{exercise.exercise.name}</TableCell>
-              <TableCell>{exercise.type}</TableCell>
-              <TableCell>{exercise.repRange}</TableCell>
-              <TableCell>
-                {exercise.amountOfSets}
-                {exercise.type === "dropset" && ` times ${exercise.amountOfDropSets} dropsets`}
+              <TableCell align="center">
+                <Typography>{exercise.exercise.name}</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell align="center">
+                <Typography>{exercise.type}</Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography>{exercise.repRange}</Typography>
+              </TableCell>
+              <TableCell align="center">
+                <Typography>
+                  {exercise.amountOfSets}
+                  {exercise.type === "dropset" && ` times ${exercise.amountOfDropSets} dropsets`}
+                </Typography>
+              </TableCell>
+              <TableCell align="center">
                 <Button
-                  variant="contained"
-                  type="button"
                   onClick={() => removeExercise(exercise.exercise.id)}
+                  sx={{ padding: 0 }}
                 >
                   remove
                 </Button>

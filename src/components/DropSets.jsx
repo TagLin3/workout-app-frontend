@@ -4,6 +4,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import Notification from "./Notification";
+import SetEditForm from "./SetEditForm";
 
 const DropSets = ({
   exerciseName,
@@ -11,9 +12,10 @@ const DropSets = ({
   addDropSets,
   sets,
   repRange,
-  deleteSet,
+  deleteDropSets,
   amountOfSets,
   amountOfDropSets,
+  editSet,
 }) => {
   const dropSets = Array.from({ length: amountOfDropSets }, (_, i) => i + 1);
   const [noteAnchorEl, setNoteAnchorEl] = useState(null);
@@ -77,6 +79,25 @@ const DropSets = ({
     await addDropSets(setsToSave);
     event.target.rest.value = "";
     event.target.note.value = "";
+  };
+
+  const initDeleteDropSets = async (setToDelete) => {
+    const setsToDelete = sets.filter((set) => set.number === setToDelete.number);
+    const setsAfterDeletion = sets.filter((set) => set.number !== setToDelete.number);
+    const updatedSets = setsAfterDeletion.map(
+      (set, index) => ({ ...set, number: Math.ceil((index + 1) / amountOfDropSets) }),
+    );
+    deleteDropSets(setsToDelete, updatedSets);
+  };
+
+  const [setToEdit, setSetToEdit] = useState(null);
+  const initEditSet = (set) => {
+    setSetToEdit(set);
+  };
+  const finishEditingSet = async (event) => {
+    event.preventDefault();
+    await editSet(setToEdit);
+    setSetToEdit(null);
   };
 
   return (
@@ -188,15 +209,28 @@ const DropSets = ({
                   </Popover>
                 </TableCell>
                 <TableCell align="center">
-                  <Button sx={{ padding: 0 }} onClick={() => deleteSet(set)}>delete</Button>
+                  <Button
+                    sx={{ padding: 0 }}
+                    onClick={() => initDeleteDropSets(set)}
+                  >
+                    delete
+                  </Button>
                 </TableCell>
                 <TableCell align="center">
-                  <Button sx={{ padding: 0 }}>edit</Button>
+                  <Button sx={{ padding: 0 }} onClick={() => initEditSet(set)}>edit</Button>
                 </TableCell>
               </TableRow>
             ))}
         </TableBody>
       </Table>
+      {setToEdit
+      && (
+        <SetEditForm
+          finishEditingSet={finishEditingSet}
+          setSetToEdit={setSetToEdit}
+          setToEdit={setToEdit}
+        />
+      )}
       <form onSubmit={newDropSets} name={exerciseId}>
         <Typography>Add a set:</Typography>
         {dropSets.map((dropSetNumber) => (

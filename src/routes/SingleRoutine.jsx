@@ -48,13 +48,14 @@ const SingleRoutine = () => {
   };
 
   const deleteRoutine = async () => {
-    await routineService.deleteRoutine(routine.id);
-    window.confirm("Warning: this will delete all of the workouts associated with this routine and also all of the sets associated with those workouts.");
-    showNotification({
-      message: "Routine deleted!",
-      severity: "success",
-    }, 3000);
-    navigate("/routines");
+    if (window.confirm("Warning: this will delete all of the workouts associated with this routine and also all of the sets associated with those workouts.")) {
+      await routineService.deleteRoutine(routine.id);
+      showNotification({
+        message: "Routine deleted!",
+        severity: "success",
+      }, 3000);
+      navigate("/routines");
+    }
   };
 
   return (

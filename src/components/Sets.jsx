@@ -27,17 +27,6 @@ const Sets = ({
     setNoteContent(note);
     setNoteAnchorEl(event.target);
   };
-  const [setToEdit, setSetToEdit] = useState(null);
-
-  const initEditSet = (set) => {
-    setSetToEdit(set);
-  };
-
-  const finishEditingSet = async (event) => {
-    event.preventDefault();
-    await editSet(setToEdit);
-    setSetToEdit(null);
-  };
 
   const [notification, setNotification] = useState({ message: null });
   const showNotification = (notificationToSet, length) => {
@@ -77,6 +66,24 @@ const Sets = ({
     event.target.weight.value = "";
     event.target.rest.value = "";
     event.target.note.value = "";
+  };
+
+  const initDeleteSet = async (setToDelete) => {
+    const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
+    const updatedSets = await Promise.all(setsAfterDeletion.map(
+      async (set, index) => ({ ...set, number: index + 1 }),
+    ));
+    deleteSet(setToDelete, updatedSets);
+  };
+
+  const [setToEdit, setSetToEdit] = useState(null);
+  const initEditSet = (set) => {
+    setSetToEdit(set);
+  };
+  const finishEditingSet = async (event) => {
+    event.preventDefault();
+    await editSet(setToEdit);
+    setSetToEdit(null);
   };
 
   return (
@@ -171,7 +178,7 @@ const Sets = ({
                   </Popover>
                 </TableCell>
                 <TableCell align="center">
-                  <Button sx={{ padding: 0 }} onClick={() => deleteSet(set)}>delete</Button>
+                  <Button sx={{ padding: 0 }} onClick={() => initDeleteSet(set)}>delete</Button>
                 </TableCell>
                 <TableCell align="center">
                   <Button sx={{ padding: 0 }} onClick={() => initEditSet(set)}>edit</Button>

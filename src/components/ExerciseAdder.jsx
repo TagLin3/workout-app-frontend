@@ -13,54 +13,54 @@ const ExerciseAdder = ({ addExercise, availableExercises }) => {
     <Box>
       <Typography variant="h2">Add exercise</Typography>
       <form onSubmit={addExercise}>
-        <FormControl>
-          <InputLabel>exercise</InputLabel>
-          <Select defaultValue="select exercise" label="exercise" name="exercise">
-            <MenuItem value="select exercise">
-              Select exercise
-            </MenuItem>
-            {availableExercises.map((exercise) => (
-              <MenuItem
-                value={`{"id": "${exercise.id}", "name": "${exercise.name}"}`}
-                key={exercise.id}
-              >
-                {exercise.name}
+        <Box
+          display="flex"
+          flexDirection="column"
+        >
+          <FormControl>
+            <InputLabel>exercise</InputLabel>
+            <Select
+              defaultValue="select exercise"
+              label="exercise"
+              name="exercise"
+            >
+              <MenuItem value="select exercise">
+                Select exercise
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <br />
-        <FormControl>
-          <InputLabel>Type</InputLabel>
-          <Select
-            defaultValue="select type"
-            label="Type"
-            name="type"
-            onChange={(event) => setType(event.target.value)}
-          >
-            <MenuItem value="select type">Select type</MenuItem>
-            <MenuItem value="regular">
-              regular
-            </MenuItem>
-            <MenuItem value="dropset">
-              drop set
-            </MenuItem>
-          </Select>
-        </FormControl>
-        <br />
-        <TextField label="Rep range lower limit" type="number" name="repRangeMin" />
-        <br />
-        <TextField label="Rep range upper limit" type="number" name="repRangeMax" />
-        <br />
-        <TextField label="Amount of total sets" type="number" name="amountOfSets" />
-        <br />
-        {type === "dropset" && (
-          <>
+              {availableExercises.map((exercise) => (
+                <MenuItem
+                  value={`{"id": "${exercise.id}", "name": "${exercise.name}"}`}
+                  key={exercise.id}
+                >
+                  {exercise.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <InputLabel>Type</InputLabel>
+            <Select
+              defaultValue="regular"
+              label="Type"
+              name="type"
+              onChange={(event) => setType(event.target.value)}
+            >
+              <MenuItem value="regular">
+                regular
+              </MenuItem>
+              <MenuItem value="dropset">
+                drop set
+              </MenuItem>
+            </Select>
+          </FormControl>
+          <TextField label="Rep range lower limit" type="number" name="repRangeMin" />
+          <TextField label="Rep range upper limit" type="number" name="repRangeMax" />
+          <TextField label="Amount of total sets" type="number" name="amountOfSets" />
+          {type === "dropset" && (
             <TextField label="Amount of sets in one drop set" type="number" name="amountOfDropSets" />
-            <br />
-          </>
-        )}
-        <Button variant="contained" type="submit">add</Button>
+          )}
+          <Button variant="contained" type="submit">add</Button>
+        </Box>
       </form>
     </Box>
   );
