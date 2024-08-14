@@ -1,10 +1,11 @@
 import {
   Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, List, ListItem, ListItemText,
-  TextField, Button, Popover,
+  TextField, Button,
 } from "@mui/material";
 import { useState } from "react";
 import Notification from "./Notification";
 import SetEditForm from "./SetEditForm";
+import NotePopover from "./NotePopover";
 
 const DropSets = ({
   exerciseName,
@@ -18,17 +19,6 @@ const DropSets = ({
   editSet,
 }) => {
   const dropSets = Array.from({ length: amountOfDropSets }, (_, i) => i + 1);
-  const [noteAnchorEl, setNoteAnchorEl] = useState(null);
-  const [noteContent, setNoteContent] = useState(null);
-  const noteOpen = Boolean(noteAnchorEl);
-  const noteHandleClose = () => {
-    setNoteAnchorEl(null);
-  };
-  const noteHandleOpen = (note, event) => {
-    setNoteContent(note);
-    setNoteAnchorEl(event.target);
-  };
-
   const [notification, setNotification] = useState({ message: null });
   const showNotification = (notificationToSet, length) => {
     setNotification(notificationToSet);
@@ -81,15 +71,6 @@ const DropSets = ({
     event.target.note.value = "";
   };
 
-  const initDeleteDropSets = async (setToDelete) => {
-    const setsToDelete = sets.filter((set) => set.number === setToDelete.number);
-    const setsAfterDeletion = sets.filter((set) => set.number !== setToDelete.number);
-    const updatedSets = setsAfterDeletion.map(
-      (set, index) => ({ ...set, number: Math.ceil((index + 1) / amountOfDropSets) }),
-    );
-    deleteDropSets(setsToDelete, updatedSets);
-  };
-
   const [setToEdit, setSetToEdit] = useState(null);
   const initEditSet = (set) => {
     setSetToEdit(set);
@@ -98,6 +79,18 @@ const DropSets = ({
     event.preventDefault();
     await editSet(setToEdit);
     setSetToEdit(null);
+  };
+
+  const initDeleteDropSets = async (setToDelete) => {
+    const setsToDelete = sets.filter((set) => set.number === setToDelete.number);
+    if (setToEdit && setsToDelete.some((set) => set.id === setToEdit.id)) {
+      setSetToEdit(null);
+    }
+    const setsAfterDeletion = sets.filter((set) => set.number !== setToDelete.number);
+    const updatedSets = setsAfterDeletion.map(
+      (set, index) => ({ ...set, number: Math.ceil((index + 1) / amountOfDropSets) }),
+    );
+    deleteDropSets(setsToDelete, updatedSets);
   };
 
   return (
@@ -192,21 +185,7 @@ const DropSets = ({
                   <Typography>{set.note}</Typography>
                 </TableCell>
                 <TableCell align="center" sx={{ display: { md: "none", xs: "table-cell" } }}>
-                  <Button
-                    sx={{ padding: 0 }}
-                    onClick={(event) => noteHandleOpen(set.note, event)}
-                  >
-                    view
-                  </Button>
-                  <Popover
-                    open={noteOpen}
-                    anchorEl={noteAnchorEl}
-                    onClose={noteHandleClose}
-                  >
-                    <Typography>
-                      {noteContent}
-                    </Typography>
-                  </Popover>
+                  <NotePopover noteToPopover={set.note} />
                 </TableCell>
                 <TableCell align="center">
                   <Button

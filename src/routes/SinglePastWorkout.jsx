@@ -1,18 +1,16 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { Link, useLoaderData } from "react-router-dom";
+import { useContext } from "react";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
-  Button,
-  Popover,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, Button,
 } from "@mui/material";
 import workoutService from "../services/workoutService";
 import { UnfinishedWorkoutContext, NotificationContext } from "../contexts";
+import NotePopover from "../components/NotePopover";
 
 const SinglePastWorkout = () => {
   const { showNotification } = useContext(NotificationContext);
   const { workout, routine } = useLoaderData();
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
-  const navigate = useNavigate();
   const date = new Date(workout.date);
 
   const deleteWorkout = async () => {
@@ -22,7 +20,10 @@ const SinglePastWorkout = () => {
       window.localStorage.removeItem("workoutAppUnfinishedWorkout");
       setUnfinishedWorkout(null);
     }
-    navigate("/past_workouts");
+    showNotification({
+      message: "Workout deleted!",
+      severity: "success",
+    }, 3000);
   };
 
   const editWorkout = async () => {
@@ -34,24 +35,12 @@ const SinglePastWorkout = () => {
       setUnfinishedWorkout(unfinishedWorkoutToSave);
       window.localStorage.setItem("workoutAppUnfinishedWorkout", JSON.stringify(unfinishedWorkoutToSave));
       window.localStorage.setItem("workoutAppUnfinishedWorkoutSets", JSON.stringify(workout.sets));
-      navigate(`/routines/${routine.id}/new_workout`);
     } else {
       showNotification({
         message: "Error: You need to finish your unfinished workout first",
         severity: "error",
       }, 3000);
     }
-  };
-
-  const [noteAnchorEl, setNoteAnchorEl] = useState(null);
-  const [noteContent, setNoteContent] = useState(null);
-  const noteOpen = Boolean(noteAnchorEl);
-  const noteHandleClose = () => {
-    setNoteAnchorEl(null);
-  };
-  const noteHandleOpen = (note, event) => {
-    setNoteContent(note);
-    setNoteAnchorEl(event.target);
   };
 
   return (
@@ -120,18 +109,7 @@ const SinglePastWorkout = () => {
                         align="center"
                         sx={{ display: { md: "none", xs: "table-cell" } }}
                       >
-                        <Button onClick={(event) => noteHandleOpen(set.note, event)}>
-                          view note
-                        </Button>
-                        <Popover
-                          open={noteOpen}
-                          anchorEl={noteAnchorEl}
-                          onClose={noteHandleClose}
-                        >
-                          <Typography>
-                            {noteContent}
-                          </Typography>
-                        </Popover>
+                        <NotePopover noteToPopover={set.note} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -140,8 +118,22 @@ const SinglePastWorkout = () => {
           </Box>
         ))}
       </Box>
-      <Button variant="contained" onClick={deleteWorkout}>delete</Button>
-      <Button variant="contained" onClick={editWorkout}>edit</Button>
+      <Button
+        component={Link}
+        to="/past_workouts"
+        variant="contained"
+        onClick={deleteWorkout}
+      >
+        delete
+      </Button>
+      <Button
+        component={Link}
+        to={`/routines/${routine.id}/new_workout`}
+        variant="contained"
+        onClick={editWorkout}
+      >
+        edit
+      </Button>
     </Box>
   );
 };

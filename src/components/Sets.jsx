@@ -1,11 +1,11 @@
 import {
   Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, List, ListItem, ListItemText,
   TextField, Button,
-  Popover,
 } from "@mui/material";
 import { useState } from "react";
 import Notification from "./Notification";
 import SetEditForm from "./SetEditForm";
+import NotePopover from "./NotePopover";
 
 const Sets = ({
   exerciseName,
@@ -17,17 +17,6 @@ const Sets = ({
   amountOfSets,
   editSet,
 }) => {
-  const [noteAnchorEl, setNoteAnchorEl] = useState(null);
-  const [noteContent, setNoteContent] = useState(null);
-  const noteOpen = Boolean(noteAnchorEl);
-  const noteHandleClose = () => {
-    setNoteAnchorEl(null);
-  };
-  const noteHandleOpen = (note, event) => {
-    setNoteContent(note);
-    setNoteAnchorEl(event.target);
-  };
-
   const [notification, setNotification] = useState({ message: null });
   const showNotification = (notificationToSet, length) => {
     setNotification(notificationToSet);
@@ -68,14 +57,6 @@ const Sets = ({
     event.target.note.value = "";
   };
 
-  const initDeleteSet = async (setToDelete) => {
-    const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
-    const updatedSets = await Promise.all(setsAfterDeletion.map(
-      async (set, index) => ({ ...set, number: index + 1 }),
-    ));
-    deleteSet(setToDelete, updatedSets);
-  };
-
   const [setToEdit, setSetToEdit] = useState(null);
   const initEditSet = (set) => {
     setSetToEdit(set);
@@ -84,6 +65,17 @@ const Sets = ({
     event.preventDefault();
     await editSet(setToEdit);
     setSetToEdit(null);
+  };
+
+  const initDeleteSet = async (setToDelete) => {
+    if (setToEdit && setToDelete.id === setToEdit.id) {
+      setSetToEdit(null);
+    }
+    const setsAfterDeletion = sets.filter((set) => set.id !== setToDelete.id);
+    const updatedSets = await Promise.all(setsAfterDeletion.map(
+      async (set, index) => ({ ...set, number: index + 1 }),
+    ));
+    deleteSet(setToDelete, updatedSets);
   };
 
   return (
@@ -161,21 +153,7 @@ const Sets = ({
                   <Typography>{set.note}</Typography>
                 </TableCell>
                 <TableCell align="center" sx={{ display: { md: "none", xs: "table-cell" } }}>
-                  <Button
-                    sx={{ padding: 0 }}
-                    onClick={(event) => noteHandleOpen(set.note, event)}
-                  >
-                    view
-                  </Button>
-                  <Popover
-                    open={noteOpen}
-                    anchorEl={noteAnchorEl}
-                    onClose={noteHandleClose}
-                  >
-                    <Typography>
-                      {noteContent}
-                    </Typography>
-                  </Popover>
+                  <NotePopover noteToPopover={set.note} />
                 </TableCell>
                 <TableCell align="center">
                   <Button sx={{ padding: 0 }} onClick={() => initDeleteSet(set)}>delete</Button>

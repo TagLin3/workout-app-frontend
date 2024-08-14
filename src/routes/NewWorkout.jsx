@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { useContext, useState } from "react";
 import { Typography, Box, Button } from "@mui/material";
 import Sets from "../components/Sets";
@@ -10,7 +10,6 @@ import workoutService from "../services/workoutService";
 const NewWorkout = () => {
   const loaderData = useLoaderData();
   const { unfinishedWorkout, setUnfinishedWorkout } = useContext(UnfinishedWorkoutContext);
-  const navigate = useNavigate();
   const { showNotification } = useContext(NotificationContext);
   const [sets, setSets] = useState(
     loaderData.sets
@@ -37,8 +36,7 @@ const NewWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
-    navigate("/routines");
-    showNotification({ severity: "success", message: "Workout saved!" }, 3000);
+    showNotification({ severity: "success", message: "Workout finished!" }, 3000);
   };
 
   const deleteWorkout = async () => {
@@ -46,7 +44,6 @@ const NewWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
     window.localStorage.removeItem("workoutAppUnfinishedWorkout");
     setUnfinishedWorkout(null);
-    navigate("/routines");
     showNotification({ severity: "success", message: "Workout deleted!" }, 3000);
   };
 
@@ -116,8 +113,26 @@ const NewWorkout = () => {
           );
         })}
       </Box>
-      <Button color="success" variant="contained" type="button" onClick={workoutDone}>Workout done</Button>
-      <Button color="error" variant="contained" type="button" onClick={deleteWorkout}>Delete workout</Button>
+      <Button
+        component={Link}
+        to="/routines"
+        color="success"
+        variant="contained"
+        type="button"
+        onClick={workoutDone}
+      >
+        Workout done
+      </Button>
+      <Button
+        component={Link}
+        to="/routines"
+        color="error"
+        variant="contained"
+        type="button"
+        onClick={deleteWorkout}
+      >
+        Delete workout
+      </Button>
     </Box>
   );
 };

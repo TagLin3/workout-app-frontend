@@ -1,5 +1,5 @@
 import { Link, useRouteError } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const ErrorPage = () => {
   const error = useRouteError();
@@ -17,15 +17,19 @@ const ErrorPage = () => {
   if (error.data && error.data.startsWith("Error: No route matches URL")) {
     return (
       <Box>
-        Error 404 not found
+        <Typography>
+          Error 404 not found
+        </Typography>
       </Box>
     );
   }
   return (
     <Box>
-      some unknown error occured:
-      {" "}
-      {error.message}
+      <Typography>
+        Some unknown error occured:
+        {" "}
+        {error.message}
+      </Typography>
     </Box>
   );
 };

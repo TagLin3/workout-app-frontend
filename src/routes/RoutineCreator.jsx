@@ -59,8 +59,8 @@ const RoutineCreator = () => {
       event.target.repRangeMin.value = "";
       event.target.repRangeMax.value = "";
       event.target.amountOfSets.value = "";
-      if (event.target.type === "dropset") {
-        event.target.amountOfDropSets = "";
+      if (event.target.type.value === "dropset") {
+        event.target.amountOfDropSets.value = "";
       }
       event.target.type.value = "";
     }

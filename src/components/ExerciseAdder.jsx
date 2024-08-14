@@ -18,7 +18,7 @@ const ExerciseAdder = ({ addExercise, availableExercises }) => {
           flexDirection="column"
         >
           <FormControl>
-            <InputLabel>exercise</InputLabel>
+            <InputLabel sx={{ padding: ".4rem" }}>exercise</InputLabel>
             <Select
               defaultValue="select exercise"
               label="exercise"
@@ -38,7 +38,7 @@ const ExerciseAdder = ({ addExercise, availableExercises }) => {
             </Select>
           </FormControl>
           <FormControl>
-            <InputLabel>Type</InputLabel>
+            <InputLabel sx={{ padding: ".4rem" }}>Type</InputLabel>
             <Select
               defaultValue="regular"
               label="Type"

@@ -1,7 +1,9 @@
 import {
   useState, useMemo, useEffect,
 } from "react";
-import { Outlet, useNavigate, useLoaderData } from "react-router-dom";
+import {
+  Outlet, useLoaderData, Link,
+} from "react-router-dom";
 import axios from "axios";
 import { ThemeProvider } from "@emotion/react";
 import {
@@ -16,7 +18,6 @@ const Root = () => {
   const [unfinishedWorkout, setUnfinishedWorkout] = useState(null);
   const [loggedUser, setLoggedUser] = useState(null);
   const [notification, setNotification] = useState({ message: null });
-  const navigate = useNavigate();
   const loaderData = useLoaderData();
 
   useEffect(() => {
@@ -40,7 +41,6 @@ const Root = () => {
     setLoggedUser(null);
     window.localStorage.removeItem("workoutAppLoggedUser");
     axios.defaults.headers.common.Authorization = undefined;
-    navigate("/login");
     showNotification({ message: "Logged out!", severity: "success" }, 3000);
   };
 
@@ -48,7 +48,7 @@ const Root = () => {
     { unfinishedWorkout, setUnfinishedWorkout }), [unfinishedWorkout]);
   const loggedUserObj = useMemo(() => (
     { loggedUser, setLoggedUser }), [loggedUser]);
-  const notificationArray = useMemo(() => (
+  const notificationObj = useMemo(() => (
     { notification, showNotification }), [notification]);
 
   const theme = createTheme({
@@ -124,16 +124,23 @@ const Root = () => {
       <CssBaseline>
         <UnfinishedWorkoutContext.Provider value={unfinishedWorkoutObj}>
           <LoggedUserContext.Provider value={loggedUserObj}>
-            <NotificationContext.Provider value={notificationArray}>
-              <Box marginLeft=".5rem" marginRight=".5rem">
-                <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
+            <NotificationContext.Provider value={notificationObj}>
+              <Nav unfinishedWorkout={unfinishedWorkout} loggedUser={loggedUser} />
+              <Box marginX=".5rem">
                 {loggedUser && (
                   <Typography>
                     Logged in as
                     {" "}
                     {loggedUser.name}
                     {" "}
-                    <Button type="button" onClick={logOut}>Log out</Button>
+                    <Button
+                      component={Link}
+                      to="/"
+                      type="button"
+                      onClick={logOut}
+                    >
+                      Log out
+                    </Button>
                   </Typography>
                 )}
                 <Notification message={notification.message} severity={notification.severity} />
