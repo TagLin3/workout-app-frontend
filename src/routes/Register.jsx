@@ -6,27 +6,43 @@ import {
 } from "@mui/material";
 import loginService from "../services/loginService";
 import userService from "../services/userService";
-import { LoggedUserContext } from "../contexts";
+import { LoggedUserContext, NotificationContext } from "../contexts";
 
 const Register = () => {
   const { setLoggedUser } = useContext(LoggedUserContext);
+  const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
   const onSubmit = async (event) => {
     event.preventDefault();
-    await userService.addUser({
-      name: event.target.name.value,
-      username: event.target.username.value,
-      password: event.target.password.value,
-    });
-    await loginService.login(event.target.username.value, event.target.password.value);
-    const loggedUser = await loginService.login(
-      event.target.username.value,
-      event.target.password.value,
-    );
-    axios.defaults.headers.common.Authorization = `Bearer ${loggedUser.token}`;
-    setLoggedUser(loggedUser);
-    window.localStorage.setItem("workoutAppLoggedUser", JSON.stringify(loggedUser));
-    navigate("/");
+    const name = event.target.name.value;
+    const username = event.target.username.value;
+    const password = event.target.password.value;
+    if (!name || !password || !username) {
+      showNotification({
+        message: "Error: Name, username and passowrd are all required",
+        severity: "error",
+      }, 3000);
+    } else {
+      try {
+        await userService.addUser({ name, username, password });
+        await loginService.login(event.target.username.value, event.target.password.value);
+        const loggedUser = await loginService.login(
+          event.target.username.value,
+          event.target.password.value,
+        );
+        axios.defaults.headers.common.Authorization = `Bearer ${loggedUser.token}`;
+        setLoggedUser(loggedUser);
+        window.localStorage.setItem("workoutAppLoggedUser", JSON.stringify(loggedUser));
+        navigate("/");
+      } catch (e) {
+        if (e.response.data.error.startsWith("User validation failed: username: Error, expected `username` to be unique.")) {
+          showNotification({
+            message: "Error: Username already in use",
+            severity: "error",
+          }, 3000);
+        }
+      }
+    }
   };
   return (
     <Box>

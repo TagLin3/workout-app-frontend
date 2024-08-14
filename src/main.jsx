@@ -16,11 +16,13 @@ import SingleRoutine from "./routes/SingleRoutine";
 import PastWorkouts from "./routes/PastWorkouts";
 import SinglePastWorkout from "./routes/SinglePastWorkout";
 import Login from "./routes/Login";
+import UserPage from "./routes/UserPage";
 
 import workoutService from "./services/workoutService";
 import routineService from "./services/routineService";
 import exerciseService from "./services/exerciseService";
 import setService from "./services/setService";
+import userService from "./services/userService";
 
 const router = createBrowserRouter([
   {
@@ -96,6 +98,11 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/user/:id",
+        element: <UserPage />,
+        loader: async ({ params }) => userService.getSingle(params.id),
       },
     ],
     loader: () => {
