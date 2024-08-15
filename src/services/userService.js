@@ -22,6 +22,13 @@ const updateUser = async (id, update) => {
   return response.data;
 };
 
+const changePassword = async (id, oldPassword, newPassword) => {
+  const response = await axios.put(`${baseUrl}/${id}/changePassword`, {
+    oldPassword, newPassword,
+  });
+  return response.data;
+};
+
 export default {
-  getAll, addUser, updateUser, getSingle,
+  getAll, addUser, updateUser, getSingle, changePassword,
 };

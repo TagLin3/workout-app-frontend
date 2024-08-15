@@ -14,7 +14,7 @@ const ErrorPage = () => {
       </Box>
     );
   }
-  if (error.data && error.data.startsWith("Error: No route matches URL")) {
+  if (error.response && error.response.status === 404) {
     return (
       <Box>
         <Typography>
