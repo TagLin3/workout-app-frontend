@@ -99,9 +99,27 @@ const UserPage = () => {
       {
         editing
           ? (
-            <Button variant="contained" onClick={finishEditing}>
-              submit
-            </Button>
+            <Box
+              display="flex"
+              flexDirection="row"
+            >
+              <Button
+                sx={{ flexGrow: 1 }}
+                variant="contained"
+                onClick={finishEditing}
+                color="success"
+              >
+                submit
+              </Button>
+              <Button
+                sx={{ flexGrow: 1 }}
+                variant="contained"
+                onClick={() => setEditing(false)}
+                color="error"
+              >
+                cancel
+              </Button>
+            </Box>
           )
           : (
             <Button variant="contained" onClick={() => setEditing(true)}>
@@ -122,12 +140,27 @@ const UserPage = () => {
             >
               <TextField type="password" id="oldPassword" />
               <TextField type="password" id="newPassword" />
-              <Button
-                variant="contained"
-                type="submit"
+              <Box
+                display="flex"
+                flexDirection="row"
               >
-                Submit
-              </Button>
+                <Button
+                  sx={{ flexGrow: 1 }}
+                  variant="contained"
+                  type="submit"
+                  color="success"
+                >
+                  submit
+                </Button>
+                <Button
+                  sx={{ flexGrow: 1 }}
+                  variant="contained"
+                  onClick={() => setChangingPassword(false)}
+                  color="error"
+                >
+                  cancel
+                </Button>
+              </Box>
             </Box>
           </form>
         )

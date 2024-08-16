@@ -23,10 +23,10 @@ const PastWorkouts = () => {
               <Typography>Date</Typography>
             </TableCell>
             <TableCell>
-              <Typography>View Workout</Typography>
+              <Typography>Status</Typography>
             </TableCell>
             <TableCell>
-              <Typography>Status</Typography>
+              <Typography>View Workout</Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -44,14 +44,14 @@ const PastWorkouts = () => {
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Button component={Link} to={workout.id}>
-                    view workout
-                  </Button>
-                </TableCell>
-                <TableCell>
                   <Typography>
                     {unfinishedWorkout && workout.id === unfinishedWorkout.id ? "unfinished" : "finished"}
                   </Typography>
+                </TableCell>
+                <TableCell>
+                  <Button component={Link} to={workout.id}>
+                    view workout
+                  </Button>
                 </TableCell>
               </TableRow>
             );

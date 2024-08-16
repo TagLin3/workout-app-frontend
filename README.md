@@ -1,12 +1,23 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
+# Instructions for using the application (also available at the home page of the application):
+## The "workout routines" page:
+The workout routines page is where you can view workout routines created by you. A workout routine is a combination of exercises with instructions of, for example, how many reps and sets to do. For example, a workout routine could be an upped body day or a leg day. A routine can be active, meaning you are currently actively completing workouts based on the routine, or inactive, meaning you are not. You can filter the routines to see only active, only inactive or all routines. Each routine is displayed as a card, that can be clicked or tapped to view the routine. Also in the workout routines page you can access the "routine creator".
+## The routine creator:
+This is where you create new workout routines. Just pick an exercise, pick whether to do regular sets or drop sets, specify a rep range and the amount of sets and add the exercise to the routine. Remember to name the workout routine after adding all the exercises you want.
+## Viewing a single routine:
+In the page to view a single routine you can see a preview of the exercises and the instructions to do them. You can set the routine as inactive or active. You can also start a new workout from it. If the routine is inactive, you can delete choose to delet it, which will delete all the workouts based on the routine as well as all of the sets based on those workouts.
+## Completing workouts:
+A workout is a single completion of a routine. In the page to complete a workout you can log your results on each exercise and they will be instantly saved as completed sets. The workout, however, will be set as unfinished until you finish it (with the button at the bottom of the page). Having an unfinished workout means having a link to it in the navigation menu as well as not being able to start a new workout, you can't have two unfinished workouts at the same time. A workout is always based on a routine. Due to this, deleting a workout routine will also delete the workouts completed based on it.
+## The "exercise library" page:
+This is where to view the exercises you have access to. These include the default exercises available for everyone as well as your own custom exercises. You can also create a new custom exercise. Just pick a name and click or tap create.
+## The "past workouts" page:
+This is where to view the workouts you have started in the past. You will see the routine the workout was based on, the date of starting the workout, whether the workout is finished or unfinished and a button to view the details of the workout.
+## Viewing a single workout:
+This is where you can view a single workout completed in the past. The sets that you completed in the workout are shown the same way you would view them in the page for doing a workout. At the bottom of the page, you can see a button to edit the workout. This will essentially set the workout as unfinished again, meaning you can edit it on the page for doing a workout. This also means that you can't edit a finished workout, if you currently have an unfinished workout.
+## The "past sets" page:
+This is where you can view all of your completed sets at once independent of the workout that they are associated with. You can also filter to show only the sets completed on a single exercise to monitor your proggress on it.
+## The user page:
+This is where you can view the information associated with your account. You can change your name or username as well as your password.
+# Work log:
 |date|hours|description|
 |----|-----|-----------|
 |9.3.2024|3|Got started on the frontend using React. Implemented basic routing for the frontend with React Router. Tried and failed to get json-server working with the many-to-many relationship between different workout plans and exercises.|
@@ -71,3 +82,4 @@ Currently, two official plugins are available:
 |14.8.2024|1|Finished styling the routine creator. Extracted the note popover, the button to view the popover and the logic behind displaying the popover to its own component the NotePopover component. Also got rid of some of buttons calling the React Router navigate function returned by the useNavigate hook and replaced it with `component={Link}` and `to="{linkToGoTo}"`.|
 |14.8.2024|1|Usernames now need to be unique (forgot to implement that earlier, oops). Started adding a page to view user information and edit it as well as change your password. Will probably also implement the deletion of user accounts. Also tidied up the backend, changing some of the error messages to be more accurate. For privacy reasons I'd like errors related to not finding a resource to appear identical to errors related to not having access to a resource.|
 |15.8.2024|1|Implemented chaning a user's username and name as well as chaning a user's password. Everything went surprisingly smoothly and it just felt like writing a lot of boilerplate code.|
+|16.8.2024|1|Finally wrote instuctions for using the front end application. Also reformatted the README file. Will probably write some docs for the backend API as well.
