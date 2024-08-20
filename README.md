@@ -84,4 +84,5 @@ This is where you can view the information associated with your account. You can
 |15.8.2024|1|Implemented chaning a user's username and name as well as chaning a user's password. Everything went surprisingly smoothly and it just felt like writing a lot of boilerplate code.|
 |16.8.2024|1|Finally wrote instuctions for using the front end application. Also reformatted the README file. Will probably write some docs for the backend API as well.|
 |20.8.2024|1|Started writing documentation for the backend API.|
-|total|77.5|
+|20.8.2024|1|Continued writing documentation for the backend API. Added a general guide to how the application stores everything in addition to the docs for the actual routes.
+|total|78.5|
