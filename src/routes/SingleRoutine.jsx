@@ -2,6 +2,11 @@ import { useContext, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import {
   Box, List, ListItem, ListItemText, Typography, Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  DialogContentText,
 } from "@mui/material";
 import { UnfinishedWorkoutContext, NotificationContext } from "../contexts";
 import workoutService from "../services/workoutService";
@@ -13,6 +18,8 @@ const SingleRoutine = () => {
   const [active, setActive] = useState(routine.active);
   const { showNotification } = useContext(NotificationContext);
   const navigate = useNavigate();
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const deleteUnfinisedWorkout = () => {
     window.localStorage.removeItem("workoutAppUnfinishedWorkoutSets");
@@ -48,14 +55,13 @@ const SingleRoutine = () => {
   };
 
   const deleteRoutine = async () => {
-    if (window.confirm("Warning: this will delete all of the workouts associated with this routine and also all of the sets associated with those workouts.")) {
-      await routineService.deleteRoutine(routine.id);
-      showNotification({
-        message: "Routine deleted!",
-        severity: "success",
-      }, 3000);
-      navigate("/routines");
-    }
+    setDeleteDialogOpen(false);
+    await routineService.deleteRoutine(routine.id);
+    showNotification({
+      message: "Routine deleted!",
+      severity: "success",
+    }, 3000);
+    navigate("/routines");
   };
 
   return (
@@ -137,9 +143,36 @@ const SingleRoutine = () => {
       </Button>
       {!active && (
         <Box>
-          <Button variant="contained" type="button" onClick={deleteRoutine}>delete</Button>
+          <Button
+            color="error"
+            variant="contained"
+            type="button"
+            onClick={() => setDeleteDialogOpen(true)}
+          >
+            delete
+          </Button>
         </Box>
       )}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">
+          Delete routine?
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" color="#FF1111">
+            This will cause all of your workouts based on this routine and all of the
+            sets on those workouts to be deleted.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={deleteRoutine}>Delete</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
