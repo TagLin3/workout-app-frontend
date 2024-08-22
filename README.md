@@ -86,4 +86,5 @@ This is where you can view the information associated with your account. You can
 |20.8.2024|1|Started writing documentation for the backend API.|
 |20.8.2024|1|Continued writing documentation for the backend API. Added a general guide to how the application stores everything in addition to the docs for the actual routes.
 |20.8.2024|1.5|The backend docs are pretty much finished now. Added PUT and DELETE routes for the backend for exercises. Started using the MUI Dialog component for confirming the deletion of a routine. Started adding validation to the backend for the sets and users.|
-|total|80.0|
+|22.8.2024|2|Implemented tests for the new backend features. Was a good idea since there were still some fairly dumb mistakes in the new untested features.|
+|total|82.0|
