@@ -85,6 +85,7 @@ This is where you can view the information associated with your account. You can
 |16.8.2024|1|Finally wrote instuctions for using the front end application. Also reformatted the README file. Will probably write some docs for the backend API as well.|
 |20.8.2024|1|Started writing documentation for the backend API.|
 |20.8.2024|1|Continued writing documentation for the backend API. Added a general guide to how the application stores everything in addition to the docs for the actual routes.
-|20.8.2024|1.5|The backend docs are pretty much finished now. Added PUT and DELETE routes for the backend for exercises. Started using the MUI Dialog component for confirming the deletion of a routine. Started adding validation to the backend for the sets and users.|
+|21.8.2024|1.5|The backend docs are pretty much finished now. Added PUT and DELETE routes for the backend for exercises. Started using the MUI Dialog component for confirming the deletion of a routine. Started adding validation to the backend for the sets and users.|
 |22.8.2024|2|Implemented tests for the new backend features. Was a good idea since there were still some fairly dumb mistakes in the new untested features.|
+|23.8.2024|1.5|Implemented tests for the backend and fixed the backend. Also created vscode REST client files to use the backend API easily.|
 |total|82.0|
