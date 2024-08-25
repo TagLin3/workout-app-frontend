@@ -1,10 +1,6 @@
 import { useState } from "react";
 import {
-  Box, Typography, Select, MenuItem,
-  InputLabel,
-  FormControl,
-  TextField,
-  Button,
+  Box, Typography, Select, MenuItem, InputLabel, FormControl, TextField, Button,
 } from "@mui/material";
 
 const ExerciseAdder = ({ addExercise, availableExercises }) => {
