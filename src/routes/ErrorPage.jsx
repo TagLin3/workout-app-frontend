@@ -3,6 +3,8 @@ import { Box, Typography } from "@mui/material";
 
 const ErrorPage = () => {
   const error = useRouteError();
+  console.log(error.response);
+
   if (error.message && error.message === "Request failed with status code 401") {
     return (
       <Box>
@@ -14,7 +16,7 @@ const ErrorPage = () => {
       </Box>
     );
   }
-  if (error.response && error.response.status === 404) {
+  if (error.status === 404) {
     return (
       <Box>
         <Typography>

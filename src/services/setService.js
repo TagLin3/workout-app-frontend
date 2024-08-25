@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3001/api/sets";
+const baseUrl = "/api/sets";
 
 const getAll = async (includeExercises) => {
   const response = await axios.get(`${baseUrl}${includeExercises ? "?includeExercises" : ""}`);
