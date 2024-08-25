@@ -1,7 +1,5 @@
 import { useState } from "react";
-import {
-  useLoaderData,
-} from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import {
   Box, Typography, Button, Checkbox, FormControlLabel,
 } from "@mui/material";

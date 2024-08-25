@@ -1,8 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import { useState } from "react";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, Select,
-  MenuItem,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, Select, MenuItem,
 } from "@mui/material";
 
 const PastSets = () => {

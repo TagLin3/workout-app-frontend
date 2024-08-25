@@ -1,9 +1,7 @@
 import { useContext, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
-  Button,
-  TextField,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, Button, TextField,
 } from "@mui/material";
 import routineService from "../services/routineService";
 import { NotificationContext } from "../contexts";

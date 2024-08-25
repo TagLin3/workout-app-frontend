@@ -1,8 +1,7 @@
 import { useContext } from "react";
 import { useLoaderData, Link } from "react-router-dom";
 import {
-  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography,
-  Button,
+  Table, TableHead, TableBody, TableRow, TableCell, Box, Typography, Button,
 } from "@mui/material";
 import { UnfinishedWorkoutContext } from "../contexts";
 

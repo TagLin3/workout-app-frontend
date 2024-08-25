@@ -17,4 +17,16 @@ const addExercise = async (exercise) => {
   return response.data;
 };
 
-export default { getSingle, getAll, addExercise };
+const editExercise = async (id, editedExercise) => {
+  const response = await axios.put(`${baseUrl}/${id}`, editedExercise);
+  return response.data;
+};
+
+const deleteExercise = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`);
+  return response.data;
+};
+
+export default {
+  getSingle, getAll, addExercise, editExercise, deleteExercise,
+};

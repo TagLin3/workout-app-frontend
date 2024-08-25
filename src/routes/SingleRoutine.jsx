@@ -1,12 +1,8 @@
 import { useContext, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import {
-  Box, List, ListItem, ListItemText, Typography, Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
+  Box, List, ListItem, ListItemText, Typography, Button, Dialog, DialogTitle, DialogContent,
+  DialogActions, DialogContentText,
 } from "@mui/material";
 import { UnfinishedWorkoutContext, NotificationContext } from "../contexts";
 import workoutService from "../services/workoutService";

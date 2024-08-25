@@ -1,6 +1,6 @@
 # Workout app frontend
 
-This is the frontend for my gym workout planning and logging application. It is used to plan workouts for completion in the gym and to track progress on different exercises.
+This is the frontend for my gym workout planning and logging application. It is used to plan workouts for completion in the gym and to track progress on different exercises. The frontend UI is designed around mobile interfaces but supports desktop as well.
 
 Instructions for running the application locally as well as using the backend api can be found at https://github.com/TagLin3/workout-app-frontend
 

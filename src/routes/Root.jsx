@@ -7,8 +7,7 @@ import {
 import axios from "axios";
 import { ThemeProvider } from "@emotion/react";
 import {
-  createTheme, Box, Typography, Button,
-  CssBaseline,
+  createTheme, Box, Typography, Button, CssBaseline,
 } from "@mui/material";
 import DesktopNav from "../components/DesktopNav";
 import MobileNav from "../components/MobileNav";
